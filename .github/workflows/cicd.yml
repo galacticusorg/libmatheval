@@ -27,12 +27,8 @@ jobs:
           git config --global --add safe.directory $GITHUB_WORKSPACE
           set -o pipefail
           autoreconf --install --force
-      - name: Upload assets
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          zip -r libmatheval.zip $GITHUB_WORKSPACE/../libmatheval
-          gh release upload latest libmatheval.zip
+          cd ..
+          zip -r libmatheval.zip libmatheval --exclude "libmatheval/.github/*" --exclude "libmatheval/.git/*" --exclude "libmatheval/autom4te/*"
       - name: Build and test
         run: |          
           LIBS="-lguile" LDFLAGS="-L/usr/local/lib" CFLAGS="-L/usr/local/lib -I/usr/local/include -I/usr/include/x86_64-linux-gnu" ./configure
@@ -48,6 +44,11 @@ jobs:
     if: github.ref == 'refs/heads/master'
     needs: Build-and-Test
     steps:
+      - name: Upload assets
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload latest libmatheval.zip
       - name: Check out repository code
         uses: actions/checkout@v3
       - name: Update tag
