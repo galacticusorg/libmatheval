@@ -22,6 +22,7 @@ jobs:
       - name: Build the code
         run: |
           cd $GITHUB_WORKSPACE
+          apt install -y bison flex
           git config --global --add safe.directory $GITHUB_WORKSPACE
           set -o pipefail
           autoreconf --install --force
