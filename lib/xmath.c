@@ -182,3 +182,21 @@ math_nandelta(double x)
 	 */
 	return MATH_ISNAN(x) ? x : ((x == 0) ? MATH_NAN : 0);
 }
+
+double
+math_min(double x, double y)
+{
+	/* 
+	 * Calculate min function value.
+	 */
+        return x < y ? x : y;
+}
+
+double
+math_max(double x, double y)
+{
+	/* 
+	 * Calculate max function value.
+	 */
+        return x > y ? x : y;
+}

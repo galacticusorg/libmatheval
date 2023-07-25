@@ -72,6 +72,7 @@ extern void input_reset (void);
 /* Grammar terminal symbols.  */
 %token <node> NUMBER CONSTANT VARIABLE
 %token <record> FUNCTION
+%token <record> FUNCTION2
 %left '-' '+'
 %left '*' '/'
 %left NEG
@@ -119,6 +120,10 @@ expression
 | expression '^' expression {
         /* Create exponentiation unary operation node.  */
         $$ = node_create ('b', '^', $1, $3);
+}
+| FUNCTION2 '(' expression ',' expression ')' {
+        /* Create function node.  */
+        $$ = node_create ('g', $1, $3, $5);
 }
 | FUNCTION '(' expression ')' {
         /* Create function node.  */

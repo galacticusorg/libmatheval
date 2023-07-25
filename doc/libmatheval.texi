@@ -386,8 +386,8 @@ inverse cotangent (@code{acoth}), hyperbolic inverse secant
 (@code{asech}), hyperbolic inverse cosecant (@code{acsch}), absolute
 value (@code{abs}), Heaviside step function (@code{step}) with value 1
 defined for x = 0, Dirac delta function with infinity (@code{delta}) and
-not-a-number (@code{nandelta}) values defined for x = 0, and error
-function (@code{erf}).
+not-a-number (@code{nandelta}) values defined for x = 0, error
+function (@code{erf}), and min (@code{min}) and max (@code{max}) functions.
 
 Supported unary operation is unary minus (@code{'-'}).
 
@@ -879,8 +879,8 @@ inverse cotangent (@code{acoth}), hyperbolic inverse secant
 (@code{asech}), hyperbolic inverse cosecant (@code{acsch}), absolute
 value (@code{abs}), Heaviside step function (@code{step}) with value 1
 defined for x = 0, Dirac delta function with infinity (@code{delta}) and
-not-a-number (@code{nandelta}) values defined for x = 0, and error
-function (@code{erf})
+not-a-number (@code{nandelta}) values defined for x = 0, error
+function (@code{erf}) and min (@code{min}) and max (@code{max}) functions.
 
 Supported unary operation is unary minus (@code{'-'}).
 

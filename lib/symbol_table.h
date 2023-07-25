@@ -31,10 +31,14 @@ typedef struct _Record {
 	struct _Record *next;	/* Pointer to next record.  */
 	char           *name;	/* Symbol name.  */
 	char            type;	/* Symbol type ('c' for constant, 'v' for
-				 * variable, 'f' for function).  */
+				 * variable, 'f' for function, 'g' for 2-argument function).  */
 	union {
 		double          value;	/* Constant or variable value.  */
 		double          (*function) (double);	/* Pointer to
+							 * function to
+							 * calculate its
+							 * value.  */
+	  double          (*function2) (double,double);	/* Pointer to
 							 * function to
 							 * calculate its
 							 * value.  */

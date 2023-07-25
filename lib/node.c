@@ -67,6 +67,14 @@ node_create(char type, ...)
 		node->data.function.child = va_arg(ap, Node *);
 		break;
 
+	case 'g':
+		/* Remember pointer to symbol table record describing
+		 * function and initialize function argument. */
+		node->data.function2.record = va_arg(ap, Record *);
+		node->data.function2.left = va_arg(ap, Node *);
+		node->data.function2.right = va_arg(ap, Node *);
+		break;
+
 	case 'u':
 		/* Initialize operation type and operand. */
 		node->data.un_op.operation = (char) va_arg(ap, int);
@@ -109,6 +117,11 @@ node_destroy(Node * node)
 		node_destroy(node->data.function.child);
 		break;
 
+	case 'g':
+		node_destroy(node->data.function2.left);
+		node_destroy(node->data.function2.right);
+		break;
+
 	case 'u':
 		node_destroy(node->data.un_op.child);
 		break;
@@ -142,6 +155,11 @@ node_copy(Node * node)
 		return node_create('f', node->data.function.record,
 				   node_copy(node->data.function.child));
 
+	case 'g':
+		return node_create('g', node->data.function2.record,
+				   node_copy(node->data.function2.left),
+				   node_copy(node->data.function2.right));
+
 	case 'u':
 		return node_create('u', node->data.un_op.operation,
 				   node_copy(node->data.un_op.child));
@@ -171,6 +189,22 @@ node_simplify(Node * node)
 		node->data.function.child =
 		    node_simplify(node->data.function.child);
 		if (node->data.function.child->type == 'n') {
+			double          value = node_evaluate(node);
+
+			node_destroy(node);
+			return node_create('n', value);
+		} else
+			return node;
+
+	case 'g':
+		/* Simplify function arguments and if number evaluate
+		 * function and replace function node with number node. */
+		node->data.function2.left =
+		    node_simplify(node->data.function2.left);
+		node->data.function2.right =
+		    node_simplify(node->data.function2.right);
+		if (node->data.function2.left->type == 'n'
+		    && node->data.function2.right->type == 'n') {
 			double          value = node_evaluate(node);
 
 			node_destroy(node);
@@ -328,6 +362,11 @@ node_evaluate(Node * node)
 		return (*node->data.function.record->data.
 			function) (node_evaluate(node->data.function.
 						 child));
+	case 'g':
+		/* Functions are evaluated through symbol table. */
+		return (*node->data.function2.record->data.
+			function2) (node_evaluate(node->data.function2.left),
+				    node_evaluate(node->data.function2.right));
 
 	case 'u':
 		/* Unary operation node is evaluated according to
@@ -1393,6 +1432,11 @@ node_flag_variables(Node * node)
 		node_flag_variables(node->data.function.child);
 		break;
 
+	case 'g':
+		node_flag_variables(node->data.function2.left);
+		node_flag_variables(node->data.function2.right);
+		break;
+
 	case 'u':
 		node_flag_variables(node->data.un_op.child);
 		break;
@@ -1442,6 +1486,12 @@ node_get_length(Node * node)
 		    node_get_length(node->data.function.child) + 1;
 		break;
 
+	case 'g':
+		return strlen(node->data.function2.record->name) + 1 +
+		    node_get_length(node->data.function2.left) + 1 +
+		   node_get_length(node->data.function2.right) + 1;
+		break;
+
 	case 'u':
 		return 1 + 1 + node_get_length(node->data.un_op.child) + 1;
 
@@ -1484,6 +1534,18 @@ node_write(Node * node, char *string)
 			'(');
 		string += strlen(string);
 		node_write(node->data.function.child, string);
+		string += strlen(string);
+		sprintf(string, "%c", ')');
+		break;
+
+	case 'g':
+		sprintf(string, "%s%c", node->data.function2.record->name,
+			'(');
+		string += strlen(string);
+		node_write(node->data.function2.left, string);
+		string += strlen(string);
+		sprintf(string, "%c", ',');
+		node_write(node->data.function2.right, string);
 		string += strlen(string);
 		sprintf(string, "%c", ')');
 		break;

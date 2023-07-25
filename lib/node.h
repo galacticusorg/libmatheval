@@ -32,7 +32,7 @@
 typedef struct _Node {
 	char            type;	/* Node type ('n' for number, 'c' for
 				 * constant, 'v' for variable, 'f' for
-				 * function, 'u' for unary operation, 'b'
+				 * function, 'g' for 2-arugment function, 'u' for unary operation, 'b'
 				 * for binary operation).  */
 	union {
 		double          number;	/* Number value.  */
@@ -46,6 +46,12 @@ typedef struct _Node {
 			struct _Node   *child;	/* Function argument node. 
 						 */
 		} function;	/* Structure representing function.  */
+		struct {
+			Record         *record;	/* Symbol table record for 
+						 * function.  */
+		  struct _Node   *left, *right;	/* Function argument node. 
+						 */
+		} function2;	/* Structure representing function.  */
 		struct {
 			char            operation;	/* Operation type
 							 * ('-' for unary

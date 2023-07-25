@@ -32,6 +32,9 @@
 /* Type definition for function accepting single argument of double type
  * and returning double value. */
 typedef double  (*function_type) (double);
+/* Type definition for function accepting two arguments of double type
+ * and returning double value. */
+typedef double  (*function2_type) (double,double);
 
 /* Calculate hash value for given name and hash table length.  */
 static int      hash(char *name, int length);
@@ -63,6 +66,10 @@ symbol_table_create(int length)
 		"abs", "step", "delta", "nandelta", "erf", 
 	};			/* Symbol table predefined functions
 				 * names. */
+	static char    *functions2_names[] = {
+		"min", "max", 
+	};			/* Symbol table predefined functions
+				 * names. */
 	static double   (*functions[]) (double) = {
 	exp, log, sqrt, sin, cos, tan, math_cot, math_sec, math_csc, asin, acos, atan, math_acot, math_asec, math_acsc, sinh, cosh, tanh, math_coth, math_sech, math_csch, math_asinh, math_acosh, math_atanh, math_acoth, math_asech, math_acsch, fabs, math_step, math_delta, math_nandelta, erf};	/* Symbol 
 																																				 * table 
@@ -75,6 +82,8 @@ symbol_table_create(int length)
 																																				 * calculate 
 																																				 * them. 
 																																				 */
+	static double   (*functions2[]) (double,double) = {
+	  math_min, math_max};	/* Symbol */
 	int             i;	/* Loop counter.  */
 
 	/* Allocate memory for symbol table data structure as well as for
@@ -94,6 +103,10 @@ symbol_table_create(int length)
 	     i < sizeof(functions_names) / sizeof(functions_names[0]); i++)
 		symbol_table_insert(symbol_table, functions_names[i], 'f',
 				    functions[i]);
+	for (i = 0;
+	     i < sizeof(functions2_names) / sizeof(functions2_names[0]); i++)
+		symbol_table_insert(symbol_table, functions2_names[i], 'g',
+				    functions2[i]);
 
 	/* Initialize symbol table reference count. */
 	symbol_table->reference_count = 1;
@@ -164,6 +177,10 @@ symbol_table_insert(SymbolTable * symbol_table, char *name, char type, ...)
 
 	case 'f':
 		record->data.function = va_arg(ap, function_type);
+		break;
+
+	case 'g':
+		record->data.function2 = va_arg(ap, function2_type);
 		break;
 	}
 	va_end(ap);

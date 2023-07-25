@@ -109,4 +109,10 @@ double          math_delta(double x);
  * of infinity value for x= 0) value for given value x. */
 double          math_nandelta(double x);
 
+/* Calculate min function value for given values x, y.  */
+double          math_min(double x, double y);
+
+/* Calculate max function value for given values x, y.  */
+double          math_max(double x, double y);
+
 #endif
