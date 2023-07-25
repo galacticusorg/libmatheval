@@ -29,11 +29,11 @@ license is included in the section entitled ``Copying''.
 @end ifnottex
 
 @titlepage
-@title{GNU @code{libmatheval} manual}
-@subtitle{Manual edition @value{EDITION}}
-@subtitle{For GNU @code{libmatheval} version @value{VERSION}}
-@subtitle{Last updated @value{UPDATED}}
-@author{Aleksandar Samardzic}
+@title GNU @code{libmatheval} manual
+@subtitle Manual edition @value{EDITION}
+@subtitle For GNU @code{libmatheval} version @value{VERSION}
+@subtitle Last updated @value{UPDATED}
+@author Aleksandar Samardzic
 
 @page
 @vskip 0pt plus 1filll
