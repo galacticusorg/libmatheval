@@ -50,6 +50,8 @@ jobs:
     if: github.ref == 'refs/heads/master'
     needs: Build-and-Test
     steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
@@ -59,8 +61,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release upload latest libmatheval.zip
-      - name: Check out repository code
-        uses: actions/checkout@v3
       - name: Update tag
         run: |
           git tag -f latest
