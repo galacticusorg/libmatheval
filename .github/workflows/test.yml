@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
-      - name: Build the code
+      - name: Generate configure
         run: |
           cd $GITHUB_WORKSPACE
           apt update
@@ -27,6 +27,14 @@ jobs:
           git config --global --add safe.directory $GITHUB_WORKSPACE
           set -o pipefail
           autoreconf --install --force
+      - name: Upload assets
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          zip -r libmatheval.zip $GITHUB_WORKSPACE/../libmatheval
+          gh release upload latest libmatheval.zip
+      - name: Build and test
+        run: |          
           LIBS="-lguile" LDFLAGS="-L/usr/local/lib" CFLAGS="-L/usr/local/lib -I/usr/local/include -I/usr/include/x86_64-linux-gnu" ./configure
           make -j2 2>&1 | tee build.log
           grep -v -q Error: build.log
@@ -35,3 +43,16 @@ jobs:
           grep -v -q Error: build.log
           grep -v -q Warning: build.log
           set +o pipefail
+  Update-Release-Tag:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    needs: Build-and-Test
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Update tag
+        run: |
+          git tag -f latest
+          git push origin -f latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
