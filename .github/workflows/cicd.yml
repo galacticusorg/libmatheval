@@ -29,6 +29,11 @@ jobs:
           autoreconf --install --force
           cd ..
           zip -r libmatheval.zip libmatheval --exclude "libmatheval/.github/*" --exclude "libmatheval/.git/*" --exclude "libmatheval/autom4te/*"
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-archive
+          path: 'libmatheval.zip'
       - name: Build and test
         run: |          
           LIBS="-lguile" LDFLAGS="-L/usr/local/lib" CFLAGS="-L/usr/local/lib -I/usr/local/include -I/usr/include/x86_64-linux-gnu" ./configure
@@ -44,7 +49,11 @@ jobs:
     if: github.ref == 'refs/heads/master'
     needs: Build-and-Test
     steps:
-      - name: Upload assets
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: release-archive
+      - name: Upload to release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
