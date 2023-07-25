@@ -15,6 +15,7 @@ jobs:
   # Build and test
   Build-and-Test:
     runs-on: ubuntu-latest
+    container: ghcr.io/galacticusorg/buildenv:latest
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
