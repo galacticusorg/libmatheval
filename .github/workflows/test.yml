@@ -1,0 +1,33 @@
+name: 'Test'
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - 'master'
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+defaults:
+  run:
+    shell: bash
+jobs:
+  # Build and test
+  Build-and-Test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Build the code
+        run: |
+          cd $GALACTICUS_EXEC_PATH
+          git config --global --add safe.directory $GALACTICUS_EXEC_PATH
+          set -o pipefail
+          ./configure
+          make -j2 2>&1 | tee build.log
+          grep -v -q Error: build.log
+          grep -v -q Warning: build.log
+          make -j2 check 2>&1 | tee build.log
+          grep -v -q Error: build.log
+          grep -v -q Warning: build.log
+          set +o pipefail
