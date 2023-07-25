@@ -29,6 +29,7 @@ jobs:
           autoreconf --install --force
           cd ..
           zip -r libmatheval.zip libmatheval --exclude "libmatheval/.github/*" --exclude "libmatheval/.git/*" --exclude "libmatheval/autom4te/*"
+          mv libmatheval.zip libmatheval/
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
