@@ -29,14 +29,11 @@ jobs:
           autoreconf --install --force
           LIBS="-lguile" LDFLAGS="-L/usr/local/lib" CFLAGS="-L/usr/local/lib -I/usr/local/include -I/usr/include/x86_64-linux-gnu" ./configure
           make dist
-          cd ..
-          zip -r libmatheval.zip libmatheval --exclude "libmatheval/.github/*" --exclude "libmatheval/.git/*" --exclude "libmatheval/autom4te/*"
-          mv libmatheval.zip libmatheval/
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
           name: release-archive
-          path: 'libmatheval.zip'
+          path: 'libmatheval-1.1.12.tar.gz'
       - name: Build and test
         run: |          
           make -j2 2>&1 | tee build.log
@@ -61,7 +58,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release upload latest libmatheval.zip --clobber
+          gh release upload latest libmatheval-1.1.12.tar.gz --clobber
       - name: Update tag
         run: |
           git tag -f latest
