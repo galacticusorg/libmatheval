@@ -26,6 +26,7 @@ jobs:
           apt install -y bison flex
           git config --global --add safe.directory $GITHUB_WORKSPACE
           set -o pipefail
+          mkdir -p config
           touch config/config.rpath
           autoreconf --install --force
           LIBS="-lguile" LDFLAGS="-L/usr/local/lib" CFLAGS="-L/usr/local/lib -I/usr/local/include -I/usr/include/x86_64-linux-gnu" ./configure
