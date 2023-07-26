@@ -1258,7 +1258,7 @@ node_derivative(Node * node, char *name, SymbolTable * symbol_table)
 								      2.0))))));
 
 		/* Apply rule of min function derivative. */
-		else if (!strcmp(node->data.function.record->name, "min"))
+		else if (!strcmp(node->data.function2.record->name, "min"))
 			return node_create('b', '+',
 					   node_create('b',
 						       '*',
@@ -1272,15 +1272,15 @@ node_derivative(Node * node, char *name, SymbolTable * symbol_table)
 								    node_copy
 								    (node->
 								     data.
-								     function.
+								     function2.
 								     right),
 								    node_copy
 								    (node->
 								     data.
-								     function.
+								     function2.
 								     left))),
 						       node_derivative(node->data.
-								       function.left,
+								       function2.left,
 								       name,
 								       symbol_table)),
 					   node_create('b',
@@ -1295,20 +1295,20 @@ node_derivative(Node * node, char *name, SymbolTable * symbol_table)
 								    node_copy
 								    (node->
 								     data.
-								     function.
+								     function2.
 								     left),
 								    node_copy
 								    (node->
 								     data.
-								     function.
+								     function2.
 								     right))),
 						       node_derivative(node->data.
-								       function.right,
+								       function2.right,
 								       name,
 								       symbol_table)));
 
 		/* Apply rule of max function derivative. */
-		else if (!strcmp(node->data.function.record->name, "max"))
+		else if (!strcmp(node->data.function2.record->name, "max"))
 			return node_create('b', '+',
 					   node_create('b',
 						       '*',
@@ -1322,15 +1322,15 @@ node_derivative(Node * node, char *name, SymbolTable * symbol_table)
 								    node_copy
 								    (node->
 								     data.
-								     function.
+								     function2.
 								     left),
 								    node_copy
 								    (node->
 								     data.
-								     function.
+								     function2.
 								     right))),
 						       node_derivative(node->data.
-								       function.left,
+								       function2.left,
 								       name,
 								       symbol_table)),
 					   node_create('b',
@@ -1345,15 +1345,15 @@ node_derivative(Node * node, char *name, SymbolTable * symbol_table)
 								    node_copy
 								    (node->
 								     data.
-								     function.
+								     function2.
 								     right),
 								    node_copy
 								    (node->
 								     data.
-								     function.
+								     function2.
 								     left))),
 						       node_derivative(node->data.
-								       function.right,
+								       function2.right,
 								       name,
 								       symbol_table)));
 
