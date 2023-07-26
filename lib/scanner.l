@@ -64,6 +64,8 @@ extern char *input_string; /* String representing function.  */
 static int input_from_string (char *buffer, int max_size);
 %}
 
+%option noyywrap
+
 /* Token definitions.  */
 whitespace [ \t]+
 digit [0-9]
