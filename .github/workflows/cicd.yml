@@ -30,7 +30,7 @@ jobs:
           mkdir -p m4
           touch config/config.rpath
           autoreconf --install --force -I/usr/local/share/aclocal
-          LIBS="-lguile" LDFLAGS="-L/usr/local/lib" CFLAGS="-L/usr/local/lib -I/usr/local/include -I/usr/include/x86_64-linux-gnu" ./configure
+          CFLAGS="-I/usr/include/x86_64-linux-gnu" ./configure
           make dist
       - name: Upload artifact
         uses: actions/upload-artifact@v3
