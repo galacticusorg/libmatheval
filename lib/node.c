@@ -1257,6 +1257,106 @@ node_derivative(Node * node, char *name, SymbolTable * symbol_table)
 								     ('n',
 								      2.0))))));
 
+		/* Apply rule of min function derivative. */
+		else if (!strcmp(node->data.function.record->name, "min"))
+			return node_create('b', '+',
+					   node_create('b',
+						       '*',
+						       node_create
+						       ('f',
+							symbol_table_lookup
+							(symbol_table,
+							 "step"),
+							node_create('b',
+								    '-',
+								    node_copy
+								    (node->
+								     data.
+								     function.
+								     right),
+								    node_copy
+								    (node->
+								     data.
+								     function.
+								     left))),
+						       node_derivative(node->data.
+								       function.left,
+								       name,
+								       symbol_table)),
+					   node_create('b',
+						       '*',
+						       node_create
+						       ('f',
+							symbol_table_lookup
+							(symbol_table,
+							 "step"),
+							node_create('b',
+								    '-',
+								    node_copy
+								    (node->
+								     data.
+								     function.
+								     left),
+								    node_copy
+								    (node->
+								     data.
+								     function.
+								     right))),
+						       node_derivative(node->data.
+								       function.right,
+								       name,
+								       symbol_table)));
+
+		/* Apply rule of max function derivative. */
+		else if (!strcmp(node->data.function.record->name, "max"))
+			return node_create('b', '+',
+					   node_create('b',
+						       '*',
+						       node_create
+						       ('f',
+							symbol_table_lookup
+							(symbol_table,
+							 "step"),
+							node_create('b',
+								    '-',
+								    node_copy
+								    (node->
+								     data.
+								     function.
+								     left),
+								    node_copy
+								    (node->
+								     data.
+								     function.
+								     right))),
+						       node_derivative(node->data.
+								       function.left,
+								       name,
+								       symbol_table)),
+					   node_create('b',
+						       '*',
+						       node_create
+						       ('f',
+							symbol_table_lookup
+							(symbol_table,
+							 "step"),
+							node_create('b',
+								    '-',
+								    node_copy
+								    (node->
+								     data.
+								     function.
+								     right),
+								    node_copy
+								    (node->
+								     data.
+								     function.
+								     left))),
+						       node_derivative(node->data.
+								       function.right,
+								       name,
+								       symbol_table)));
+
 	case 'u':
 		switch (node->data.un_op.operation) {
 		case '-':
