@@ -27,6 +27,8 @@ jobs:
           git config --global --add safe.directory $GITHUB_WORKSPACE
           set -o pipefail
           autoreconf --install --force
+          ./configure
+          make dist
           cd ..
           zip -r libmatheval.zip libmatheval --exclude "libmatheval/.github/*" --exclude "libmatheval/.git/*" --exclude "libmatheval/autom4te/*"
           mv libmatheval.zip libmatheval/
