@@ -45,5 +45,4 @@ to access this document.
 
 BUGS
 
-Please report bugs and eventually send patches to
-<bug-libmatheval@gnu.org> mailing list.
+Please report bugs via GitHub (issues)[https://github.com/galacticusorg/libmatheval/issues]. Patches should be submitted as GitHub pull requests.
