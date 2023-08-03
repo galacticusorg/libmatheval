@@ -102,5 +102,4 @@ jobs:
           git add doc
           git commit -m "Update documentation"
           git push --set-upstream origin gh-pages
-          git checkout -
         if: github.event_name != 'pull_request'
