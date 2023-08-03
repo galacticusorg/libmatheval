@@ -82,7 +82,8 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
-        ref: gh-pages
+        with:
+          ref: gh-pages
       - name: Remove old docs
         run: |
           mkdir -p doc
