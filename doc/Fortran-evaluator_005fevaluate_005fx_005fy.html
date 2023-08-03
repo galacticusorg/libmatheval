@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Fortran evaluator_evaluate_x_y (GNU libmatheval manual)</title>
+
+<meta name="description" content="Fortran evaluator_evaluate_x_y (GNU libmatheval manual)">
+<meta name="keywords" content="Fortran evaluator_evaluate_x_y (GNU libmatheval manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Fortran-convenience-procedures.html" rel="up" title="Fortran convenience procedures">
+<link href="Fortran-evaluator_005fevaluate_005fx_005fy_005fz.html" rel="next" title="Fortran evaluator_evaluate_x_y_z">
+<link href="Fortran-evaluator_005fevaluate_005fx.html" rel="prev" title="Fortran evaluator_evaluate_x">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="subsection" id="Fortran-evaluator_005fevaluate_005fx_005fy">
+<div class="header">
+<p>
+Next: <a href="Fortran-evaluator_005fevaluate_005fx_005fy_005fz.html" accesskey="n" rel="next"><code>evaluator_evaluate_x_y_z</code></a>, Previous: <a href="Fortran-evaluator_005fevaluate_005fx.html" accesskey="p" rel="prev"><code>evaluator_evaluate_x</code></a>, Up: <a href="Fortran-convenience-procedures.html" accesskey="u" rel="up">Fortran convenience procedures</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="evaluator_005fevaluate_005fx_005fy-2"></span><h4 class="subsection">3.2.2 <code>evaluator_evaluate_x_y</code></h4>
+<span id="index-Fortran_002c-evaluator_005fevaluate_005fx_005fy"></span>
+
+<ul class="section-toc">
+<li><a href="#Synopsis-21" accesskey="1">Synopsis</a></li>
+<li><a href="#Description-21" accesskey="2">Description</a></li>
+<li><a href="#Return-value-21" accesskey="3">Return value</a></li>
+<li><a href="#See-also-21" accesskey="4">See also</a></li>
+</ul>
+<div class="unnumberedsubsubsec" id="Synopsis-21">
+<h4 class="unnumberedsubsubsec">Synopsis</h4>
+
+<div class="example">
+<pre class="example">double precision function evaluator_evaluate_x_y (evaluator, x, y)
+integer*8 :: evaluator double precision ::  x, y end function
+evaluator_evaluate_x_y
+</pre></div>
+
+</div>
+<div class="unnumberedsubsubsec" id="Description-21">
+<h4 class="unnumberedsubsubsec">Description</h4>
+
+<p>Convenience function to evaluate function for given variables &ldquo;x&rdquo;
+and &ldquo;y&rdquo; values.  Function is equivalent to following:
+</p>
+<div class="example">
+<pre class="example">evaluator_evaluate (evaluator, 2, 'x y', (/ x, y /))
+</pre></div>
+
+<p>See <a href="Fortran-evaluator_005fevaluate.html"><code>evaluator_evaluate</code></a> for further information.
+</p>
+</div>
+<div class="unnumberedsubsubsec" id="Return-value-21">
+<h4 class="unnumberedsubsubsec">Return value</h4>
+
+<p>Value of function for given values of variables &ldquo;x&rdquo; and &ldquo;y&rdquo;.
+</p>
+</div>
+<div class="unnumberedsubsubsec" id="See-also-21">
+<h4 class="unnumberedsubsubsec">See also</h4>
+
+<p><a href="Fortran-evaluator_005fcreate.html"><code>evaluator_create</code></a>, <a href="Fortran-evaluator_005fdestroy.html"><code>evaluator_destroy</code></a>,
+<a href="Fortran-evaluator_005fevaluate.html"><code>evaluator_evaluate</code></a>
+</p>
+</div>
+</div>
+
+
+
+</body>
+</html>

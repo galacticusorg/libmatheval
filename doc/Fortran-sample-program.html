@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Fortran sample program (GNU libmatheval manual)</title>
+
+<meta name="description" content="Fortran sample program (GNU libmatheval manual)">
+<meta name="keywords" content="Fortran sample program (GNU libmatheval manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Fortran-interface.html" rel="up" title="Fortran interface">
+<link href="Fortran-build-process.html" rel="next" title="Fortran build process">
+<link href="Fortran-convenience-procedures.html" rel="prev" title="Fortran convenience procedures">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section" id="Fortran-sample-program">
+<div class="header">
+<p>
+Next: <a href="Fortran-build-process.html" accesskey="n" rel="next">Fortran build process</a>, Previous: <a href="Fortran-convenience-procedures.html" accesskey="p" rel="prev">Fortran convenience procedures</a>, Up: <a href="Fortran-interface.html" accesskey="u" rel="up">Fortran interface</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Fortran-sample-program-1"></span><h3 class="section">3.3 Fortran sample program</h3>
+<span id="index-Fortran_002c-sample-program"></span>
+
+<p>Here follows sample program demonstrating use of library Fortran
+interface.  Hopefully, comments throughout code will be enough for
+Fortran programmer to get acquainted with library usage.  Basic
+functioning of program is equivalent to code presented for C
+programmer in <a href="Introduction.html">Introduction</a> sequence, except that textual
+representation of function derivative is not printed to standard
+output and this is avoided simply because of Fortran 77 ugly string
+handling.  Following code is written in Fortran 77 with GNU Fortran 77
+compiler extensions (most notable of these certainly is free form of
+source code).
+</p>
+<div class="example">
+<pre class="example">! Program is demonstrating use of GNU libmatheval library of procedures
+! for evaluating mathematical functions.
+program evaluator
+  implicit none
+
+  ! Declarations of GNU libmatheval procedures used.
+  integer*8 evaluator_create
+  integer*8 evaluator_derivative_x
+  double precision evaluator_evaluate_x
+  external evaluator_destroy
+
+  ! Size of input buffer.
+  integer :: BUFFER_SIZE
+  parameter(BUFFER_SIZE = 256)
+
+  character(len = BUFFER_SIZE) :: buffer ! Input buffer.
+  integer*8 :: f, f_prim ! Evaluators for function and function derivative.
+  double precision :: x ! Variable x value.
+
+  ! Read function.  Function has to be over variable x, or result may
+  ! be undetermined.  Size of textual represenatation will be truncated
+  ! here to BUFFER_SIZE characters, in real conditions one should 
+  ! probably come with something smarter to avoid this limit.
+  write (*, '(A)') 'f(x) = '
+  read (*, '(A)') buffer
+
+  ! Create evaluator for function.
+  f = evaluator_create (buffer);
+  if (f == 0) stop
+
+  ! Create evaluator for function derivative.
+  f_prim = evaluator_derivative_x (f);
+  if (f_prim == 0) stop
+
+  ! Read variable x value.
+  write (*, '(A)') 'x = '
+  read (*, *) x
+
+  ! Calculate and print values of function and its derivative for given
+  ! value of x.
+  write (*,*) '  f (', x, ') = ', evaluator_evaluate_x (f, x)
+  write (*,*) '  f'' (', x, ') = ', evaluator_evaluate_x (f_prim, x)
+
+  ! Destroy evaluators.
+  call evaluator_destroy (f)
+  call evaluator_destroy (f_prim)
+end program evaluator
+</pre></div>
+
+</div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Fortran-build-process.html">Fortran build process</a>, Previous: <a href="Fortran-convenience-procedures.html">Fortran convenience procedures</a>, Up: <a href="Fortran-interface.html">Fortran interface</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

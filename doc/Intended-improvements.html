@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Intended improvements (GNU libmatheval manual)</title>
+
+<meta name="description" content="Intended improvements (GNU libmatheval manual)">
+<meta name="keywords" content="Intended improvements (GNU libmatheval manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Hacking.html" rel="up" title="Hacking">
+<link href="Project-structure.html" rel="prev" title="Project structure">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section" id="Intended-improvements">
+<div class="header">
+<p>
+Previous: <a href="Project-structure.html" accesskey="p" rel="prev">Project structure</a>, Up: <a href="Hacking.html" accesskey="u" rel="up">Hacking</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Intended-improvements-1"></span><h3 class="section">4.3 Intended improvements</h3>
+<span id="index-intended-improvements"></span>
+
+<p>As stated in <a href="Design-notes.html">Design notes</a> section, GNU <code>libmatheval</code> is
+designed with intention to be simple and understandable and to
+eventually have its usage to govern improvements.  Thus, further work
+will be primarily directed by user requests and of course, as usual
+with free software projects, with amount of spare time of primary
+developer (see <a href="Bugs.html">Bugs</a> for contact information).  However, there
+exist several obvious improvements that I&rsquo;m willing to work on
+immediately if any interest of library arise and these are (in random
+order) listed below:
+</p>
+<ul>
+<li> Extend scanner to recognize more mathematical functions, to recognize
+alternative names for existing functions (e.g. to recognize both
+&lsquo;<samp>tg</samp>&rsquo; and &lsquo;<samp>tan</samp>&rsquo; as names for tangent function) and to
+recognize more constants.
+
+</li><li> Implement variable hash table length for symbol table.  As for now,
+hash table length is fixed to 211 that is reasonable for most cases,
+but it would certainly be more robust to have hash table to be
+constructed of length proportional say to length of string
+representing function.
+
+</li><li> Add more simplifications to function tree representation.  Only basic
+simplifications, mostly related to numbers subtrees consolidation and
+binary operations neutral elements are employed now.  More ambitious
+optimization, using commutative, associative and distributive rules
+for binary operations would be desirable.
+
+</li><li> Improve output when evaluator object is printed.  Presently,
+parenthesis are always used around operations, while using them when
+necessary to establish proper evaluation priority order only would
+give prettier output
+
+</li><li> Add more tests.  Basic functionality of library is exercised through
+existing test suite, but present number of tests is certainly far from
+enough.
+
+</li><li> Extend and improve error handling.  There are couple <code>assert</code>s
+left in code that may be replaced with some other mechanism, also
+probably error handling of more error conditions should be added to
+library.
+
+</li><li> Add command line interface to library, i.e. write a program that will
+make possible to evaluate expression for given variable values where
+both specified in command line, as program arguments (for expressions
+without variables this program could be useful as a calculator).
+</li></ul>
+
+<p>There exists also an improvement that is obvious and necessary but
+because I&rsquo;m not native speaker I&rsquo;m unfortunately not able to
+accomplish it anything more than I already tried:
+</p>
+<ul>
+<li> Clean up English used in documentation.
+
+</li></ul>
+
+</div>
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Project-structure.html">Project structure</a>, Up: <a href="Hacking.html">Hacking</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

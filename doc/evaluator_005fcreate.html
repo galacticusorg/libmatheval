@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>evaluator_create (GNU libmatheval manual)</title>
+
+<meta name="description" content="evaluator_create (GNU libmatheval manual)">
+<meta name="keywords" content="evaluator_create (GNU libmatheval manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Main-entry-points.html" rel="up" title="Main entry points">
+<link href="evaluator_005fdestroy.html" rel="next" title="evaluator_destroy">
+<link href="Main-entry-points.html" rel="prev" title="Main entry points">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="subsection" id="evaluator_005fcreate">
+<div class="header">
+<p>
+Next: <a href="evaluator_005fdestroy.html" accesskey="n" rel="next"><code>evaluator_destroy</code></a>, Previous: <a href="Main-entry-points.html" accesskey="p" rel="prev">Main entry points</a>, Up: <a href="Main-entry-points.html" accesskey="u" rel="up">Main entry points</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="evaluator_005fcreate-1"></span><h4 class="subsection">2.1.1 <code>evaluator_create</code></h4>
+<span id="index-evaluator_005fcreate"></span>
+
+<ul class="section-toc">
+<li><a href="#Synopsis" accesskey="1">Synopsis</a></li>
+<li><a href="#Description" accesskey="2">Description</a></li>
+<li><a href="#Return-value" accesskey="3">Return value</a></li>
+<li><a href="#See-also" accesskey="4">See also</a></li>
+</ul>
+<div class="unnumberedsubsubsec" id="Synopsis">
+<h4 class="unnumberedsubsubsec">Synopsis</h4>
+
+<div class="example">
+<pre class="example">#include &lt;matheval.h&gt;
+
+void *evaluator_create (char *string);
+</pre></div>
+
+</div>
+<div class="unnumberedsubsubsec" id="Description">
+<h4 class="unnumberedsubsubsec">Description</h4>
+
+<p>Create evaluator object from <code>string</code> containing mathematical
+representation of function.  Evaluator object could be used later to
+evaluate function for specific variable values or to calculate
+function derivative over some variable.
+</p>
+<p>String representation of function is allowed to consist of decimal
+numbers, constants, variables, elementary functions, unary and binary
+operations.
+</p>
+<p>Supported constants are (names that should be used are given in
+parenthesis): e (<code>e</code>), log2(e) (<code>log2e</code>), log10(e)
+(<code>log10e</code>), ln(2) (<code>ln2</code>), ln(10) (<code>ln10</code>), pi
+(<code>pi</code>), pi / 2 (<code>pi_2</code>), pi / 4 (<code>pi_4</code>), 1 / pi
+(<code>1_pi</code>), 2 / pi (<code>2_pi</code>), 2 / sqrt(pi) (<code>2_sqrtpi</code>),
+sqrt(2) (<code>sqrt</code>) and sqrt(1 / 2) (<code>sqrt1_2</code>).
+</p>
+<p>Variable name is any combination of alphanumericals and <code>_</code>
+characters beginning with a non-digit that is not elementary function
+name.
+</p>
+<p>Supported elementary functions are (names that should be used are given
+in parenthesis): exponential (<code>exp</code>), logarithmic (<code>log</code>),
+square root (<code>sqrt</code>), sine (<code>sin</code>), cosine (<code>cos</code>),
+tangent (<code>tan</code>), cotangent (<code>cot</code>), secant (<code>sec</code>),
+cosecant (<code>csc</code>), inverse sine (<code>asin</code>), inverse cosine
+(<code>acos</code>), inverse tangent (<code>atan</code>), inverse cotangent
+(<code>acot</code>), inverse secant (<code>asec</code>), inverse cosecant
+(<code>acsc</code>), hyperbolic sine (<code>sinh</code>), cosine (<code>cosh</code>),
+hyperbolic tangent (<code>tanh</code>), hyperbolic cotangent (<code>coth</code>),
+hyperbolic secant (<code>sech</code>), hyperbolic cosecant (<code>csch</code>),
+hyperbolic inverse sine (<code>asinh</code>), hyperbolic inverse cosine
+(<code>acosh</code>), hyperbolic inverse tangent (<code>atanh</code>), hyperbolic
+inverse cotangent (<code>acoth</code>), hyperbolic inverse secant
+(<code>asech</code>), hyperbolic inverse cosecant (<code>acsch</code>), absolute
+value (<code>abs</code>), Heaviside step function (<code>step</code>) with value 1
+defined for x = 0, Dirac delta function with infinity (<code>delta</code>) and
+not-a-number (<code>nandelta</code>) values defined for x = 0, error
+function (<code>erf</code>), and min (<code>min</code>) and max (<code>max</code>) functions.
+</p>
+<p>Supported unary operation is unary minus (<code>'-'</code>).
+</p>
+<p>Supported binary operations are addition (<code>'+'</code>), subtraction
+(<code>'+'</code>), multiplication (<code>'*'</code>), division multiplication
+(<code>'/'</code>) and exponentiation (<code>'^'</code>).
+</p>
+<p>Usual mathematical rules regarding operation precedence
+apply. Parenthesis (<code>'('</code> and <code>')'</code>) could be used to change
+priority order.
+</p>
+<p>Blanks and tab characters are allowed in string representing function;
+newline characters must not appear in this string.
+</p>
+</div>
+<div class="unnumberedsubsubsec" id="Return-value">
+<h4 class="unnumberedsubsubsec">Return value</h4>
+
+<p>Pointer to evaluator object if operation successful, null pointer
+otherwise.  Evaluator object is opaque, one should only use return
+pointer to pass it to other functions from library.
+</p>
+</div>
+<div class="unnumberedsubsubsec" id="See-also">
+<h4 class="unnumberedsubsubsec">See also</h4>
+
+<p><a href="evaluator_005fdestroy.html"><code>evaluator_destroy</code></a>, <a href="evaluator_005fevaluate.html"><code>evaluator_evaluate</code></a>,
+<a href="evaluator_005fget_005fstring.html"><code>evaluator_get_string</code></a>, <a href="evaluator_005fget_005fvariables.html"><code>evaluator_get_variables</code></a>,
+<a href="evaluator_005fderivative.html"><code>evaluator_derivative</code></a>
+</p>
+</div>
+</div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="evaluator_005fdestroy.html"><code>evaluator_destroy</code></a>, Previous: <a href="Main-entry-points.html">Main entry points</a>, Up: <a href="Main-entry-points.html">Main entry points</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

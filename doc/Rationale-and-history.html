@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Rationale and history (GNU libmatheval manual)</title>
+
+<meta name="description" content="Rationale and history (GNU libmatheval manual)">
+<meta name="keywords" content="Rationale and history (GNU libmatheval manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html" rel="up" title="Top">
+<link href="Copying.html" rel="next" title="Copying">
+<link href="Bugs.html" rel="prev" title="Bugs">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="chapter" id="Rationale-and-history">
+<div class="header">
+<p>
+Next: <a href="Copying.html" accesskey="n" rel="next">GNU Free Documentation License</a>, Previous: <a href="Bugs.html" accesskey="p" rel="prev">Bugs</a>, Up: <a href="index.html" accesskey="u" rel="up">GNU <code>libmatheval</code> manual</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Rationale-and-history-1"></span><h2 class="chapter">6 Rationale and history</h2>
+<span id="index-rationale"></span>
+<span id="index-history"></span>
+
+<p>The library is developed as a back-end for &ldquo;Numerical Analysis&rdquo;
+course taught during 1999/2000, 2000/2001 and 2001/2002 school years
+at Department of Mathematics, University of Belgrade.  Most numerical
+libraries (library accompanying &ldquo;Numerical Recipes&rdquo; book most
+notably example) are asking programmer to write corresponding C code
+when it comes to evaluate mathematical functions.  It seemed to me
+that it would be more appropriate (well, at least for above mentioned
+course) to have library that will make possible to specify functions
+as strings and then have them evaluated for given variable values, so
+I wrote first version of library during November 1999.  Fortran
+interface is added to the library later; during January 2001 interface
+for Pacific Sierra VAST Fortran 90 translator was implemented and
+during September 2001 it was replaced by interface for Intel Fortran
+90 compiler <a id="DOCF1" href="#FOOT1"><sup>1</sup></a>.  This library eventually
+went into rather stable state and was tested by number of other
+programs implementing various numerical methods and developed for the
+same course.
+</p>
+<p>After completing engagement with this course, I thought it may be
+interesting for someone else to use this code and decided to make it
+publicly available.  So, having some spare time during June 2002, I
+re-wrote whole library in preparation for public release, now
+employing simpler overall design and also using GNU auto-tools and
+what else was necessary according to GNU guidelines.  The benefit is
+that final product looks much better now (well, at least to me and at
+least at the very moment of this writing), the drawback is that code
+is not thoroughly tested again.  But certainly author would be more
+than happy to further improve and maintain it.  Please see <a href="Bugs.html">Bugs</a>,
+for contact information.
+</p>
+<p>The library source code was hosted on Savannah
+(<a href="http://savannah.gnu.org/">http://savannah.gnu.org/</a>) since Septembar 2002.  In September
+2003, library officially became part of GNU project.
+</p>
+</div>
+<div class="footnote">
+<hr>
+<h4 class="footnotes-heading">Footnotes</h4>
+
+<h5><a id="FOOT1" href="#DOCF1">(1)</a></h5>
+<p>That was in turn replaced by interface for GNU
+Fortran 77 compiler in order to meet requirement that no GNU project
+should require use of non-free software</p>
+</div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Copying.html">GNU Free Documentation License</a>, Previous: <a href="Bugs.html">Bugs</a>, Up: <a href="index.html">GNU <code>libmatheval</code> manual</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

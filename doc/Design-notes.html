@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Design notes (GNU libmatheval manual)</title>
+
+<meta name="description" content="Design notes (GNU libmatheval manual)">
+<meta name="keywords" content="Design notes (GNU libmatheval manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Hacking.html" rel="up" title="Hacking">
+<link href="Project-structure.html" rel="next" title="Project structure">
+<link href="Hacking.html" rel="prev" title="Hacking">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section" id="Design-notes">
+<div class="header">
+<p>
+Next: <a href="Project-structure.html" accesskey="n" rel="next">Project structure</a>, Previous: <a href="Hacking.html" accesskey="p" rel="prev">Hacking</a>, Up: <a href="Hacking.html" accesskey="u" rel="up">Hacking</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Design-notes-1"></span><h3 class="section">4.1 Design notes</h3>
+<span id="index-design-notes"></span>
+
+<p>As usual with a free software project, ultimate reference for anyone
+willing to hack on it is its source code.  Every effort is put to have
+source code properly commented; having in mind that GNU
+<code>libmatheval</code> is rather simple project, it is reasonable to
+expect that this would be enough for anyone interested in project
+internals to get acquainted with it.  Still, this section will briefly
+explain project design. See <a href="Project-structure.html">Project structure</a> section for
+description of where each functionality is located in source code.
+</p>
+<p>Mathematical functions are represented as trees in computer memory.
+There are five different nodes in such a tree: number, constants,
+variables, functions, unary operations and binary operations.  Single
+data structure is employed for tree nodes, while union is used over
+what is different among them.  Numbers have unique value, unary and
+binary operations have unique pointer(s) to their operand(s) node(s).
+To represent constants, variables and functions, a symbol table is
+employed; thus constants, variables and functions have unique pointers
+to corresponding symbol table records (functions also have unique
+pointer to their argument node).  All operations related to functions
+(e.g. evaluation or derivative calculation) are implemented as
+recursive operations on tree nodes.  There exist a node operation that
+is not visible as external procedure and this is node simplification;
+this operation is very important regarding overall efficiency of other
+operations and is employed each time when new tree created.
+</p>
+<p>Symbol table is implemented as hash table, where each bucket has
+linked list of records stored in it.  Records store information of
+symbol name and type (variable or function), as well as some unique
+information related to evaluation: variable records store temporary
+variable value and function records store pointer to procedure used to
+actually calculate function value during evaluation.  Hashing function
+described in <cite>A.V. Aho, R. Sethi, J.D. Ullman, &ldquo;Compilers -
+Principle, Techniques, and Tools&rdquo;, Addison-Wesley, 1986, pp 435-437</cite>
+is used.  Symbol tables are reference counted objects, i.e. could be
+shared.
+</p>
+<p>Evaluator objects actually consists of function tree and reference to
+symbol table.  Most of operations on evaluator objects are simply
+delegated to function tree root node.
+</p>
+<p>For parsing strings representing mathematical functions, Lex and Yacc
+are employed.  Scanner is creating symbol table records for variables,
+while for constants and functions it is only looking up existing
+symbol table records (before starting scanning, symbol table should be
+populated with records for constants and functions recognized by
+scanner).  Parser is responsible for building function tree
+representation.
+</p>
+<p>Couple error reporting procedures, as well as replacements for
+standard memory allocation routines are also present.  These are
+rather standard for all GNU projects, so deserve no further
+discussion.  Further present in project are couple procedures for
+mathematical functions not implemented by C standard library, like
+cotangent, inverse cotangent and some hyperbolic and inverse
+hyperbolic functions.
+</p>
+<p>Also present in project are stubs for Fortran code calling
+library. These stubs uses knowledge of GNU Fortran 77 compiler calling
+conventions, take parameters from Fortran 77 calls, eventually mangle
+them to satisfy primary C library interface and call library
+procedures to actually do the work, finally eventually mangling return
+values to satisfy Fortran 77 calling conventions again.
+</p>
+<p>Most important thing to know before criticizing library design is that
+it is intentionally left as simple as it could be.  Decision is now
+that eventual library usage should direct its improvements.  Some
+obvious and intended improvements if enough interest for library arise
+are enumerated in <a href="Intended-improvements.html">Intended improvements</a> section.  If having
+further suggestions, pleas see <a href="Bugs.html">Bugs</a> sections for contact
+information.
+</p>
+</div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Project-structure.html">Project structure</a>, Previous: <a href="Hacking.html">Hacking</a>, Up: <a href="Hacking.html">Hacking</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

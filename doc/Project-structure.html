@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Project structure (GNU libmatheval manual)</title>
+
+<meta name="description" content="Project structure (GNU libmatheval manual)">
+<meta name="keywords" content="Project structure (GNU libmatheval manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Hacking.html" rel="up" title="Hacking">
+<link href="Intended-improvements.html" rel="next" title="Intended improvements">
+<link href="Design-notes.html" rel="prev" title="Design notes">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section" id="Project-structure">
+<div class="header">
+<p>
+Next: <a href="Intended-improvements.html" accesskey="n" rel="next">Intended improvements</a>, Previous: <a href="Design-notes.html" accesskey="p" rel="prev">Design notes</a>, Up: <a href="Hacking.html" accesskey="u" rel="up">Hacking</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Project-structure-1"></span><h3 class="section">4.2 Project structure</h3>
+<span id="index-physical-structure"></span>
+
+<p>Interesting source files are mostly concentrated in <samp>lib</samp>
+subdirectory of distribution.  Basic arrangement is rather standard
+for GNU projects, thus scanner is in <samp>scanner.l</samp> file, parser in
+<samp>parser.y</samp>, error handling routines are in <samp>error.c</samp> and
+<samp>error.h</samp> files, replacements for standard memory allocation
+routines are in <samp>xmalloc.c</samp> and <samp>xmalloc.h</samp>, additional
+mathematical functions are in <samp>xmath.c</samp> and <samp>xmath.c</samp>.
+Project specific files are: <samp>node.h</samp> and <samp>node.c</samp> files for
+tree representing mathematical function data structures and
+procedures, <samp>symbol_table.c</samp> and <samp>symbol_table.h</samp> for symbol
+table data structures and procedures and finally <samp>evaluator.c</samp> and
+<samp>matheval.h</samp> for evaluator object data structures and procedures
+(evaluator object data structure is moved to <samp>.c</samp> file because
+<samp>matheval.h</samp> is public header file and this data structure should
+be opaque).  Fortran interface is implemented in
+<samp>f77_interface.c</samp> file.
+</p>
+<p>File <samp>libmatheval.texi</samp> under <samp>doc</samp> subdirectory of
+distribution contains Texinfo source of project documentation
+(i.e. what you are reading now).
+</p>
+<p>Subdirectory <samp>tests</samp> contains library test suite.  Kind of mixed
+design is employed here - GNU autotest is used for test framework in
+order to achieve more portability, while number of small Guile scripts
+are performing tests.  File <samp>matheval.c</samp> in <samp>tests</samp>
+subdirectory contains program extending Guile interpreter with GNU
+<code>libmatheval</code> procedures.  Files with <samp>.at</samp> extension in
+same subdirectory in turn consist of fragments of Guile code that this
+extended Guile interpreter executes in order to conduct tests.  File
+<samp>matheval.sh</samp> is shell wrapper for program contained in
+<samp>matheval.c</samp> file; this wrapper is used by autotest during
+testing instead of original program.  Most interesting aspect of code
+from <samp>tests</samp> subdirectory is certainly Guile interface for
+library that is implemented in <samp>matheval.c</samp> file; anyone
+intending to write more tests must before approaching this task become
+familiar with this interface.
+</p>
+</div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Intended-improvements.html">Intended improvements</a>, Previous: <a href="Design-notes.html">Design notes</a>, Up: <a href="Hacking.html">Hacking</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

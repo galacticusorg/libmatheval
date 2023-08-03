@@ -1,0 +1,283 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Introduction (GNU libmatheval manual)</title>
+
+<meta name="description" content="Introduction (GNU libmatheval manual)">
+<meta name="keywords" content="Introduction (GNU libmatheval manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html" rel="up" title="Top">
+<link href="Reference.html" rel="next" title="Reference">
+<link href="License.html" rel="prev" title="License">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="chapter" id="Introduction">
+<div class="header">
+<p>
+Next: <a href="Reference.html" accesskey="n" rel="next">Reference</a>, Previous: <a href="License.html" accesskey="p" rel="prev">License</a>, Up: <a href="index.html" accesskey="u" rel="up">GNU <code>libmatheval</code> manual</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Introduction-1"></span><h2 class="chapter">1 Introduction</h2>
+<span id="index-introduction"></span>
+<span id="index-usage"></span>
+
+<p>GNU <code>libmatheval</code> is library comprising several procedures that
+makes possible to create in-memory tree representation of mathematical
+functions over single or multiple variables and later use this
+representation to evaluate function for specified variable values, to
+create corresponding tree for function derivative over specified
+variable or to get back textual representation of in-memory tree.
+</p>
+<p>This section discuss use of programming interface exposed by library
+from C programs. Readers interested in Fortran interface should switch
+immediately to <a href="Fortran-interface.html">Fortran interface</a> section.
+</p>
+<p>In order to use GNU <code>libmatheval</code> library from C code, it is
+necessary first to include header file <samp>matheval.h</samp> from all
+files calling GNU <code>libmatheval</code> procedures and then refer to
+<samp>libmatheval</samp> library among other linker option.  Thus, command
+to compile C program using library and stored in file <samp>example.c</samp>
+using GNU C compiler would look like (supposing that library is
+installed using default prefix <code>/usr/local/lib</code>):
+</p>
+<div class="example">
+<pre class="example">gcc example.c -I/usr/local/include -L/usr/local/lib -lmatheval -o example
+</pre></div>
+
+<p>Alternatively, <code>pkg-config</code> metadata file for <code>libmatheval</code>
+is installed along with the library too, thus on system with
+<code>pkg-config</code> installed following command could be used instead:
+</p>
+<div class="example">
+<pre class="example">gcc example.c $(pkg-config --cflags --libs) -o example
+</pre></div>
+
+<p>First step in actually utilizing library after including appropriate
+header file would be to declare variable of <code>void *</code> type to
+point to evaluator object that will represent given mathematical
+function:
+</p>
+<div class="example">
+<pre class="example">void *f;
+</pre></div>
+
+<p>Then, given that textual representation of function is stored into
+string <code>buffer</code>, evaluator object corresponding to given
+mathematical function could be created using <code>evaluator_create</code>
+procedure (see <a href="evaluator_005fcreate.html"><code>evaluator_create</code></a>) as follows (see documentation
+for this procedure also for description of notation that should be
+used to describe mathematical functions):
+</p>
+<div class="example">
+<pre class="example">f = evaluator_create (buffer);
+assert (f);
+</pre></div>
+
+<p>Return value should be always checked, because above procedure will
+return null pointer if there exist syntax errors in notation.  After
+that, one could utilize <code>evaluator_get_variables</code> (see
+<a href="evaluator_005fget_005fvariables.html"><code>evaluator_get_variables</code></a>) procedure to obtain a list of variable
+names appearing in function:
+</p>
+<div class="example">
+<pre class="example">{
+  char **names;
+  int count;
+  int i;
+
+  evaluator_get_variables (f, &amp;names, &amp;count);
+  for (i = 0; i &lt; count; i++)
+    printf (&quot;%s &quot;, names[i]);
+  printf (&quot;\n&quot;);
+}
+</pre></div>
+
+<p>Procedure <code>evaluator_evaluate</code> (see <a href="evaluator_005fevaluate.html"><code>evaluator_evaluate</code></a>)
+could be used to evaluate function for specific variable values.  Say
+that above function is over variable &ldquo;x&rdquo; only, then following code
+will evaluate and print function value for x = 0.1:
+</p>
+<div class="example">
+<pre class="example">{
+  char *names[] = { &quot;x&quot; };
+  double values[] = { 0.1 };
+
+  printf (&quot;f(0.1) = %g\n&quot;, evaluator_evaluate (f, 1, names, 
+                                               values));
+}
+</pre></div>
+
+<p>Or alternatively, since function is over variable with standard name
+&ldquo;x&rdquo;, convenience procedure <code>evaluator_evaluate_x</code>
+(<a href="evaluator_005fevaluate_005fx.html"><code>evaluator_evaluate_x</code></a>) could be used to accomplish same by
+following:
+</p>
+<div class="example">
+<pre class="example">printf (&quot;f(0.1) = %g\n&quot;, evaluator_evaluate_x (f, 0.1));
+</pre></div>
+
+<p>Evaluator object for function derivative over some variable could be
+created from evaluator object for given function.  In order to
+accomplish this, a declaration for derivative evaluator object should
+be added to variable declarations section:
+</p>
+<div class="example">
+<pre class="example">void *f_prim;
+</pre></div>
+
+<p>After that (supposing that &ldquo;x&rdquo; is used as derivation variable),
+derivative evaluator object could be created using
+<code>evaluator_derivative</code> procedure (see
+<a href="evaluator_005fderivative.html"><code>evaluator_derivative</code></a>):
+</p>
+<div class="example">
+<pre class="example">f_prim = evaluator_derivative (f, &quot;x&quot;);
+</pre></div>
+
+<p>or alternatively using <code>evaluator_derivative_x</code> convenience
+procedure (see <a href="evaluator_005fderivative_005fx.html"><code>evaluator_derivative_x</code></a>):
+</p>
+<div class="example">
+<pre class="example">f_prim = evaluator_derivative_x (f);
+</pre></div>
+
+<p>Derivative evaluator object could be used to evaluate derivative
+values or say textual representation of derivative could be written to
+standard output through utilizing <code>evaluator_get_string</code>
+procedure (see <a href="evaluator_005fget_005fstring.html"><code>evaluator_get_string</code></a>) to get string representing
+given evaluator.  Following code would accomplish this:
+</p>
+<div class="example">
+<pre class="example">printf (&quot;  f'(x) = %s\n&quot;, evaluator_get_string (f_prim));
+</pre></div>
+
+<p>All evaluator objects must be destroyed after finished with using them
+and <code>evaluator_destroy</code> procedure (see <a href="evaluator_005fdestroy.html"><code>evaluator_destroy</code></a>)
+is intended for this:
+</p>
+<div class="example">
+<pre class="example">evaluator_destroy (f);
+evaluator_destroy (f_prim);
+</pre></div>
+
+<p>Here follows complete program connecting above fragments.  Program
+read from standard input string representing function over variable
+&ldquo;x&rdquo;, create evaluators for function and its first derivative, print
+textual representation of function derivative to standard output, then
+read value of variable &ldquo;x&rdquo; and finally print to standard output
+values of function and its first derivative for given value of
+variable &ldquo;x&rdquo;.
+</p>
+<div class="example">
+<pre class="example">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;assert.h&gt;
+#include &lt;matheval.h&gt;
+
+/* Size of input buffer.  */
+#define BUFFER_SIZE 256
+
+/* Program is demonstrating use of GNU libmatheval library of procedures
+   for evaluating mathematical functions.  */
+int
+main (int argc, char **argv)
+{
+  char buffer[BUFFER_SIZE];	/* Input buffer.  */
+  int length;			/* Length of above buffer. */
+  void *f, *f_prim;		/* Evaluators for function and function derivative.  */
+  char **names;			/* Function variables names. */
+  int count;			/* Number of function variables. */
+  double x;			/* Variable x value.  */
+  int i;			/* Loop counter. */
+
+  /* Read function.  Function has to be over variable x, or result may
+     be undetermined.  Size of textual represenatation of function is
+     bounded here to 256 characters, in real conditions one should
+     probably use GNU readline() instead of fgets() to overcome this
+     limit.  */
+  printf (&quot;f(x) = &quot;);
+  fgets (buffer, BUFFER_SIZE, stdin);
+  length = strlen (buffer);
+  if (length &gt; 0 &amp;&amp; buffer[length - 1] == '\n')
+    buffer[length - 1] = '\0';
+
+  /* Create evaluator for function.  */
+  f = evaluator_create (buffer);
+  assert (f);
+
+  /* Print variable names appearing in function. */
+  evaluator_get_variables (f, &amp;names, &amp;count);
+  printf (&quot;  &quot;);
+  for (i = 0; i &lt; count; i++)
+    printf (&quot;%s &quot;, names[i]);
+  printf (&quot;\n&quot;);
+
+  /* Create evaluator for function derivative and print textual
+     representation of derivative.  */
+  f_prim = evaluator_derivative_x (f);
+  printf (&quot;  f'(x) = %s\n&quot;, evaluator_get_string (f_prim));
+
+  /* Read variable x value.  */
+  printf (&quot;x = &quot;);
+  scanf (&quot;%lf&quot;, &amp;x);
+
+  /* Calculate and print values of function and its derivative for given
+     value of x.  */
+  printf (&quot;  f(%g) = %g\n&quot;, x, evaluator_evaluate_x (f, x));
+  printf (&quot;  f'(%g) = %g\n&quot;, x, evaluator_evaluate_x (f_prim, x));
+
+  /* Destroy evaluators.  */
+  evaluator_destroy (f);
+  evaluator_destroy (f_prim);
+
+  exit (EXIT_SUCCESS);
+}
+</pre></div>
+
+<p>Above example exercise most of library main procedures (see <a href="Main-entry-points.html">Main entry points</a>), as well as some of convenience procedures (see
+<a href="Convenience-procedures.html">Convenience procedures</a>).  For full documentation, see
+<a href="Reference.html">Reference</a>.
+</p>
+</div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Reference.html">Reference</a>, Previous: <a href="License.html">License</a>, Up: <a href="index.html">GNU <code>libmatheval</code> manual</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

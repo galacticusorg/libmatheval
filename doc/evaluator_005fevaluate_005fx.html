@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>evaluator_evaluate_x (GNU libmatheval manual)</title>
+
+<meta name="description" content="evaluator_evaluate_x (GNU libmatheval manual)">
+<meta name="keywords" content="evaluator_evaluate_x (GNU libmatheval manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Convenience-procedures.html" rel="up" title="Convenience procedures">
+<link href="evaluator_005fevaluate_005fx_005fy.html" rel="next" title="evaluator_evaluate_x_y">
+<link href="Convenience-procedures.html" rel="prev" title="Convenience procedures">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="subsection" id="evaluator_005fevaluate_005fx">
+<div class="header">
+<p>
+Next: <a href="evaluator_005fevaluate_005fx_005fy.html" accesskey="n" rel="next"><code>evaluator_evaluate_x_y</code></a>, Previous: <a href="Convenience-procedures.html" accesskey="p" rel="prev">Convenience procedures</a>, Up: <a href="Convenience-procedures.html" accesskey="u" rel="up">Convenience procedures</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="evaluator_005fevaluate_005fx-1"></span><h4 class="subsection">2.2.1 <code>evaluator_evaluate_x</code></h4>
+<span id="index-evaluator_005fevaluate_005fx"></span>
+
+<ul class="section-toc">
+<li><a href="#Synopsis-6" accesskey="1">Synopsis</a></li>
+<li><a href="#Description-6" accesskey="2">Description</a></li>
+<li><a href="#Return-value-6" accesskey="3">Return value</a></li>
+<li><a href="#See-also-6" accesskey="4">See also</a></li>
+</ul>
+<div class="unnumberedsubsubsec" id="Synopsis-6">
+<h4 class="unnumberedsubsubsec">Synopsis</h4>
+
+<div class="example">
+<pre class="example">#include &lt;matheval.h&gt;
+
+double evaluator_evaluate_x (void *evaluator, double x);
+</pre></div>
+
+</div>
+<div class="unnumberedsubsubsec" id="Description-6">
+<h4 class="unnumberedsubsubsec">Description</h4>
+
+<p>Convenience function to evaluate function for given variable &ldquo;x&rdquo;
+value.  Function is equivalent to following:
+</p>
+<div class="example">
+<pre class="example">char *names[] = { &quot;x&quot; };
+double values[] = { x };
+
+evaluator_evaluate (evaluator, sizeof (names) / sizeof(names[0]),
+			     names, values);
+</pre></div>
+
+<p>See <a href="evaluator_005fevaluate.html"><code>evaluator_evaluate</code></a> for further information.
+</p>
+</div>
+<div class="unnumberedsubsubsec" id="Return-value-6">
+<h4 class="unnumberedsubsubsec">Return value</h4>
+
+<p>Value of function for given value of variable &ldquo;x&rdquo;.
+</p>
+</div>
+<div class="unnumberedsubsubsec" id="See-also-6">
+<h4 class="unnumberedsubsubsec">See also</h4>
+
+<p><a href="evaluator_005fcreate.html"><code>evaluator_create</code></a>, <a href="evaluator_005fdestroy.html"><code>evaluator_destroy</code></a>,
+<a href="evaluator_005fevaluate.html"><code>evaluator_evaluate</code></a>
+</p>
+</div>
+</div>
+
+
+
+</body>
+</html>

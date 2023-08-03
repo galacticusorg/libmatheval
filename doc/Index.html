@@ -1,0 +1,309 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Top (GNU libmatheval manual)</title>
+
+<meta name="description" content="Top (GNU libmatheval manual)">
+<meta name="keywords" content="Top (GNU libmatheval manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="#Top" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="../dir/index.html" rel="up" title="(dir)">
+<link href="License.html" rel="next" title="License">
+<link href="../dir/index.html" rel="prev" title="(dir)">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<h1 class="settitle" align="center">GNU libmatheval manual</h1>
+
+
+
+<p>This file documents GNU <code>libmatheval</code> library.
+</p>
+<p>Copyright &copy; 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2011,
+2012, 2013 Free Software Foundation, Inc.
+</p>
+<p>Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being &ldquo;Rationale and history&rdquo;, with no
+Front-Cover Texts, and with no Back-Cover Texts.  A copy of the
+license is included in the section entitled &ldquo;Copying&rdquo;.
+</p>
+
+<div class="top" id="Top">
+<div class="header">
+<p>
+Next: <a href="License.html" accesskey="n" rel="next">License</a>, Previous: <a href="../dir/index.html" accesskey="p" rel="prev">(dir)</a>, Up: <a href="../dir/index.html" accesskey="u" rel="up">(dir)</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="GNU-libmatheval-manual"></span><h1 class="top">GNU <code>libmatheval</code> manual</h1>
+
+<p>GNU <code>libmatheval</code> is small library of procedures for evaluating
+mathematical functions.  This manual documents how to use the library;
+this is manual edition 1.1.12, last updated 3 August 2023,
+corresponding to library version 1.1.12.
+</p>
+
+<div class="Contents_element" id="SEC_Contents">
+<h2 class="contents-heading">Table of Contents</h2>
+
+<div class="contents">
+
+<ul class="no-bullet">
+  <li><a id="toc-License-1" href="License.html">License</a></li>
+  <li><a id="toc-Introduction-1" href="Introduction.html">1 Introduction</a></li>
+  <li><a id="toc-Reference-1" href="Reference.html">2 Reference</a>
+  <ul class="no-bullet">
+    <li><a id="toc-Main-entry-points-1" href="Main-entry-points.html">2.1 Main entry points</a>
+    <ul class="no-bullet">
+      <li><a id="toc-evaluator_005fcreate-1" href="evaluator_005fcreate.html">2.1.1 <code>evaluator_create</code></a>
+      <ul class="no-bullet">
+        <li><a id="toc-Synopsis" href="evaluator_005fcreate.html#Synopsis">Synopsis</a></li>
+        <li><a id="toc-Description" href="evaluator_005fcreate.html#Description">Description</a></li>
+        <li><a id="toc-Return-value" href="evaluator_005fcreate.html#Return-value">Return value</a></li>
+        <li><a id="toc-See-also" href="evaluator_005fcreate.html#See-also">See also</a></li>
+      </ul></li>
+      <li><a id="toc-evaluator_005fdestroy-1" href="evaluator_005fdestroy.html">2.1.2 <code>evaluator_destroy</code></a>
+      <ul class="no-bullet">
+        <li><a id="toc-Synopsis-1" href="evaluator_005fdestroy.html#Synopsis-1">Synopsis</a></li>
+        <li><a id="toc-Description-1" href="evaluator_005fdestroy.html#Description-1">Description</a></li>
+        <li><a id="toc-Return-value-1" href="evaluator_005fdestroy.html#Return-value-1">Return value</a></li>
+        <li><a id="toc-See-also-1" href="evaluator_005fdestroy.html#See-also-1">See also</a></li>
+      </ul></li>
+      <li><a id="toc-evaluator_005fevaluate-1" href="evaluator_005fevaluate.html">2.1.3 <code>evaluator_evaluate</code></a>
+      <ul class="no-bullet">
+        <li><a id="toc-Synopsis-2" href="evaluator_005fevaluate.html#Synopsis-2">Synopsis</a></li>
+        <li><a id="toc-Description-2" href="evaluator_005fevaluate.html#Description-2">Description</a></li>
+        <li><a id="toc-Return-value-2" href="evaluator_005fevaluate.html#Return-value-2">Return value</a></li>
+        <li><a id="toc-See-also-2" href="evaluator_005fevaluate.html#See-also-2">See also</a></li>
+      </ul></li>
+      <li><a id="toc-evaluator_005fget_005fstring-1" href="evaluator_005fget_005fstring.html">2.1.4 <code>evaluator_get_string</code></a>
+      <ul class="no-bullet">
+        <li><a id="toc-Synopsis-3" href="evaluator_005fget_005fstring.html#Synopsis-3">Synopsis</a></li>
+        <li><a id="toc-Description-3" href="evaluator_005fget_005fstring.html#Description-3">Description</a></li>
+        <li><a id="toc-Return-value-3" href="evaluator_005fget_005fstring.html#Return-value-3">Return value</a></li>
+        <li><a id="toc-See-also-3" href="evaluator_005fget_005fstring.html#See-also-3">See also</a></li>
+      </ul></li>
+      <li><a id="toc-evaluator_005fget_005fvariables-1" href="evaluator_005fget_005fvariables.html">2.1.5 <code>evaluator_get_variables</code></a>
+      <ul class="no-bullet">
+        <li><a id="toc-Synopsis-4" href="evaluator_005fget_005fvariables.html#Synopsis-4">Synopsis</a></li>
+        <li><a id="toc-Description-4" href="evaluator_005fget_005fvariables.html#Description-4">Description</a></li>
+        <li><a id="toc-Return-value-4" href="evaluator_005fget_005fvariables.html#Return-value-4">Return value</a></li>
+        <li><a id="toc-See-also-4" href="evaluator_005fget_005fvariables.html#See-also-4">See also</a></li>
+      </ul></li>
+      <li><a id="toc-evaluator_005fderivative-1" href="evaluator_005fderivative.html">2.1.6 <code>evaluator_derivative</code></a>
+      <ul class="no-bullet">
+        <li><a id="toc-Synopsis-5" href="evaluator_005fderivative.html#Synopsis-5">Synopsis</a></li>
+        <li><a id="toc-Description-5" href="evaluator_005fderivative.html#Description-5">Description</a></li>
+        <li><a id="toc-Return-value-5" href="evaluator_005fderivative.html#Return-value-5">Return value</a></li>
+        <li><a id="toc-See-also-5" href="evaluator_005fderivative.html#See-also-5">See also</a></li>
+      </ul></li>
+    </ul></li>
+    <li><a id="toc-Convenience-procedures-1" href="Convenience-procedures.html">2.2 Convenience procedures</a>
+    <ul class="no-bullet">
+      <li><a id="toc-evaluator_005fevaluate_005fx-1" href="evaluator_005fevaluate_005fx.html">2.2.1 <code>evaluator_evaluate_x</code></a>
+      <ul class="no-bullet">
+        <li><a id="toc-Synopsis-6" href="evaluator_005fevaluate_005fx.html#Synopsis-6">Synopsis</a></li>
+        <li><a id="toc-Description-6" href="evaluator_005fevaluate_005fx.html#Description-6">Description</a></li>
+        <li><a id="toc-Return-value-6" href="evaluator_005fevaluate_005fx.html#Return-value-6">Return value</a></li>
+        <li><a id="toc-See-also-6" href="evaluator_005fevaluate_005fx.html#See-also-6">See also</a></li>
+      </ul></li>
+      <li><a id="toc-evaluator_005fevaluate_005fx_005fy-1" href="evaluator_005fevaluate_005fx_005fy.html">2.2.2 <code>evaluator_evaluate_x_y</code></a>
+      <ul class="no-bullet">
+        <li><a id="toc-Synopsis-7" href="evaluator_005fevaluate_005fx_005fy.html#Synopsis-7">Synopsis</a></li>
+        <li><a id="toc-Description-7" href="evaluator_005fevaluate_005fx_005fy.html#Description-7">Description</a></li>
+        <li><a id="toc-Return-value-7" href="evaluator_005fevaluate_005fx_005fy.html#Return-value-7">Return value</a></li>
+        <li><a id="toc-See-also-7" href="evaluator_005fevaluate_005fx_005fy.html#See-also-7">See also</a></li>
+      </ul></li>
+      <li><a id="toc-evaluator_005fevaluate_005fx_005fy_005fz-1" href="evaluator_005fevaluate_005fx_005fy_005fz.html">2.2.3 <code>evaluator_evaluate_x_y_z</code></a>
+      <ul class="no-bullet">
+        <li><a id="toc-Synopsis-8" href="evaluator_005fevaluate_005fx_005fy_005fz.html#Synopsis-8">Synopsis</a></li>
+        <li><a id="toc-Description-8" href="evaluator_005fevaluate_005fx_005fy_005fz.html#Description-8">Description</a></li>
+        <li><a id="toc-Return-value-8" href="evaluator_005fevaluate_005fx_005fy_005fz.html#Return-value-8">Return value</a></li>
+        <li><a id="toc-See-also-8" href="evaluator_005fevaluate_005fx_005fy_005fz.html#See-also-8">See also</a></li>
+      </ul></li>
+      <li><a id="toc-evaluator_005fderivative_005fx-1" href="evaluator_005fderivative_005fx.html">2.2.4 <code>evaluator_derivative_x</code></a>
+      <ul class="no-bullet">
+        <li><a id="toc-Synopsis-9" href="evaluator_005fderivative_005fx.html#Synopsis-9">Synopsis</a></li>
+        <li><a id="toc-Description-9" href="evaluator_005fderivative_005fx.html#Description-9">Description</a></li>
+        <li><a id="toc-Return-value-9" href="evaluator_005fderivative_005fx.html#Return-value-9">Return value</a></li>
+        <li><a id="toc-See-also-9" href="evaluator_005fderivative_005fx.html#See-also-9">See also</a></li>
+      </ul></li>
+      <li><a id="toc-evaluator_005fderivative_005fy-1" href="evaluator_005fderivative_005fy.html">2.2.5 <code>evaluator_derivative_y</code></a>
+      <ul class="no-bullet">
+        <li><a id="toc-Synopsis-10" href="evaluator_005fderivative_005fy.html#Synopsis-10">Synopsis</a></li>
+        <li><a id="toc-Description-10" href="evaluator_005fderivative_005fy.html#Description-10">Description</a></li>
+        <li><a id="toc-Return-value-10" href="evaluator_005fderivative_005fy.html#Return-value-10">Return value</a></li>
+        <li><a id="toc-See-also-10" href="evaluator_005fderivative_005fy.html#See-also-10">See also</a></li>
+      </ul></li>
+      <li><a id="toc-evaluator_005fderivative_005fz-1" href="evaluator_005fderivative_005fz.html">2.2.6 <code>evaluator_derivative_z</code></a>
+      <ul class="no-bullet">
+        <li><a id="toc-Synopsis-11" href="evaluator_005fderivative_005fz.html#Synopsis-11">Synopsis</a></li>
+        <li><a id="toc-Description-11" href="evaluator_005fderivative_005fz.html#Description-11">Description</a></li>
+        <li><a id="toc-Return-value-11" href="evaluator_005fderivative_005fz.html#Return-value-11">Return value</a></li>
+        <li><a id="toc-See-also-11" href="evaluator_005fderivative_005fz.html#See-also-11">See also</a></li>
+      </ul></li>
+    </ul></li>
+  </ul></li>
+  <li><a id="toc-Fortran-interface-1" href="Fortran-interface.html">3 Fortran interface</a>
+  <ul class="no-bullet">
+    <li><a id="toc-Fortran-main-entry-points-1" href="Fortran-main-entry-points.html">3.1 Fortran main entry points</a>
+    <ul class="no-bullet">
+      <li><a id="toc-evaluator_005fcreate-2" href="Fortran-evaluator_005fcreate.html">3.1.1 <code>evaluator_create</code></a>
+      <ul class="no-bullet">
+        <li><a id="toc-Synopsis-12" href="Fortran-evaluator_005fcreate.html#Synopsis-12">Synopsis</a></li>
+        <li><a id="toc-Description-12" href="Fortran-evaluator_005fcreate.html#Description-12">Description</a></li>
+        <li><a id="toc-Return-value-12" href="Fortran-evaluator_005fcreate.html#Return-value-12">Return value</a></li>
+        <li><a id="toc-See-also-12" href="Fortran-evaluator_005fcreate.html#See-also-12">See also</a></li>
+      </ul></li>
+      <li><a id="toc-evaluator_005fdestroy-2" href="Fortran-evaluator_005fdestroy.html">3.1.2 <code>evaluator_destroy</code></a>
+      <ul class="no-bullet">
+        <li><a id="toc-Synopsis-13" href="Fortran-evaluator_005fdestroy.html#Synopsis-13">Synopsis</a></li>
+        <li><a id="toc-Description-13" href="Fortran-evaluator_005fdestroy.html#Description-13">Description</a></li>
+        <li><a id="toc-Return-value-13" href="Fortran-evaluator_005fdestroy.html#Return-value-13">Return value</a></li>
+        <li><a id="toc-See-also-13" href="Fortran-evaluator_005fdestroy.html#See-also-13">See also</a></li>
+      </ul></li>
+      <li><a id="toc-evaluator_005fevaluate-2" href="Fortran-evaluator_005fevaluate.html">3.1.3 <code>evaluator_evaluate</code></a>
+      <ul class="no-bullet">
+        <li><a id="toc-Synopsis-14" href="Fortran-evaluator_005fevaluate.html#Synopsis-14">Synopsis</a></li>
+        <li><a id="toc-Description-14" href="Fortran-evaluator_005fevaluate.html#Description-14">Description</a></li>
+        <li><a id="toc-Return-value-14" href="Fortran-evaluator_005fevaluate.html#Return-value-14">Return value</a></li>
+        <li><a id="toc-See-also-14" href="Fortran-evaluator_005fevaluate.html#See-also-14">See also</a></li>
+      </ul></li>
+      <li><a id="toc-evaluator_005fget_005fstring_005flength" href="Fortran-evaluator_005fget_005fstring_005flength.html">3.1.4 <code>evaluator_get_string_length</code></a>
+      <ul class="no-bullet">
+        <li><a id="toc-Synopsis-15" href="Fortran-evaluator_005fget_005fstring_005flength.html#Synopsis-15">Synopsis</a></li>
+        <li><a id="toc-Description-15" href="Fortran-evaluator_005fget_005fstring_005flength.html#Description-15">Description</a></li>
+        <li><a id="toc-Return-value-15" href="Fortran-evaluator_005fget_005fstring_005flength.html#Return-value-15">Return value</a></li>
+        <li><a id="toc-See-also-15" href="Fortran-evaluator_005fget_005fstring_005flength.html#See-also-15">See also</a></li>
+      </ul></li>
+      <li><a id="toc-evaluator_005fget_005fstring_005fchars" href="Fortran-evaluator_005fget_005fstring_005fchars.html">3.1.5 <code>evaluator_get_string_chars</code></a>
+      <ul class="no-bullet">
+        <li><a id="toc-Synopsis-16" href="Fortran-evaluator_005fget_005fstring_005fchars.html#Synopsis-16">Synopsis</a></li>
+        <li><a id="toc-Description-16" href="Fortran-evaluator_005fget_005fstring_005fchars.html#Description-16">Description</a></li>
+        <li><a id="toc-Return-value-16" href="Fortran-evaluator_005fget_005fstring_005fchars.html#Return-value-16">Return value</a></li>
+        <li><a id="toc-See-also-16" href="Fortran-evaluator_005fget_005fstring_005fchars.html#See-also-16">See also</a></li>
+      </ul></li>
+      <li><a id="toc-evaluator_005fget_005fvariables_005flength" href="Fortran-evaluator_005fget_005fvariables_005flength.html">3.1.6 <code>evaluator_get_variables_length</code></a>
+      <ul class="no-bullet">
+        <li><a id="toc-Synopsis-17" href="Fortran-evaluator_005fget_005fvariables_005flength.html#Synopsis-17">Synopsis</a></li>
+        <li><a id="toc-Description-17" href="Fortran-evaluator_005fget_005fvariables_005flength.html#Description-17">Description</a></li>
+        <li><a id="toc-Return-value-17" href="Fortran-evaluator_005fget_005fvariables_005flength.html#Return-value-17">Return value</a></li>
+        <li><a id="toc-See-also-17" href="Fortran-evaluator_005fget_005fvariables_005flength.html#See-also-17">See also</a></li>
+      </ul></li>
+      <li><a id="toc-evaluator_005fget_005fvariables_005fchars" href="Fortran-evaluator_005fget_005fvariables_005fchars.html">3.1.7 <code>evaluator_get_variables_chars</code></a>
+      <ul class="no-bullet">
+        <li><a id="toc-Synopsis-18" href="Fortran-evaluator_005fget_005fvariables_005fchars.html#Synopsis-18">Synopsis</a></li>
+        <li><a id="toc-Description-18" href="Fortran-evaluator_005fget_005fvariables_005fchars.html#Description-18">Description</a></li>
+        <li><a id="toc-Return-value-18" href="Fortran-evaluator_005fget_005fvariables_005fchars.html#Return-value-18">Return value</a></li>
+        <li><a id="toc-See-also-18" href="Fortran-evaluator_005fget_005fvariables_005fchars.html#See-also-18">See also</a></li>
+      </ul></li>
+      <li><a id="toc-evaluator_005fderivative-2" href="Fortran-evaluator_005fderivative.html">3.1.8 <code>evaluator_derivative</code></a>
+      <ul class="no-bullet">
+        <li><a id="toc-Synopsis-19" href="Fortran-evaluator_005fderivative.html#Synopsis-19">Synopsis</a></li>
+        <li><a id="toc-Description-19" href="Fortran-evaluator_005fderivative.html#Description-19">Description</a></li>
+        <li><a id="toc-Return-value-19" href="Fortran-evaluator_005fderivative.html#Return-value-19">Return value</a></li>
+        <li><a id="toc-See-also-19" href="Fortran-evaluator_005fderivative.html#See-also-19">See also</a></li>
+      </ul></li>
+    </ul></li>
+    <li><a id="toc-Fortran-convenience-procedures-1" href="Fortran-convenience-procedures.html">3.2 Fortran convenience procedures</a>
+    <ul class="no-bullet">
+      <li><a id="toc-evaluator_005fevaluate_005fx-2" href="Fortran-evaluator_005fevaluate_005fx.html">3.2.1 <code>evaluator_evaluate_x</code></a>
+      <ul class="no-bullet">
+        <li><a id="toc-Synopsis-20" href="Fortran-evaluator_005fevaluate_005fx.html#Synopsis-20">Synopsis</a></li>
+        <li><a id="toc-Description-20" href="Fortran-evaluator_005fevaluate_005fx.html#Description-20">Description</a></li>
+        <li><a id="toc-Return-value-20" href="Fortran-evaluator_005fevaluate_005fx.html#Return-value-20">Return value</a></li>
+        <li><a id="toc-See-also-20" href="Fortran-evaluator_005fevaluate_005fx.html#See-also-20">See also</a></li>
+      </ul></li>
+      <li><a id="toc-evaluator_005fevaluate_005fx_005fy-2" href="Fortran-evaluator_005fevaluate_005fx_005fy.html">3.2.2 <code>evaluator_evaluate_x_y</code></a>
+      <ul class="no-bullet">
+        <li><a id="toc-Synopsis-21" href="Fortran-evaluator_005fevaluate_005fx_005fy.html#Synopsis-21">Synopsis</a></li>
+        <li><a id="toc-Description-21" href="Fortran-evaluator_005fevaluate_005fx_005fy.html#Description-21">Description</a></li>
+        <li><a id="toc-Return-value-21" href="Fortran-evaluator_005fevaluate_005fx_005fy.html#Return-value-21">Return value</a></li>
+        <li><a id="toc-See-also-21" href="Fortran-evaluator_005fevaluate_005fx_005fy.html#See-also-21">See also</a></li>
+      </ul></li>
+      <li><a id="toc-evaluator_005fevaluate_005fx_005fy_005fz-2" href="Fortran-evaluator_005fevaluate_005fx_005fy_005fz.html">3.2.3 <code>evaluator_evaluate_x_y_z</code></a>
+      <ul class="no-bullet">
+        <li><a id="toc-Synopsis-22" href="Fortran-evaluator_005fevaluate_005fx_005fy_005fz.html#Synopsis-22">Synopsis</a></li>
+        <li><a id="toc-Description-22" href="Fortran-evaluator_005fevaluate_005fx_005fy_005fz.html#Description-22">Description</a></li>
+        <li><a id="toc-Return-value-22" href="Fortran-evaluator_005fevaluate_005fx_005fy_005fz.html#Return-value-22">Return value</a></li>
+        <li><a id="toc-See-also-22" href="Fortran-evaluator_005fevaluate_005fx_005fy_005fz.html#See-also-22">See also</a></li>
+      </ul></li>
+      <li><a id="toc-evaluator_005fderivative_005fx-2" href="Fortran-evaluator_005fderivative_005fx.html">3.2.4 <code>evaluator_derivative_x</code></a>
+      <ul class="no-bullet">
+        <li><a id="toc-Synopsis-23" href="Fortran-evaluator_005fderivative_005fx.html#Synopsis-23">Synopsis</a></li>
+        <li><a id="toc-Description-23" href="Fortran-evaluator_005fderivative_005fx.html#Description-23">Description</a></li>
+        <li><a id="toc-Return-value-23" href="Fortran-evaluator_005fderivative_005fx.html#Return-value-23">Return value</a></li>
+        <li><a id="toc-See-also-23" href="Fortran-evaluator_005fderivative_005fx.html#See-also-23">See also</a></li>
+      </ul></li>
+      <li><a id="toc-evaluator_005fderivative_005fy-2" href="Fortran-evaluator_005fderivative_005fy.html">3.2.5 <code>evaluator_derivative_y</code></a>
+      <ul class="no-bullet">
+        <li><a id="toc-Synopsis-24" href="Fortran-evaluator_005fderivative_005fy.html#Synopsis-24">Synopsis</a></li>
+        <li><a id="toc-Description-24" href="Fortran-evaluator_005fderivative_005fy.html#Description-24">Description</a></li>
+        <li><a id="toc-Return-value-24" href="Fortran-evaluator_005fderivative_005fy.html#Return-value-24">Return value</a></li>
+        <li><a id="toc-See-also-24" href="Fortran-evaluator_005fderivative_005fy.html#See-also-24">See also</a></li>
+      </ul></li>
+      <li><a id="toc-evaluator_005fderivative_005fz-2" href="Fortran-evaluator_005fderivative_005fz.html">3.2.6 <code>evaluator_derivative_z</code></a>
+      <ul class="no-bullet">
+        <li><a id="toc-Synopsis-25" href="Fortran-evaluator_005fderivative_005fz.html#Synopsis-25">Synopsis</a></li>
+        <li><a id="toc-Description-25" href="Fortran-evaluator_005fderivative_005fz.html#Description-25">Description</a></li>
+        <li><a id="toc-Return-value-25" href="Fortran-evaluator_005fderivative_005fz.html#Return-value-25">Return value</a></li>
+        <li><a id="toc-See-also-25" href="Fortran-evaluator_005fderivative_005fz.html#See-also-25">See also</a></li>
+      </ul></li>
+    </ul></li>
+    <li><a id="toc-Fortran-sample-program-1" href="Fortran-sample-program.html">3.3 Fortran sample program</a></li>
+    <li><a id="toc-Fortran-build-process-1" href="Fortran-build-process.html">3.4 Fortran build process</a></li>
+  </ul></li>
+  <li><a id="toc-Hacking-1" href="Hacking.html">4 Hacking</a>
+  <ul class="no-bullet">
+    <li><a id="toc-Design-notes-1" href="Design-notes.html">4.1 Design notes</a></li>
+    <li><a id="toc-Project-structure-1" href="Project-structure.html">4.2 Project structure</a></li>
+    <li><a id="toc-Intended-improvements-1" href="Intended-improvements.html">4.3 Intended improvements</a></li>
+  </ul></li>
+  <li><a id="toc-Bugs-1" href="Bugs.html">5 Bugs</a></li>
+  <li><a id="toc-Rationale-and-history-1" href="Rationale-and-history.html">6 Rationale and history</a></li>
+  <li><a id="toc-GNU-Free-Documentation-License" href="Copying.html">7 GNU Free Documentation License</a></li>
+  <li><a id="toc-Index-1" href="Index.html" rel="index">Index</a></li>
+</ul>
+</div>
+</div>
+</div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="License.html" accesskey="n" rel="next">License</a>, Previous: <a href="../dir/index.html" accesskey="p" rel="prev">(dir)</a>, Up: <a href="../dir/index.html" accesskey="u" rel="up">(dir)</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

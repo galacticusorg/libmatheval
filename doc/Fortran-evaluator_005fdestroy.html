@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Fortran evaluator_destroy (GNU libmatheval manual)</title>
+
+<meta name="description" content="Fortran evaluator_destroy (GNU libmatheval manual)">
+<meta name="keywords" content="Fortran evaluator_destroy (GNU libmatheval manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Fortran-main-entry-points.html" rel="up" title="Fortran main entry points">
+<link href="Fortran-evaluator_005fevaluate.html" rel="next" title="Fortran evaluator_evaluate">
+<link href="Fortran-evaluator_005fcreate.html" rel="prev" title="Fortran evaluator_create">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="subsection" id="Fortran-evaluator_005fdestroy">
+<div class="header">
+<p>
+Next: <a href="Fortran-evaluator_005fevaluate.html" accesskey="n" rel="next"><code>evaluator_evaluate</code></a>, Previous: <a href="Fortran-evaluator_005fcreate.html" accesskey="p" rel="prev"><code>evaluator_create</code></a>, Up: <a href="Fortran-main-entry-points.html" accesskey="u" rel="up">Fortran main entry points</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="evaluator_005fdestroy-2"></span><h4 class="subsection">3.1.2 <code>evaluator_destroy</code></h4>
+<span id="index-Fortran_002c-evaluator_005fdestroy"></span>
+
+<ul class="section-toc">
+<li><a href="#Synopsis-13" accesskey="1">Synopsis</a></li>
+<li><a href="#Description-13" accesskey="2">Description</a></li>
+<li><a href="#Return-value-13" accesskey="3">Return value</a></li>
+<li><a href="#See-also-13" accesskey="4">See also</a></li>
+</ul>
+<div class="unnumberedsubsubsec" id="Synopsis-13">
+<h4 class="unnumberedsubsubsec">Synopsis</h4>
+
+<div class="example">
+<pre class="example">subroutine evaluator_destroy (evaluator) integer*8 :: evaluator end
+subroutine evaluator_destroy
+</pre></div>
+
+</div>
+<div class="unnumberedsubsubsec" id="Description-13">
+<h4 class="unnumberedsubsubsec">Description</h4>
+
+<p>Destroy evaluator object denoted by <code>evaluator</code> handle.  After
+returning from this call evaluator object gets invalidated, so value
+of <code>evaluator</code> handle should not be used any more.
+</p>
+</div>
+<div class="unnumberedsubsubsec" id="Return-value-13">
+<h4 class="unnumberedsubsubsec">Return value</h4>
+
+<p>None.
+</p>
+</div>
+<div class="unnumberedsubsubsec" id="See-also-13">
+<h4 class="unnumberedsubsubsec">See also</h4>
+
+<p><a href="Fortran-evaluator_005fcreate.html"><code>evaluator_create</code></a>
+</p>
+</div>
+</div>
+
+
+
+</body>
+</html>

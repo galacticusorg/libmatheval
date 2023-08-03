@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Fortran interface (GNU libmatheval manual)</title>
+
+<meta name="description" content="Fortran interface (GNU libmatheval manual)">
+<meta name="keywords" content="Fortran interface (GNU libmatheval manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html" rel="up" title="Top">
+<link href="Hacking.html" rel="next" title="Hacking">
+<link href="Reference.html" rel="prev" title="Reference">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="chapter" id="Fortran-interface">
+<div class="header">
+<p>
+Next: <a href="Hacking.html" accesskey="n" rel="next">Hacking</a>, Previous: <a href="Reference.html" accesskey="p" rel="prev">Reference</a>, Up: <a href="index.html" accesskey="u" rel="up">GNU <code>libmatheval</code> manual</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Fortran-interface-1"></span><h2 class="chapter">3 Fortran interface</h2>
+<span id="index-Fortran-interface"></span>
+
+<p>Fortran interface to GNU <code>libmatheval</code> library is very similar to
+C interface; still, complete documentation from <a href="Reference.html">Reference</a> is
+reproduced here using Fortran terms in order to have Fortran
+programmer not to mess with C terms that he may not understand.
+Besides documentation for all library exported procedures, an example
+Fortran program of structure similar to sequence of code fragments
+presented for C programmers in <a href="Introduction.html">Introduction</a> section as well as
+notes on how to link library with Fortran programs are presented here.
+</p>
+<p>Since passing arguments between C and Fortran is not (yet)
+standardized, Fortran interface of library applies only to GNU Fortran
+77 compiler; but note that same interface is working fine for GNU
+Fortran 95 compiler.  Requests to adapt interface to other Fortran
+compilers are welcome (see section <a href="Bugs.html">Bugs</a> for contact
+information), under condition that access to corresponding compiler is
+provided.
+</p>
+
+<ul class="section-toc">
+<li><a href="Fortran-main-entry-points.html" accesskey="1">Fortran main entry points</a></li>
+<li><a href="Fortran-convenience-procedures.html" accesskey="2">Fortran convenience procedures</a></li>
+<li><a href="Fortran-sample-program.html" accesskey="3">Fortran sample program</a></li>
+<li><a href="Fortran-build-process.html" accesskey="4">Fortran build process</a></li>
+</ul>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>evaluator_destroy (GNU libmatheval manual)</title>
+
+<meta name="description" content="evaluator_destroy (GNU libmatheval manual)">
+<meta name="keywords" content="evaluator_destroy (GNU libmatheval manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Main-entry-points.html" rel="up" title="Main entry points">
+<link href="evaluator_005fevaluate.html" rel="next" title="evaluator_evaluate">
+<link href="evaluator_005fcreate.html" rel="prev" title="evaluator_create">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="subsection" id="evaluator_005fdestroy">
+<div class="header">
+<p>
+Next: <a href="evaluator_005fevaluate.html" accesskey="n" rel="next"><code>evaluator_evaluate</code></a>, Previous: <a href="evaluator_005fcreate.html" accesskey="p" rel="prev"><code>evaluator_create</code></a>, Up: <a href="Main-entry-points.html" accesskey="u" rel="up">Main entry points</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="evaluator_005fdestroy-1"></span><h4 class="subsection">2.1.2 <code>evaluator_destroy</code></h4>
+<span id="index-evaluator_005fdestroy"></span>
+
+<ul class="section-toc">
+<li><a href="#Synopsis-1" accesskey="1">Synopsis</a></li>
+<li><a href="#Description-1" accesskey="2">Description</a></li>
+<li><a href="#Return-value-1" accesskey="3">Return value</a></li>
+<li><a href="#See-also-1" accesskey="4">See also</a></li>
+</ul>
+<div class="unnumberedsubsubsec" id="Synopsis-1">
+<h4 class="unnumberedsubsubsec">Synopsis</h4>
+
+<div class="example">
+<pre class="example">#include &lt;matheval.h&gt;
+
+void evaluator_destroy (void *evaluator);
+</pre></div>
+
+</div>
+<div class="unnumberedsubsubsec" id="Description-1">
+<h4 class="unnumberedsubsubsec">Description</h4>
+
+<p>Destroy evaluator object pointer by <code>evaluator</code> pointer.  After
+returning from this call <code>evaluator</code> pointer must not be
+dereferenced because evaluator object gets invalidated.
+</p>
+</div>
+<div class="unnumberedsubsubsec" id="Return-value-1">
+<h4 class="unnumberedsubsubsec">Return value</h4>
+
+<p>None.
+</p>
+</div>
+<div class="unnumberedsubsubsec" id="See-also-1">
+<h4 class="unnumberedsubsubsec">See also</h4>
+
+<p><a href="evaluator_005fcreate.html"><code>evaluator_create</code></a>
+</p>
+</div>
+</div>
+
+
+
+</body>
+</html>
