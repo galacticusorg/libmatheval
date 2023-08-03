@@ -32,6 +32,8 @@ jobs:
           autoreconf --install --force -I/usr/local/share/aclocal
           CFLAGS="-I/usr/include/x86_64-linux-gnu" ./configure
           make dist
+          cd doc
+          make libmatheval.html
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
@@ -68,3 +70,16 @@ jobs:
           git push origin -f latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Update online docs
+        run: |
+          mv doc doc.bak
+          git checkout gh-pages
+          rm -rf doc
+          mv doc.bak/libmatheval.html doc
+          git config --local user.email "github@users.noreply.github.com"
+          git config --local user.name "github-action-validate"
+          git add doc
+          git commit -m "Update documentation"
+          git push --set-upstream origin gh-pages
+          git checkout -
+        if: github.event_name != 'pull_request'
