@@ -94,7 +94,7 @@ jobs:
           name: docs
       - name: Update online docs
         run: |
-          git config --global --add safe.directory $GALACTICUS_EXEC_PATH
+          git config --global --add safe.directory $GITHUB_WORKSPACE
           mv doc doc.bak
           mv doc/libmatheval.html doc
           git config --local user.email "github@users.noreply.github.com"
