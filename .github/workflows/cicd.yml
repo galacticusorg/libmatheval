@@ -43,7 +43,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: docs
-          path: 'docs/libmatheval.html'
+          path: 'doc/libmatheval.html'
       - name: Build and test
         run: |          
           make -j2 2>&1 | tee build.log
