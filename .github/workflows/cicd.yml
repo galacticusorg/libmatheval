@@ -88,18 +88,18 @@ jobs:
         run: |
           mkdir -p doc
           rm -rf doc
+          mkdir -p doc
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
           name: docs
+          path: doc
       - name: Update online docs
         run: |
           git config --global --add safe.directory $GITHUB_WORKSPACE
-          ls -l
-          mv libmatheval.html doc
           git config --local user.email "github@users.noreply.github.com"
           git config --local user.name "github-action-validate"
-          git add doc
+          git add -u
           git commit -m "Update documentation"
           git push --set-upstream origin gh-pages
           git checkout -
