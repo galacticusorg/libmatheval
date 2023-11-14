@@ -100,8 +100,7 @@ jobs:
           git config --local user.email "github@users.noreply.github.com"
           git config --local user.name "github-action-validate"
           git add doc
-          git diff --cached --quiet
-          if [ $? -eq 1 ]; then
+          if [ git diff --cached --quiet ]; then
             git commit -m "Update documentation"
             git push --set-upstream origin gh-pages
           fi
