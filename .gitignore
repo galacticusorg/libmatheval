@@ -1,0 +1,10 @@
+aclocal.m4
+config.log
+configure
+lib/lex.yyscanner.c
+lib/parser.h
+libmatheval-*.tar.gz
+*~
+*.in
+*.info
+*.texi
