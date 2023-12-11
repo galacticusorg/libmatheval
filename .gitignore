@@ -8,3 +8,9 @@ libmatheval-*.tar.gz
 *.in
 *.info
 *.texi
+autom4te.cache
+config
+doc/stamp-vti
+libmatheval-1.1.11
+m4
+new
