@@ -61,7 +61,7 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v5
       - name: Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v5
         with:
           name: release-archive
       - name: Upload to release
@@ -90,7 +90,7 @@ jobs:
           rm -rf doc
           mkdir -p doc
       - name: Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v5
         with:
           name: docs
           path: doc
