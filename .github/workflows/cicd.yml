@@ -35,12 +35,12 @@ jobs:
           cd doc
           make libmatheval.html
       - name: Upload artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: release-archive
           path: 'libmatheval-1.1.12.tar.gz'
       - name: Upload docs artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: docs
           path: 'doc/libmatheval.html'
