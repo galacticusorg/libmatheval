@@ -1257,8 +1257,9 @@ node_derivative(Node * node, char *name, SymbolTable * symbol_table)
 								     ('n',
 								      2.0))))));
 
+	case 'g':
 		/* Apply rule of min function derivative. */
-		else if (!strcmp(node->data.function2.record->name, "min"))
+		if (!strcmp(node->data.function2.record->name, "min"))
 			return node_create('b', '+',
 					   node_create('b',
 						       '*',

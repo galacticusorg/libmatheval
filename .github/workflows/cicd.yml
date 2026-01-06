@@ -46,10 +46,10 @@ jobs:
           path: 'doc/libmatheval.html'
       - name: Build and test
         run: |          
-          make -j2 2>&1 | tee build.log
+          make -j4 2>&1 | tee build.log
           grep -v -q Error: build.log
           grep -v -q Warning: build.log
-          make -j2 check 2>&1 | tee build.log
+          (make -j4 check || { cat tests/testsuite.log; exit 1; }) 2>&1 | tee build.log
           grep -v -q Error: build.log
           grep -v -q Warning: build.log
           set +o pipefail
