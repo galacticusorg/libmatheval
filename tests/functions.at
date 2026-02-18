@@ -29,7 +29,7 @@ AT_DATA([function.scm],
 (display (evaluator-evaluate-x f 1))
 ]])
 
-AT_CHECK([matheval.sh function.scm], [ignore], [2.71828182845905], [ignore])
+AT_CHECK([matheval.sh function.scm], [ignore], [2.718281828459045], [ignore])
 
 AT_DATA([function.scm],
 [[
@@ -80,7 +80,7 @@ AT_DATA([function.scm],
 (display (evaluator-evaluate-x f 1))
 ]])
 
-AT_CHECK([matheval.sh function.scm], [ignore], [0.841470984807897], [ignore])
+AT_CHECK([matheval.sh function.scm], [ignore], [0.8414709848078965], [ignore])
 
 AT_DATA([function.scm],
 [[
@@ -97,7 +97,7 @@ AT_DATA([function.scm],
 (display (evaluator-evaluate-x f 1))
 ]])
 
-AT_CHECK([matheval.sh function.scm], [ignore], [0.54030230586814], [ignore])
+AT_CHECK([matheval.sh function.scm], [ignore], [0.5403023058681398], [ignore])
 
 AT_DATA([function.scm],
 [[
@@ -114,7 +114,7 @@ AT_DATA([function.scm],
 (display (evaluator-evaluate-x f 1))
 ]])
 
-AT_CHECK([matheval.sh function.scm], [ignore], [1.5574077246549], [ignore])
+AT_CHECK([matheval.sh function.scm], [ignore], [1.5574077246549023], [ignore])
 
 AT_DATA([function.scm],
 [[
@@ -131,7 +131,7 @@ AT_DATA([function.scm],
 (display (evaluator-evaluate-x f 1))
 ]])
 
-AT_CHECK([matheval.sh function.scm], [ignore], [0.642092615934331], [ignore])
+AT_CHECK([matheval.sh function.scm], [ignore], [0.6420926159343306], [ignore])
 
 AT_DATA([function.scm],
 [[
@@ -148,7 +148,7 @@ AT_DATA([function.scm],
 (display (evaluator-evaluate-x f 1))
 ]])
 
-AT_CHECK([matheval.sh function.scm], [ignore], [1.85081571768093], [ignore])
+AT_CHECK([matheval.sh function.scm], [ignore], [1.8508157176809255], [ignore])
 
 AT_DATA([function.scm],
 [[
@@ -165,7 +165,7 @@ AT_DATA([function.scm],
 (display (evaluator-evaluate-x f 1))
 ]])
 
-AT_CHECK([matheval.sh function.scm], [ignore], [1.18839510577812], [ignore])
+AT_CHECK([matheval.sh function.scm], [ignore], [1.1883951057781212], [ignore])
 
 AT_DATA([function.scm],
 [[
@@ -182,7 +182,7 @@ AT_DATA([function.scm],
 (display (evaluator-evaluate-x f 1))
 ]])
 
-AT_CHECK([matheval.sh function.scm], [ignore], [1.5707963267949], [ignore])
+AT_CHECK([matheval.sh function.scm], [ignore], [1.5707963267948966], [ignore])
 
 AT_DATA([function.scm],
 [[
@@ -216,7 +216,7 @@ AT_DATA([function.scm],
 (display (evaluator-evaluate-x f 1))
 ]])
 
-AT_CHECK([matheval.sh function.scm], [ignore], [0.785398163397448], [ignore])
+AT_CHECK([matheval.sh function.scm], [ignore], [0.7853981633974483], [ignore])
 
 AT_DATA([function.scm],
 [[
@@ -233,7 +233,7 @@ AT_DATA([function.scm],
 (display (evaluator-evaluate-x f 1))
 ]])
 
-AT_CHECK([matheval.sh function.scm], [ignore], [0.785398163397448], [ignore])
+AT_CHECK([matheval.sh function.scm], [ignore], [0.7853981633974483], [ignore])
 
 AT_DATA([function.scm],
 [[
@@ -267,7 +267,7 @@ AT_DATA([function.scm],
 (display (evaluator-evaluate-x f 1))
 ]])
 
-AT_CHECK([matheval.sh function.scm], [ignore], [1.5707963267949], [ignore])
+AT_CHECK([matheval.sh function.scm], [ignore], [1.5707963267948966], [ignore])
 
 AT_DATA([function.scm],
 [[
@@ -284,7 +284,7 @@ AT_DATA([function.scm],
 (display (evaluator-evaluate-x f 1))
 ]])
 
-AT_CHECK([matheval.sh function.scm], [ignore], [1.1752011936438], [ignore])
+AT_CHECK([matheval.sh function.scm], [ignore], [1.1752011936438014], [ignore])
 
 AT_DATA([function.scm],
 [[
@@ -301,7 +301,7 @@ AT_DATA([function.scm],
 (display (evaluator-evaluate-x f 1))
 ]])
 
-AT_CHECK([matheval.sh function.scm], [ignore], [1.54308063481524], [ignore])
+AT_CHECK([matheval.sh function.scm], [ignore], [1.5430806348152437], [ignore])
 
 AT_DATA([function.scm],
 [[
@@ -318,7 +318,7 @@ AT_DATA([function.scm],
 (display (evaluator-evaluate-x f 1))
 ]])
 
-AT_CHECK([matheval.sh function.scm], [ignore], [0.761594155955765], [ignore])
+AT_CHECK([matheval.sh function.scm], [ignore], [0.7615941559557649], [ignore])
 
 AT_DATA([function.scm],
 [[
@@ -335,7 +335,7 @@ AT_DATA([function.scm],
 (display (evaluator-evaluate-x f 1))
 ]])
 
-AT_CHECK([matheval.sh function.scm], [ignore], [1.31303528549933], [ignore])
+AT_CHECK([matheval.sh function.scm], [ignore], [1.3130352854993315], [ignore])
 
 AT_DATA([function.scm],
 [[
@@ -352,7 +352,7 @@ AT_DATA([function.scm],
 (display (evaluator-evaluate-x f 1))
 ]])
 
-AT_CHECK([matheval.sh function.scm], [ignore], [0.648054273663885], [ignore])
+AT_CHECK([matheval.sh function.scm], [ignore], [0.6480542736638855], [ignore])
 
 AT_DATA([function.scm],
 [[
@@ -368,7 +368,7 @@ AT_DATA([function.scm],
 (display (evaluator-evaluate-x f 1))
 ]])
 
-AT_CHECK([matheval.sh function.scm], [ignore], [0.850918128239322], [ignore])
+AT_CHECK([matheval.sh function.scm], [ignore], [0.8509181282393216], [ignore])
 
 AT_DATA([function.scm],
 [[
@@ -385,7 +385,7 @@ AT_DATA([function.scm],
 (display (evaluator-evaluate-x f 1))
 ]])
 
-AT_CHECK([matheval.sh function.scm], [ignore], [0.881373587019543], [ignore])
+AT_CHECK([matheval.sh function.scm], [ignore], [0.8813735870195429], [ignore])
 
 AT_DATA([function.scm],
 [[
@@ -419,7 +419,7 @@ AT_DATA([function.scm],
 (display (evaluator-evaluate-x f 0.5))
 ]])
 
-AT_CHECK([matheval.sh function.scm], [ignore], [0.549306144334055], [ignore])
+AT_CHECK([matheval.sh function.scm], [ignore], [0.5493061443340549], [ignore])
 
 AT_DATA([function.scm],
 [[
@@ -436,7 +436,7 @@ AT_DATA([function.scm],
 (display (evaluator-evaluate-x f 2))
 ]])
 
-AT_CHECK([matheval.sh function.scm], [ignore], [0.549306144334055], [ignore])
+AT_CHECK([matheval.sh function.scm], [ignore], [0.5493061443340549], [ignore])
 
 AT_DATA([function.scm],
 [[
@@ -470,7 +470,7 @@ AT_DATA([function.scm],
 (display (evaluator-evaluate-x f 1))
 ]])
 
-AT_CHECK([matheval.sh function.scm], [ignore], [0.881373587019543], [ignore])
+AT_CHECK([matheval.sh function.scm], [ignore], [0.8813735870195429], [ignore])
 
 AT_DATA([function.scm],
 [[
