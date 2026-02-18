@@ -15,22 +15,21 @@ jobs:
   # Build and test
   Build-and-Test:
     runs-on: ubuntu-latest
-    container: ghcr.io/galacticusorg/buildenv:latest
     steps:
       - name: Check out repository code
         uses: actions/checkout@v6
       - name: Generate configure
         run: |
           cd $GITHUB_WORKSPACE
-          apt update
-          apt install -y bison flex
+          sudo apt update
+          sudo apt install -y build-essential bison flex gettext gcc guile-3.0 guile-3.0-dev texinfo
           git config --global --add safe.directory $GITHUB_WORKSPACE
           set -o pipefail
           mkdir -p config
           mkdir -p m4
           touch config/config.rpath
           autoreconf --install --force -I/usr/local/share/aclocal
-          CFLAGS="-I/usr/include/x86_64-linux-gnu" ./configure
+          CFLAGS="-I/usr/include/x86_64-linux-gnu -I/usr/include/guile/3.0/" ./configure
           make dist
           cd doc
           make libmatheval.html
@@ -38,7 +37,7 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: release-archive
-          path: 'libmatheval-1.1.12.tar.gz'
+          path: 'libmatheval-1.1.13.tar.gz'
       - name: Upload docs artifact
         uses: actions/upload-artifact@v6
         with:
@@ -49,7 +48,7 @@ jobs:
           make -j4 2>&1 | tee build.log
           grep -v -q Error: build.log
           grep -v -q Warning: build.log
-          make -j4 install
+          sudo make -j4 install
           (make -j4 check || { cat tests/testsuite.log; exit 1; }) 2>&1 | tee build.log
           grep -v -q Error: build.log
           grep -v -q Warning: build.log
@@ -69,7 +68,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release upload latest libmatheval-1.1.12.tar.gz --clobber
+          gh release upload latest libmatheval-1.1.13.tar.gz --clobber
       - name: Update tag
         run: |
           git tag -f latest
