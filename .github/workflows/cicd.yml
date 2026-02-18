@@ -21,8 +21,8 @@ jobs:
       - name: Generate configure
         run: |
           cd $GITHUB_WORKSPACE
-          apt update
-          apt install -y build-essential bison flex gettext gcc guile-3.0 guile-3.0-dev texinfo
+          sudo apt update
+          sudo apt install -y build-essential bison flex gettext gcc guile-3.0 guile-3.0-dev texinfo
           git config --global --add safe.directory $GITHUB_WORKSPACE
           set -o pipefail
           mkdir -p config
