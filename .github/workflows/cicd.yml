@@ -15,7 +15,6 @@ jobs:
   # Build and test
   Build-and-Test:
     runs-on: ubuntu-latest
-    container: ghcr.io/galacticusorg/buildenv:latest
     steps:
       - name: Check out repository code
         uses: actions/checkout@v6
@@ -23,14 +22,14 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE
           apt update
-          apt install -y bison flex
+          apt install -y build-essential bison flex gettext gcc guile-3.0 guile-3.0-dev texinfo
           git config --global --add safe.directory $GITHUB_WORKSPACE
           set -o pipefail
           mkdir -p config
           mkdir -p m4
           touch config/config.rpath
           autoreconf --install --force -I/usr/local/share/aclocal
-          CFLAGS="-I/usr/include/x86_64-linux-gnu" ./configure
+          CFLAGS="-I/usr/include/x86_64-linux-gnu -I/usr/include/guile/3.0/" ./configure
           make dist
           cd doc
           make libmatheval.html
