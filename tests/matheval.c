@@ -30,12 +30,8 @@
 typedef long    scm_t_bits;
 #endif
 
-#ifndef HAVE_SCM_NUM2DBL
-#ifdef SCM_NUM2DBL
-#define scm_num2dbl(x,s) SCM_NUM2DBL(x)
-#else
-#error Neither scm_num2dbl() nor SCM_NUM2DBL available
-#endif
+#ifndef HAVE_SCM_TO_DOUBLE
+#error scm_to_double() is not available
 #endif
 
 #ifndef HAVE_SCM_C_DEFINE_GSUBR
@@ -51,7 +47,7 @@ static scm_t_bits evaluator_tag;	/* Unique identifier for Guile
 
 /* Guile interface for libmatheval library.  Procedures below are simple
  * wrappers for corresponding libmatheval procedures. */
-static scm_sizet evaluator_destroy_scm(SCM evaluator_smob);
+static size_t evaluator_destroy_scm(SCM evaluator_smob);
 static SCM      evaluator_create_scm(SCM string);
 static SCM      evaluator_evaluate_scm(SCM evaluator_smob, SCM count,
 				       SCM names, SCM values);
@@ -104,7 +100,7 @@ inner_main(void *closure, int argc, char **argv)
 
 	/* Interpret Guile code from file with name given through above
 	 * argument.  */
-	scm_primitive_load(scm_makfrom0str(argv[1]));
+	scm_primitive_load(scm_from_locale_string(argv[1]));
 }
 
 /* Program is demonstrating use of libmatheval library of procedures for
@@ -122,7 +118,7 @@ main(int argc, char **argv)
 }
 
 /* Wrapper for evaluator_destroy() procedure from libmatheval library. */
-static          scm_sizet
+static          size_t
 evaluator_destroy_scm(SCM evaluator_smob)
 {
 	SCM_ASSERT((SCM_NIMP(evaluator_smob)
@@ -142,12 +138,12 @@ evaluator_create_scm(SCM string)
 	void           *evaluator;
 
 	SCM_ASSERT(SCM_NIMP(string)
-		   && SCM_STRINGP(string), string, SCM_ARG1,
+		   && scm_is_string(string), string, SCM_ARG1,
 		   "evaluator-create");
 
-	stringz = (char *) malloc((SCM_LENGTH(string) + 1) * sizeof(char));
-	memcpy(stringz, SCM_CHARS(string), SCM_LENGTH(string));
-	stringz[SCM_LENGTH(string)] = 0;
+	stringz = (char *) malloc((scm_c_string_length(string) + 1) * sizeof(char));
+	memcpy(stringz, scm_to_latin1_string(string), scm_c_string_length(string));
+	stringz[scm_c_string_length(string)] = 0;
 
 	evaluator = evaluator_create(stringz);
 
@@ -174,43 +170,43 @@ evaluator_evaluate_scm(SCM evaluator_smob, SCM count, SCM names,
 	SCM_ASSERT((SCM_NIMP(evaluator_smob)
 		    && SCM_SMOB_PREDICATE(evaluator_tag, evaluator_smob)),
 		   evaluator_smob, SCM_ARG1, "evaluator-evaluate");
-	SCM_ASSERT(SCM_INUMP(count), count, SCM_ARG2,
+	SCM_ASSERT(scm_is_integer(count), count, SCM_ARG2,
 		   "evaluator-evaluate");
 
-	names_copy = (char **) malloc(SCM_INUM(count) * sizeof(char *));
-	for (i = 0, name = names; i < SCM_INUM(count);
+	names_copy = (char **) malloc(scm_to_int(count) * sizeof(char *));
+	for (i = 0, name = names; i < scm_to_int(count);
 	     i++, name = SCM_CDR(name)) {
 		SCM_ASSERT(SCM_NIMP(name) && SCM_CONSP(name)
-			   && SCM_STRINGP(SCM_CAR(name)), names, SCM_ARG3,
+			   && scm_is_string(SCM_CAR(name)), names, SCM_ARG3,
 			   "evaluator-evaluate");
 		names_copy[i] =
-		    (char *) malloc((SCM_LENGTH(SCM_CAR(name)) + 1) *
+		    (char *) malloc((scm_c_string_length(SCM_CAR(name)) + 1) *
 				    sizeof(char));
-		memcpy(names_copy[i], SCM_CHARS(SCM_CAR(name)),
-		       SCM_LENGTH(SCM_CAR(name)));
-		names_copy[i][SCM_LENGTH(SCM_CAR(name))] = 0;
+		memcpy(names_copy[i], scm_to_latin1_string(SCM_CAR(name)),
+		       scm_c_string_length(SCM_CAR(name)));
+		names_copy[i][scm_c_string_length(SCM_CAR(name))] = 0;
 	}
 
-	values_copy = (double *) malloc(SCM_INUM(count) * sizeof(double));
-	for (i = 0, value = values; i < SCM_INUM(count);
+	values_copy = (double *) malloc(scm_to_int(count) * sizeof(double));
+	for (i = 0, value = values; i < scm_to_int(count);
 	     i++, value = SCM_CDR(value)) {
 		SCM_ASSERT(SCM_NIMP(value) && SCM_CONSP(value)
 			   && SCM_NUMBERP(SCM_CAR(value)), values,
 			   SCM_ARG4, "evaluator-evaluate");
 		values_copy[i] =
-		    scm_num2dbl(SCM_CAR(value), "evaluator-evaluate");
+		    scm_to_double(SCM_CAR(value));
 	}
 
 	result =
 	    evaluator_evaluate((void *) SCM_CDR(evaluator_smob),
-			       SCM_INUM(count), names_copy, values_copy);
+			       scm_to_int(count), names_copy, values_copy);
 
-	for (i = 0; i < SCM_INUM(count); i++)
+	for (i = 0; i < scm_to_int(count); i++)
 		free(names_copy[i]);
 	free(names_copy);
 	free(values_copy);
 
-	return scm_make_real(result);
+	return scm_from_double(result);
 }
 
 /* Wrapper for evaluator_get_string() procedure from libmatheval library. */
@@ -222,7 +218,7 @@ evaluator_get_string_scm(SCM evaluator_smob)
 		   evaluator_smob, SCM_ARG1, "evaluator-get-string");
 
 	return
-	    scm_makfrom0str(evaluator_get_string
+	    scm_from_locale_string(evaluator_get_string
 			    ((void *) SCM_CDR(evaluator_smob)));
 }
 
@@ -245,9 +241,9 @@ evaluator_get_variables_scm(SCM evaluator_smob)
 	list = SCM_EOL;
 	for (i = 0; i < count; i++)
 		list =
-		    scm_append_x(scm_listify
+		    scm_append_x(scm_list_n
 				 (list,
-				  scm_listify(scm_makfrom0str(names[i]),
+				  scm_list_n(scm_from_locale_string(names[i]),
 					      SCM_UNDEFINED),
 				  SCM_UNDEFINED));
 
@@ -262,12 +258,12 @@ evaluator_derivative_scm(SCM evaluator_smob, SCM name)
 		    && SCM_SMOB_PREDICATE(evaluator_tag, evaluator_smob)),
 		   evaluator_smob, SCM_ARG1, "evaluator-derivative");
 	SCM_ASSERT(SCM_NIMP(name)
-		   && SCM_STRINGP(name), name, SCM_ARG2,
+		   && scm_is_string(name), name, SCM_ARG2,
 		   "evaluator-derivative");
 	SCM_RETURN_NEWSMOB(evaluator_tag,
 			   evaluator_derivative((void *)
 						SCM_CDR(evaluator_smob),
-						SCM_CHARS(name)));
+						scm_to_latin1_string(name)));
 }
 
 /* Wrapper for evaluator_evaluate_x() procedure from libmatheval library. */
@@ -279,9 +275,9 @@ evaluator_evaluate_x_scm(SCM evaluator_smob, SCM x)
 		   evaluator_smob, SCM_ARG1, "evaluator-evaluate-x");
 	SCM_ASSERT(SCM_NUMBERP(x), x, SCM_ARG2, "evaluator-evaluate-x");
 	return
-	    scm_make_real(evaluator_evaluate_x
+	    scm_from_double(evaluator_evaluate_x
 			  ((void *) SCM_CDR(evaluator_smob),
-			   scm_num2dbl(x, "evaluator-evaluate-x")));
+			   scm_to_double(x)));
 }
 
 /* Wrapper for evaluator_evaluate_x_y() procedure from libmatheval
@@ -295,10 +291,10 @@ evaluator_evaluate_x_y_scm(SCM evaluator_smob, SCM x, SCM y)
 	SCM_ASSERT(SCM_NUMBERP(x), x, SCM_ARG2, "evaluator-evaluate-x-y");
 	SCM_ASSERT(SCM_NUMBERP(y), y, SCM_ARG3, "evaluator-evaluate-x-y");
 	return
-	    scm_make_real(evaluator_evaluate_x_y
+	    scm_from_double(evaluator_evaluate_x_y
 			  ((void *) SCM_CDR(evaluator_smob),
-			   scm_num2dbl(x, "evaluator-evaluate-x-y"),
-			   scm_num2dbl(y, "evaluator-evaluate-x-y")));
+			   scm_to_double(x),
+			   scm_to_double(y)));
 }
 
 /* Wrapper for evaluator_evaluate_x_y_z() procedure from libmatheval
@@ -316,11 +312,11 @@ evaluator_evaluate_x_y_z_scm(SCM evaluator_smob, SCM x, SCM y, SCM z)
 	SCM_ASSERT(SCM_NUMBERP(z), z, SCM_ARG4,
 		   "evaluator-evaluate-x-y-z");
 	return
-	    scm_make_real(evaluator_evaluate_x_y_z
+	    scm_from_double(evaluator_evaluate_x_y_z
 			  ((void *) SCM_CDR(evaluator_smob),
-			   scm_num2dbl(x, "evaluator-evaluate-x-y-z"),
-			   scm_num2dbl(y, "evaluator-evaluate-x-y-z"),
-			   scm_num2dbl(z, "evaluator-evaluate-x-y-z")));
+			   scm_to_double(x),
+			   scm_to_double(y),
+			   scm_to_double(z)));
 }
 
 /* Wrapper for evaluator_derivative_x() procedure from libmatheval

@@ -19,11 +19,11 @@ dnl <http://www.gnu.org/licenses/>.
 
 dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ([2.69])
-AC_INIT([libmatheval],[1.1.12],[asamardzic@gnu.org])
+AC_INIT([libmatheval],[1.1.13],[abensonca@gmail.com])
 AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_MACRO_DIR([m4])
 AC_SUBST([ac_aux_dir])
-AM_INIT_AUTOMAKE([libmatheval], [1.1.12])
+AM_INIT_AUTOMAKE([libmatheval], [1.1.13])
 AC_CONFIG_SRCDIR([configure.in])
 AM_CONFIG_HEADER([config.h])
 
@@ -61,9 +61,9 @@ AC_CHECK_FUNCS([bzero memset], [break])
 
 dnl Additional Guile feature checks.
 AC_CHECK_TYPE([scm_t_bits], [AC_DEFINE([HAVE_SCM_T_BITS], [1], [Define to 1 if you have the `scm_t_bits' type.])], [], [#include <libguile.h>])
-AC_CHECK_LIB([guile], [scm_c_define_gsubr], [AC_DEFINE([HAVE_SCM_C_DEFINE_GSUBR], [1], [Define to 1 if you have the `scm_c_define_gsubr' function.])], [], [$GUILE_LDFLAGS])
-AC_CHECK_LIB([guile], [scm_make_gsubr], [AC_DEFINE([HAVE_SCM_MAKE_GSUBR], [1], [Define to 1 if you have the `scm_make_gsubr' function.])], [], [$GUILE_LDFLAGS])
-AC_CHECK_LIB([guile], [scm_num2dbl], [AC_DEFINE([HAVE_SCM_NUM2DBL], [1], [Define to 1 if you have the `scm_num2dbl' function.])], [], [$GUILE_LDFLAGS])
+AC_CHECK_LIB([guile-3.0], [scm_c_define_gsubr], [AC_DEFINE([HAVE_SCM_C_DEFINE_GSUBR], [1], [Define to 1 if you have the `scm_c_define_gsubr' function.])], [], [$GUILE_LDFLAGS])
+AC_CHECK_LIB([guile-3.0], [scm_make_gsubr], [AC_DEFINE([HAVE_SCM_MAKE_GSUBR], [1], [Define to 1 if you have the `scm_make_gsubr' function.])], [], [$GUILE_LDFLAGS])
+AC_CHECK_LIB([guile-3.0], [scm_to_double], [AC_DEFINE([HAVE_SCM_TO_DOUBLE], [1], [Define to 1 if you have the `scm_to_double' function.])], [], [$GUILE_LDFLAGS])
 
 AC_CONFIG_FILES([Makefile doc/Makefile lib/Makefile])
 AC_CONFIG_FILES([libmatheval.pc])
