@@ -37,7 +37,7 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: release-archive
-          path: 'libmatheval-1.1.12.tar.gz'
+          path: 'libmatheval-1.1.13.tar.gz'
       - name: Upload docs artifact
         uses: actions/upload-artifact@v6
         with:
@@ -68,7 +68,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release upload latest libmatheval-1.1.12.tar.gz --clobber
+          gh release upload latest libmatheval-1.1.13.tar.gz --clobber
       - name: Update tag
         run: |
           git tag -f latest
