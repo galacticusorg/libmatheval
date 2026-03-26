@@ -16,10 +16,6 @@ jobs:
       - name: "Set environmental variables"
         run: |
           echo "GALACTICUS_EXEC_PATH=$GITHUB_WORKSPACE" >> $GITHUB_ENV
-      - name: Install tools
-        run: |
-          sudo apt -y update
-          sudo apt install -y libjson-pp-perl
       - name: Retrieve and report status
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -27,4 +23,4 @@ jobs:
         run: |
           cd $GALACTICUS_EXEC_PATH
           git config --global --add safe.directory $GALACTICUS_EXEC_PATH
-          ./scripts/workflowStatus.pl
+          python3 scripts/workflowStatus.py
