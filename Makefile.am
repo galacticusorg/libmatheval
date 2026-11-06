@@ -27,7 +27,15 @@ $(ac_aux_dir)/mkinstalldirs $(ac_aux_dir)/texinfo.tex
 MAINTAINERCLEANFILES = Makefile.in aclocal.m4 configure config.h.in	\
 config.log config.status stamp-h.in $(AUX_DIST)
 
-SUBDIRS = doc lib tests
+# The test suite needs Guile, which is optional.
+if HAVE_GUILE
+TESTS_SUBDIR = tests
+else
+check-local:
+	@echo "Guile 3.0 was not found by configure, so the test suite was not run."
+endif
+SUBDIRS = doc lib $(TESTS_SUBDIR)
+DIST_SUBDIRS = doc lib tests
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libmatheval.pc

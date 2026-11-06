@@ -21,8 +21,11 @@ specified string. The library exposes C and Fortran 77 interfaces.
 
 GNU autotools are employed for this project, so library should be
 compilable on any UNIX variant.  Still, compilation is verified on
-NetBSD 1.6 and Slackware GNU/Linux 9.1 only.  Library (actually, test
-suite) requires Guile to be present.
+NetBSD 1.6 and Slackware GNU/Linux 9.1 only.  The test suite requires
+Guile 3.0; the library itself does not.  If `configure` does not find
+Guile 3.0, the library is built without the test suite (use
+`--with-guile` to make a missing Guile an error, or `--without-guile`
+to skip the test suite even if Guile is present).
 
 
 ### INSTALLATION
