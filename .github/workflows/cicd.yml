@@ -53,10 +53,46 @@ jobs:
           grep -v -q Error: build.log
           grep -v -q Warning: build.log
           set +o pipefail
+  # Build the release archive on a system without Guile (or flex, bison, or texinfo), as the Galacticus installer does.
+  Build-without-Guile:
+    runs-on: ubuntu-latest
+    needs: Build-and-Test
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: release-archive
+      - name: Build, install, and test
+        run: |
+          set -e
+          sudo apt update
+          sudo apt remove -y guile-3.0 guile-3.0-dev flex bison texinfo || true
+          tar xvfz libmatheval-1.1.13.tar.gz
+          cd libmatheval-1.1.13
+          ./configure --prefix=$HOME/install | tee configure.log
+          grep -q "Guile 3.0 was not found" configure.log
+          make -j4
+          make check
+          make install
+          cat > minTest.c <<EOF
+          #include <stdio.h>
+          #include <matheval.h>
+          int main(void) {
+            char *names[] = {"x"};
+            double values[] = {3.0};
+            void *f = evaluator_create("min(x,1)+max(x,2)^2");
+            if (!f) return 1;
+            double result = evaluator_evaluate(f, 1, names, values);
+            printf("%g\n", result);
+            return result == 10.0 ? 0 : 1;
+          }
+          EOF
+          gcc minTest.c -I$HOME/install/include -L$HOME/install/lib -lmatheval -o minTest
+          LD_LIBRARY_PATH=$HOME/install/lib ./minTest
   Update-Release-Tag:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
-    needs: Build-and-Test
+    needs: [Build-and-Test, Build-without-Guile]
     steps:
       - name: Check out repository code
         uses: actions/checkout@v7
