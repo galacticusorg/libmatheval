@@ -1,5 +1,5 @@
 # Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2011, 2012,
-# 2013 Free Software Foundation, Inc.
+# 2013, 2026 Free Software Foundation, Inc.
 #
 # This file is part of GNU libmatheval
 #
@@ -75,5 +75,5 @@ matheval_LDFLAGS = $(GUILE_LDFLAGS)
 .PHONY: beauty
 
 beauty:
-	-for file in $$(ls *.c); do indent -orig -i8 -ncdb $$file; done
-	-rm -f *~
+	cd $(srcdir) && INDENT_PROFILE=../.indent.pro indent *.c
+	-rm -f $(srcdir)/*~

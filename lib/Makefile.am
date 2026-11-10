@@ -1,5 +1,5 @@
 # Copyright (C) 1999, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2011,
-# 2012, 2013 Free Software Foundation, Inc.
+# 2012, 2013, 2026 Free Software Foundation, Inc.
 #
 # This file is part of GNU libmatheval
 #
@@ -40,5 +40,7 @@ AM_YFLAGS = -d
 .PHONY: beauty
 
 beauty:
-	-for file in $$(ls *.c *.h); do indent -orig -i8 -ncdb $$file; done
-	-rm -f *~
+	cd $(srcdir) && INDENT_PROFILE=../.indent.pro indent error.c	\
+	g77_interface.c matheval.c node.c symbol_table.c xmalloc.c xmath.c	\
+	$(include_HEADERS) $(noinst_HEADERS)
+	-rm -f $(srcdir)/*~
