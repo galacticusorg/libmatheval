@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1999, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2011,
- * 2012, 2013 Free Software Foundation, Inc.
+ * 2012, 2013, 2026 Free Software Foundation, Inc.
  * 
  * This file is part of GNU libmatheval
  *
@@ -22,7 +22,7 @@
 %{
 /*
  * Copyright (C) 1999, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2011,
- * 2012, 2013 Free Software Foundation, Inc.
+ * 2012, 2013, 2026 Free Software Foundation, Inc.
  * 
  * GNU libmatheval is free software: you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -80,6 +80,9 @@ extern void input_reset (void);
 
 /* Grammar non-terminal symbols.  */
 %type <node> expression
+
+/* Free subtrees discarded when parsing fails.  */
+%destructor { node_destroy ($$); } <node>
 
 /* Grammar start non-terminal.  */
 %start input

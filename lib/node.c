@@ -276,16 +276,12 @@ node_simplify(Node *node)
 				return left;
 			} else
 				return node;
-		/* Eliminate 0 and 1 as both left and right exponentiation
-		   operands.  */
+		/* Eliminate 1 as left exponentiation operand, and 0 and 1
+		   as right exponentiation operand (0 as left operand is
+		   not eliminated, as 0^x is not 0 for x not positive).  */
 		else if (node->data.bin_op.operation == '^')
 			if (node->data.bin_op.left->type == 'n'
-			    && node->data.bin_op.left->data.number == 0) {
-				node_destroy(node);
-				return node_create('n', 0.0);
-			} else if (node->data.bin_op.left->type == 'n'
-				   && node->data.bin_op.left->data.number
-				   == 1) {
+			    && node->data.bin_op.left->data.number == 1) {
 				node_destroy(node);
 				return node_create('n', 1.0);
 			} else if (node->data.bin_op.right->type == 'n'
@@ -850,6 +846,10 @@ node_derivative(Node *node, char *name, SymbolTable *symbol_table)
 				n7 = node_create('b', '^', n3, n6);
 				return node_create('b', '*', n2, n7);
 			}
+			/* If left operand of exponentiation zero, apply
+			   (0^g)'=0 derivative rule.  */
+			if (left->type == 'n' && left->data.number == 0)
+				return node_create('n', 0.0);
 			/* Otherwise, apply logarithmic derivative rule:
 			   (log(f^g))'=(f^g)'/f^g =>
 			   (f^g)'=f^g*(log(f^g))'=f^g*(g*log(f))' */

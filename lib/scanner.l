@@ -64,8 +64,9 @@ extern char *input_string; /* String representing function.  */
 static int input_from_string (char *buffer, int max_size);
 %}
 
-/* Scanner input is a single string, so yywrap() is not needed.  */
-%option noyywrap
+/* Scanner input is a single string, so yywrap() is not needed;
+ * unmatched input must not be echoed to standard output.  */
+%option noyywrap nodefault
 
 /* Token definitions.  */
 whitespace [ \t]+
@@ -73,7 +74,7 @@ digit [0-9]
 number ({digit}+|{digit}+\.{digit}*|{digit}*\.{digit}+)([Ee][+\-]?{digit}+)?
 constant "e"|"log2e"|"log10e"|"ln2"|"ln10"|"pi"|"pi_2"|"pi_4"|"1_pi"|"2_pi"|"2_sqrtpi"|"sqrt2"|"sqrt1_2"
 function "exp"|"log"|"sqrt"|"sin"|"cos"|"tan"|"cot"|"sec"|"csc"|"asin"|"acos"|"atan"|"acot"|"asec"|"acsc"|"sinh"|"cosh"|"tanh"|"coth"|"sech"|"csch"|"asinh"|"acosh"|"atanh"|"acoth"|"asech"|"acsch"|"abs"|"step"|"delta"|"nandelta"|"erf"
-identifier [_a-zA-Z][[_a-zA-Z0-9]*
+identifier [_a-zA-Z][_a-zA-Z0-9]*
 
 %%
 
@@ -139,6 +140,12 @@ identifier [_a-zA-Z][[_a-zA-Z0-9]*
 
 "\n" {
         return '\n';
+}
+
+. {
+        /* Any other character is invalid, and passed to parser in
+         * order to have syntax error reported.  */
+        return (unsigned char) yytext[0];
 }
 
 %%
