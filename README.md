@@ -1,5 +1,5 @@
 Copyright (C) 1999, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2011,
-2012, 2013 Free Software Foundation, Inc.
+2012, 2013, 2026 Free Software Foundation, Inc.
 
 Copying and distribution of this file, with or without modification, are
 permitted in any medium without royalty provided the copyright notice
@@ -20,12 +20,11 @@ specified string. The library exposes C and Fortran 77 interfaces.
 ### REQUIREMENTS
 
 GNU autotools are employed for this project, so library should be
-compilable on any UNIX variant.  Still, compilation is verified on
-NetBSD 1.6 and Slackware GNU/Linux 9.1 only.  The test suite requires
-Guile 3.0; the library itself does not.  If `configure` does not find
-Guile 3.0, the library is built without the test suite (use
-`--with-guile` to make a missing Guile an error, or `--without-guile`
-to skip the test suite even if Guile is present).
+compilable on any UNIX variant.  The test suite requires Guile, version
+2.0 or later; the library itself does not.  If `configure` does not find
+Guile, the library is built and the tests that need Guile are skipped
+(use `--with-guile` to make a missing Guile an error, or `--without-guile`
+to skip those tests even if Guile is present).
 
 
 ### INSTALLATION

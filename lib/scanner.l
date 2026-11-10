@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1999, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2011,
- * 2012, 2013 Free Software Foundation, Inc.
+ * 2012, 2013, 2026 Free Software Foundation, Inc.
  * 
  * This file is part of GNU libmatheval
  *
@@ -22,7 +22,7 @@
 %{
 /*
  * Copyright (C) 1999, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2011,
- * 2012, 2013 Free Software Foundation, Inc.
+ * 2012, 2013, 2026 Free Software Foundation, Inc.
  * 
  * This file is part of GNU libmatheval
  *
@@ -64,7 +64,9 @@ extern char *input_string; /* String representing function.  */
 static int input_from_string (char *buffer, int max_size);
 %}
 
-%option noyywrap
+/* Scanner input is a single string, so yywrap() is not needed;
+ * unmatched input must not be echoed to standard output.  */
+%option noyywrap nodefault nounput noinput
 
 /* Token definitions.  */
 whitespace [ \t]+
@@ -72,8 +74,9 @@ digit [0-9]
 number ({digit}+|{digit}+\.{digit}*|{digit}*\.{digit}+)([Ee][+\-]?{digit}+)?
 constant "e"|"log2e"|"log10e"|"ln2"|"ln10"|"pi"|"pi_2"|"pi_4"|"1_pi"|"2_pi"|"2_sqrtpi"|"sqrt2"|"sqrt1_2"
 function "exp"|"log"|"sqrt"|"sin"|"cos"|"tan"|"cot"|"sec"|"csc"|"asin"|"acos"|"atan"|"acot"|"asec"|"acsc"|"sinh"|"cosh"|"tanh"|"coth"|"sech"|"csch"|"asinh"|"acosh"|"atanh"|"acoth"|"asech"|"acsch"|"abs"|"step"|"delta"|"nandelta"|"erf"
-function2 "max"|"min"
-identifier [_a-zA-Z][[_a-zA-Z0-9]*
+function2 "min"|"max"
+select "select"
+identifier [_a-zA-Z][_a-zA-Z0-9]*
 
 %%
 
@@ -98,6 +101,12 @@ identifier [_a-zA-Z][[_a-zA-Z0-9]*
         /* Find symbol table record corresponding to function name.  */
         yylval.record = symbol_table_lookup (symbol_table, yytext);
         return FUNCTION;
+}
+
+{select} {
+        /* Find symbol table record corresponding to selection.  */
+        yylval.record = symbol_table_lookup (symbol_table, yytext);
+        return SELECT;
 }
 
 {function2} {
@@ -135,6 +144,10 @@ identifier [_a-zA-Z][[_a-zA-Z0-9]*
         return '^';
 }
 
+"," {
+        return ',';
+}
+
 "(" {
         return '(';
 }
@@ -143,24 +156,26 @@ identifier [_a-zA-Z][[_a-zA-Z0-9]*
         return ')';
 }
 
-"," {
-        return ',';
-}
-
 "\n" {
         return '\n';
+}
+
+. {
+        /* Any other character is invalid, and passed to parser in
+         * order to have syntax error reported.  */
+        return (unsigned char) yytext[0];
 }
 
 %%
 
 static int input_from_string (char *buffer, int max_size)
 {
-        int count; /* Count of characters to copy from input string to buffer.  */
+        size_t count; /* Count of characters to copy from input string to buffer.  */
 
-        /* Calculate count of characters to copy.  */
-        count = strlen (input_string);
-        if (count > max_size)
-                count = max_size;
+        /* Calculate count of characters to copy, without overflow for
+         * very long strings.  */
+        for (count = 0; count < (size_t) max_size && input_string[count];
+             count++);
 
         /* Perform copy operation and update input string.  */
         memcpy(buffer, input_string, count);

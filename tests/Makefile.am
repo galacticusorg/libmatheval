@@ -1,5 +1,5 @@
 # Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2011, 2012,
-# 2013 Free Software Foundation, Inc.
+# 2013, 2026 Free Software Foundation, Inc.
 #
 # This file is part of GNU libmatheval
 #
@@ -27,7 +27,7 @@ check_SCRIPTS = matheval.sh
 DISTCLEANFILES = atconfig $(check_SCRIPTS)
 MAINTAINERCLEANFILES = Makefile.in $(TESTSUITE)
 
-$(srcdir)/package.m4: $(top_srcdir)/configure.in
+$(srcdir)/package.m4: $(top_srcdir)/configure.ac
 	{					\
 	  echo '# Signature of the current package.'; \
 	  echo 'm4_define([AT_PACKAGE_NAME],      [@PACKAGE_NAME@])'; \
@@ -52,28 +52,44 @@ clean-local:
 		$(SHELL) $(TESTSUITE) --clean; \
 	fi
 
+if HAVE_GUILE
 check-local: atconfig $(TESTSUITE)
-	$(SHELL) $(TESTSUITE);
+	$(SHELL) $(TESTSUITE)
+else
+check-local:
+	@echo "Guile not found, test suite skipped"
+endif
 
-installcheck-local:
-	if test -f $(TESTSUITE); then \
-		$(SHELL) $(TESTSUITE) AUTOTEST_PATH=$(exec_prefix)/bin; \
-	fi
 
-
-INCLUDES = -I$(top_builddir) -I$(top_builddir)/lib -I$(top_srcdir)	\
+AM_CPPFLAGS = -I$(top_builddir) -I$(top_builddir)/lib -I$(top_srcdir)	\
 -I$(top_srcdir)/lib
 
-noinst_PROGRAMS = matheval
+check_PROGRAMS = fortran
+TESTS = fortran
+
+# Symbols internal to library are hidden in shared library only.
+if ENABLE_SHARED
+check_PROGRAMS += symbols
+TESTS += symbols
+endif
+
+fortran_SOURCES = fortran.c
+fortran_LDADD = $(top_builddir)/lib/libmatheval.la
+
+symbols_SOURCES = symbols.c
+symbols_LDADD = $(top_builddir)/lib/libmatheval.la
+
+if HAVE_GUILE
+check_PROGRAMS += matheval
+endif
 
 matheval_SOURCES = matheval.c
 
 matheval_CFLAGS = $(GUILE_CFLAGS)
-matheval_LDADD = $(top_builddir)/lib/libmatheval.la
-matheval_LDFLAGS = $(GUILE_LDFLAGS)
+matheval_LDADD = $(top_builddir)/lib/libmatheval.la $(GUILE_LIBS)
 
 .PHONY: beauty
 
 beauty:
-	-for file in $$(ls *.c); do indent -orig -i8 -ncdb $$file; done
-	-rm -f *~
+	cd $(srcdir) && INDENT_PROFILE=../.indent.pro indent *.c
+	-rm -f $(srcdir)/*~

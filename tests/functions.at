@@ -1,7 +1,7 @@
 # Checking the functions.                    -*- Autotest -*-
 
 # Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2011, 2012,
-# 2013 Free Software Foundation, Inc.
+# 2013, 2026 Free Software Foundation, Inc.
 #
 # This file is part of GNU libmatheval
 #
@@ -385,7 +385,7 @@ AT_DATA([function.scm],
 (display (evaluator-evaluate-x f 1))
 ]])
 
-AT_CHECK([matheval.sh function.scm], [ignore], [0.8813735870195429], [ignore])
+AT_CHECK([matheval.sh function.scm], [ignore], [0.881373587019543], [ignore])
 
 AT_DATA([function.scm],
 [[
@@ -394,7 +394,16 @@ AT_DATA([function.scm],
 (display (evaluator-get-string f_prim))
 ]])
 
-AT_CHECK([matheval.sh function.scm], [ignore], [(1/sqrt((1-(x^2))))], [ignore])
+AT_CHECK([matheval.sh function.scm], [ignore], [(1/sqrt((1+(x^2))))], [ignore])
+
+AT_DATA([function.scm],
+[[
+(define f (evaluator-create "asinh(x)"))
+(define f_prim (evaluator-derivative-x f))
+(display (evaluator-evaluate-x f_prim 2))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [0.4472135954999579], [ignore])
 
 AT_DATA([function.scm],
 [[
@@ -445,7 +454,16 @@ AT_DATA([function.scm],
 (display (evaluator-get-string f_prim))
 ]])
 
-AT_CHECK([matheval.sh function.scm], [ignore], [(1/((x^2)-1))], [ignore])
+AT_CHECK([matheval.sh function.scm], [ignore], [(1/(1-(x^2)))], [ignore])
+
+AT_DATA([function.scm],
+[[
+(define f (evaluator-create "acoth(x)"))
+(define f_prim (evaluator-derivative-x f))
+(display (evaluator-evaluate-x f_prim 2))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [-0.3333333333333333], [ignore])
 
 AT_DATA([function.scm],
 [[
@@ -470,7 +488,7 @@ AT_DATA([function.scm],
 (display (evaluator-evaluate-x f 1))
 ]])
 
-AT_CHECK([matheval.sh function.scm], [ignore], [0.8813735870195429], [ignore])
+AT_CHECK([matheval.sh function.scm], [ignore], [0.881373587019543], [ignore])
 
 AT_DATA([function.scm],
 [[
@@ -565,5 +583,313 @@ AT_DATA([function.scm],
 ]])
 
 AT_CHECK([matheval.sh function.scm], [ignore], [(2_sqrtpi*exp((-(x^2))))], [ignore])
+
+AT_DATA([function.scm],
+[[
+(define f (evaluator-create "asinh(x)"))
+(display (evaluator-evaluate-x f -10000000000))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [-23.7189981105004], [ignore])
+
+AT_DATA([function.scm],
+[[
+(define f (evaluator-create "asinh(x)"))
+(display (evaluator-evaluate-x f 1e-10))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [1.0e-10], [ignore])
+
+AT_DATA([function.scm],
+[[
+(define f (evaluator-create "acosh(x)"))
+(display (evaluator-evaluate-x f 10000000000))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [23.7189981105004], [ignore])
+
+AT_DATA([function.scm],
+[[
+(define f (evaluator-create "atanh(x)"))
+(display (evaluator-evaluate-x f 1e-12))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [1.0e-12], [ignore])
+
+AT_DATA([function.scm],
+[[
+(define f (evaluator-create "acoth(x)"))
+(display (evaluator-evaluate-x f 1000000000000))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [1.0e-12], [ignore])
+
+AT_DATA([function.scm],
+[[
+(define f (evaluator-create "asech(x)"))
+(display (evaluator-evaluate-x f 1e-10))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [23.7189981105004], [ignore])
+
+AT_DATA([function.scm],
+[[
+(define f (evaluator-create "acsch(x)"))
+(display (evaluator-evaluate-x f 10000000000))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [1.0e-10], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-get-string (evaluator-create "min(x,y)")))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [min(x,y)], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-get-string (evaluator-create "max(1,2)+min(3,-4)")))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [(-2)], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-evaluate (evaluator-create "min(x,y)") 2 (list "x" "y") (list 1 2)))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [1.0], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-evaluate (evaluator-create "max(x,y)") 2 (list "x" "y") (list 1 2)))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [2.0], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-get-string (evaluator-derivative-x (evaluator-create "min(x^2,y)"))))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [select(select(step((y-(x^2))),1,select(step(((x^2)-y)),0,step(abs((x^2))))),(2*x),0)], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-evaluate (evaluator-derivative-x (evaluator-create "min(x^2,y)")) 2 (list "x" "y") (list 2 1)))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [0.0], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-evaluate (evaluator-derivative-x (evaluator-create "max(x^2,y)")) 2 (list "x" "y") (list 2 1)))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [4.0], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-evaluate-x (evaluator-derivative-x (evaluator-create "min(x,2*x-1)")) 1))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [1.0], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-evaluate-x (evaluator-derivative-x (evaluator-create "min(x,1e20*x)")) 1))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [1.0], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-evaluate-x (evaluator-derivative-x (evaluator-create "max(x,1e20*x)")) -1))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [1.0], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-get-string (evaluator-derivative-x (evaluator-create "max(x,0)"))))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [select(select(step(x),1,select(step((0-x)),0,step(abs(x)))),1,0)], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-evaluate-x (evaluator-derivative-x (evaluator-create "min(x,1+sqrt(x^2))")) 0))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [1.0], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-evaluate-x (evaluator-derivative-x (evaluator-create "max(x,-1-sqrt(x^2))")) 0))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [1.0], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-create "min(x)"))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [#f], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-create "min(x,y,z)"))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [#f], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-create "sin(x,y)"))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [#f], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-evaluate-x (evaluator-derivative-x (evaluator-derivative-x (evaluator-create "min(x^2,10)"))) 1))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [2.0], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-evaluate-x (evaluator-derivative-x (evaluator-derivative-x (evaluator-create "max(x,1e20*x)"))) -1))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [0.0], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-evaluate-x (evaluator-derivative-x (evaluator-create "min(x,sqrt(-x))")) 1))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [1.0], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-evaluate-x (evaluator-derivative-x (evaluator-create "max(x,sqrt(-x))")) 1))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [1.0], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-evaluate-x (evaluator-derivative-x (evaluator-create "max(sqrt(x),1)")) 0))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [0.0], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-get-string (evaluator-create "select(x,1,2)")))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [select(x,1,2)], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-evaluate-x (evaluator-create "select(x,1,2)") 3))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [1.0], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-evaluate-x (evaluator-create "select(x,1,2)") 0))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [2.0], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-evaluate-x (evaluator-create "select(sqrt(-x),1,2)") 1))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [2.0], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-evaluate-x (evaluator-create "select(x-1,x^2,sqrt(-x))") 2))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [4.0], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-get-string (evaluator-create "select(1,x,y)")))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [x], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-get-string (evaluator-derivative-x (evaluator-create "select(y,x^2,2*x)"))))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [select(y,(2*x),((0*x)+2))], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-get-string (evaluator-derivative-x (evaluator-create "select(x,y,z)"))))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [0], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-create "select(x,y)"))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [#f], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-evaluate-x (evaluator-derivative-x (evaluator-create "max(exp(x),x)")) 1000))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [+inf.0], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-evaluate-x (evaluator-derivative-x (evaluator-create "min(-exp(x),x)")) 1000))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [-inf.0], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-evaluate-x (evaluator-derivative-x (evaluator-create "max(sqrt(-x),x)")) 1))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [1.0], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-get-string (evaluator-create "select(1,x,1/0)")))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [x], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-get-string (evaluator-create "select(pi,x,1/0)")))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [x], [ignore])
+
+AT_DATA([function.scm],
+[[
+(display (evaluator-get-string (evaluator-derivative-x (evaluator-create "min(x,min(x,min(x,min(x,min(x,min(x,min(x,min(x,min(x,min(x,min(x,min(x,min(x,min(x,min(x,min(x,min(x,min(x,x))))))))))))))))))"))))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [1], [ignore])
 
 AT_CLEANUP

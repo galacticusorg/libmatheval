@@ -27,7 +27,6 @@ jobs:
           set -o pipefail
           mkdir -p config
           mkdir -p m4
-          touch config/config.rpath
           autoreconf --install --force -I/usr/local/share/aclocal
           CFLAGS="-I/usr/include/x86_64-linux-gnu -I/usr/include/guile/3.0/" ./configure
           make dist
@@ -37,7 +36,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: release-archive
-          path: 'libmatheval-1.1.13.tar.gz'
+          path: 'libmatheval-1.1.14.tar.gz'
       - name: Upload docs artifact
         uses: actions/upload-artifact@v7
         with:
@@ -67,10 +66,10 @@ jobs:
           set -e
           sudo apt update
           sudo apt remove -y guile-3.0 guile-3.0-dev flex bison texinfo || true
-          tar xvfz libmatheval-1.1.13.tar.gz
-          cd libmatheval-1.1.13
+          tar xvfz libmatheval-1.1.14.tar.gz
+          cd libmatheval-1.1.14
           ./configure --prefix=$HOME/install | tee configure.log
-          grep -q "Guile 3.0 was not found" configure.log
+          grep -q "Guile was not found" configure.log
           make -j4
           make check
           make install
@@ -104,7 +103,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release upload latest libmatheval-1.1.13.tar.gz --clobber
+          gh release upload latest libmatheval-1.1.14.tar.gz --clobber
       - name: Update tag
         run: |
           git tag -f latest

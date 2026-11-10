@@ -1,23 +1,21 @@
-/* 
- * Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2011, 2012,
- * 2013 Free Software Foundation, Inc.
- * 
- * This file is part of GNU libmatheval
- * 
- * GNU libmatheval is free software: you can redistribute it and/or
- * modify it under the terms of the GNU General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * GNU libmatheval is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GNU libmatheval.  If not, see
- * <http://www.gnu.org/licenses/>.
- */
+/* Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2011, 2012,
+   2013, 2026 Free Software Foundation, Inc.
+
+   This file is part of GNU libmatheval
+
+   GNU libmatheval is free software: you can redistribute it and/or
+   modify it under the terms of the GNU General Public License as
+   published by the Free Software Foundation, either version 3 of the
+   License, or (at your option) any later version.
+
+   GNU libmatheval is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with GNU libmatheval.  If not, see
+   <http://www.gnu.org/licenses/>.  */
 
 #if HAVE_CONFIG_H
 #include "config.h"
@@ -33,27 +31,28 @@
 #include "matheval.h"
 
 /* Wrapper for evaluator_create() function.  Evaluator objects will be
- * passed between Fortran and C as 64-bit integers instead of void
- * pointers, thus size of void* is assumed to be less or equal of 64 bits
- * throughout this interface. */
+   passed between Fortran and C as 64-bit integers instead of void
+   pointers, thus size of void* is assumed to be less or equal of 64 bits
+   throughout this interface.  */
 int64_t
 evaluator_create__(char *string, int length)
 {
-	char           *stringz;	/* Zero-terminated string
-					 * representing function.  */
-	int64_t         evaluator;	/* Evaluator created for function. 
-					 */
+	/* Zero-terminated string representing function.  */
+	char *stringz;
+	int64_t evaluator;	/* Evaluator created for function.  */
 
 	/* Copy string passed from Fortran code and terminate it with
-	 * zero. */
+	   zero.  */
+	if (length < 0)
+		length = 0;
 	stringz = XMALLOC(char, length + 1);
 	memcpy(stringz, string, length * sizeof(char));
 	stringz[length] = '\0';
 
-	/* Call evaluator_create() function. */
+	/* Call evaluator_create() function.  */
 	evaluator = (int64_t) evaluator_create(stringz);
 
-	/* Free string used to create evaluator. */
+	/* Free string used to create evaluator.  */
 	XFREE(stringz);
 
 	return evaluator;
@@ -61,45 +60,45 @@ evaluator_create__(char *string, int length)
 
 /* Wrapper for evaluator_destroy() function.  */
 void
-evaluator_destroy__(int64_t * evaluator)
+evaluator_destroy__(int64_t *evaluator)
 {
 	evaluator_destroy((void *) *evaluator);
 }
 
 /* Wrapper for evaluator_evaluate() function.  */
 double
-evaluator_evaluate__(int64_t * evaluator, int *count, char *names,
+evaluator_evaluate__(int64_t *evaluator, int *count, char *names,
 		     double *values, int length)
 {
-	char          **names_copy;	/* Copy of variable names.  Names
-					 * are passed in single string
-					 * from Fortran code, delimited by 
-					 * blanks, while
-					 * evaluator_evaluate() function
-					 * expects array of strings.  */
-	double          result;	/* Calculated value of function.  */
-	int             i,
-	                j,
-	                n;	/* Loop counters.  */
+	/* Copy of variable names.  Names are passed in single string from
+	   Fortran code, delimited by blanks, while evaluator_evaluate()
+	   function expects array of strings.  */
+	char **names_copy;
+	double result;	/* Calculated value of function.  */
+	int parsed;	/* Number of names parsed.  */
+	int i, j, n;	/* Loop counters.  */
 
 	/* Parse string containing variable names and create array of
-	 * strings with each string containing single name. */
-	names_copy = XMALLOC(char *, *count);
-	for (i = j = 0; i < *count && j < length; i++, j += n) {
-		for (; names[j] == ' '; j++);
+	   strings with each string containing single name; parsing stops
+	   at the end of string, if less names than given count found.  */
+	names_copy = XMALLOC(char *, *count > 0 ? *count : 1);
+	for (i = j = 0; i < *count; i++, j += n) {
+		for (; j < length && names[j] == ' '; j++);
+		if (j >= length)
+			break;
 		for (n = 1; j + n < length && !(names[j + n] == ' '); n++);
 		names_copy[i] = XMALLOC(char, n + 1);
 		memcpy(names_copy[i], names + j, n * sizeof(char));
 		names_copy[i][n] = '\0';
 	}
+	parsed = i;
 
-	/* Call evaluator_evaluate() function. */
-	result =
-	    evaluator_evaluate((void *) *evaluator, *count, names_copy,
-			       values);
+	/* Call evaluator_evaluate() function.  */
+	result = evaluator_evaluate((void *) *evaluator, parsed,
+				    names_copy, values);
 
-	/* Free memory used. */
-	for (i = 0; i < *count; i++)
+	/* Free memory used.  */
+	for (i = 0; i < parsed; i++)
 		XFREE(names_copy[i]);
 	XFREE(names_copy);
 
@@ -108,37 +107,46 @@ evaluator_evaluate__(int64_t * evaluator, int *count, char *names,
 
 /* First in pair of wrappers for evaluator_get_string() function.  */
 int
-evaluator_get_string_length__(int64_t * evaluator)
+evaluator_get_string_length__(int64_t *evaluator)
 {
-	/* Return length of evaluator textual respresentation. */
+	/* Return length of evaluator textual respresentation.  */
 	return strlen(evaluator_get_string((void *) *evaluator));
 }
 
 /* Second in pair of wrappers for evaluator_get_string() function.  */
 void
-evaluator_get_string_chars__(int64_t * evaluator, char *string, int length)
+evaluator_get_string_chars__(int64_t *evaluator, char *string, int length)
 {
+	char *source;	/* Evaluator textual representation.  */
+	size_t n;	/* Number of characters to copy.  */
+
 	/* Copy evaluator textual respresentation to string passed from
-	 * Fortran code. */
-	memcpy(string, evaluator_get_string((void *) *evaluator),
-	       length * sizeof(char));
+	   Fortran code, padding it with blanks.  */
+	if (length < 0)
+		return;
+	source = evaluator_get_string((void *) *evaluator);
+	n = strlen(source);
+	if (n > (size_t) length)
+		n = length;
+	memcpy(string, source, n * sizeof(char));
+	memset(string + n, ' ', length - n);
 }
 
 /* First in pair of wrappers for evaluator_get_variables() function.  */
 int
-evaluator_get_variables_length__(int64_t * evaluator)
+evaluator_get_variables_length__(int64_t *evaluator)
 {
-	char          **names;	/* Array with variable names. */
-	int             count;	/* Number of elements in above array. */
-	int             length;	/* Length of string with concatenated
-				 * variable names */
-	int             i;	/* Loop counter. */
+	char **names;	/* Array with variable names.  */
+	int count;	/* Number of elements in above array.  */
+	/* Length of string with concatenated variable names */
+	int length;
+	int i;	/* Loop counter.  */
 
-	/* Get array of strings with variable names. */
+	/* Get array of strings with variable names.  */
 	evaluator_get_variables((void *) *evaluator, &names, &count);
 
 	/* Calculate length of string with concatenated names from above
-	 * array. */
+	   array.  */
 	length = 0;
 	for (i = 0; i < count; i++) {
 		if (i != 0)
@@ -151,21 +159,23 @@ evaluator_get_variables_length__(int64_t * evaluator)
 
 /* Second in pair of wrappers for evaluator_get_variables() function.  */
 void
-evaluator_get_variables_chars__(int64_t * evaluator, char *string,
+evaluator_get_variables_chars__(int64_t *evaluator, char *string,
 				int length)
 {
-	char          **names;	/* Array with variable names. */
-	int             count;	/* Number of elements in above array. */
-	int             n;	/* Number of characters to be copied from
-				 * current variable name to string with
-				 * concatenated variable names. */
-	int             i;	/* Loop counter. */
+	char **names;	/* Array with variable names.  */
+	int count;	/* Number of elements in above array.  */
+	/* Number of characters to be copied from current variable name to
+	   string with concatenated variable names.  */
+	int n;
+	int i;	/* Loop counter.  */
 
-	/* Get array of strings with variable names. */
+	/* Get array of strings with variable names.  */
 	evaluator_get_variables((void *) *evaluator, &names, &count);
+	if (length < 0)
+		length = 0;
 
 	/* Concatenate variable names from above array into string passed
-	 * from Fortran code. */
+	   from Fortran code, padding it with blanks.  */
 	for (i = 0; i < count; i++) {
 		if (i != 0 && length > 0) {
 			*(string++) = ' ';
@@ -178,29 +188,30 @@ evaluator_get_variables_chars__(int64_t * evaluator, char *string,
 		string += n;
 		length -= n;
 	}
+	memset(string, ' ', length);
 }
 
 /* Wrapper for evaluator_derivative() function.  */
 int64_t
-evaluator_derivative__(int64_t * evaluator, char *name, int length)
+evaluator_derivative__(int64_t *evaluator, char *name, int length)
 {
-	char           *stringz;	/* Zero terminated string
-					 * containing derivation variable
-					 * name.  */
-	int64_t         derivative;	/* Evaluator for function
-					 * derivative.  */
+	/* Zero terminated string containing derivation variable name.  */
+	char *stringz;
+	int64_t derivative;	/* Evaluator for function derivative.  */
 
 	/* Copy variable name passed from Fortran code and terminate it
-	 * with zero. */
+	   with zero.  */
+	if (length < 0)
+		length = 0;
 	stringz = XMALLOC(char, length + 1);
 	memcpy(stringz, name, length * sizeof(char));
 	stringz[length] = '\0';
 
-	/* Call evaluator_derivative() function. */
+	/* Call evaluator_derivative() function.  */
 	derivative =
 	    (int64_t) evaluator_derivative((void *) *evaluator, stringz);
 
-	/* Free string containing derivation variable name. */
+	/* Free string containing derivation variable name.  */
 	XFREE(stringz);
 
 	return derivative;
@@ -208,21 +219,21 @@ evaluator_derivative__(int64_t * evaluator, char *name, int length)
 
 /* Wrapper for evaluator_evaluate_x() function.  */
 double
-evaluator_evaluate_x__(int64_t * evaluator, double *x)
+evaluator_evaluate_x__(int64_t *evaluator, double *x)
 {
 	return evaluator_evaluate_x((void *) *evaluator, *x);
 }
 
 /* Wrapper for evaluator_evaluate_x_y() function.  */
 double
-evaluator_evaluate_x_y__(int64_t * evaluator, double *x, double *y)
+evaluator_evaluate_x_y__(int64_t *evaluator, double *x, double *y)
 {
 	return evaluator_evaluate_x_y((void *) *evaluator, *x, *y);
 }
 
 /* Wrapper for evaluator_evaluate_x_y_z() function.  */
 double
-evaluator_evaluate_x_y_z__(int64_t * evaluator, double *x, double *y,
+evaluator_evaluate_x_y_z__(int64_t *evaluator, double *x, double *y,
 			   double *z)
 {
 	return evaluator_evaluate_x_y_z((void *) *evaluator, *x, *y, *z);
@@ -230,21 +241,21 @@ evaluator_evaluate_x_y_z__(int64_t * evaluator, double *x, double *y,
 
 /* Wrapper for evaluator_derivative_x() function.  */
 int64_t
-evaluator_derivative_x__(int64_t * evaluator)
+evaluator_derivative_x__(int64_t *evaluator)
 {
 	return (int64_t) evaluator_derivative_x((void *) *evaluator);
 }
 
 /* Wrapper for evaluator_derivative_y() function.  */
 int64_t
-evaluator_derivative_y__(int64_t * evaluator)
+evaluator_derivative_y__(int64_t *evaluator)
 {
 	return (int64_t) evaluator_derivative_y((void *) *evaluator);
 }
 
 /* Wrapper for evaluator_derivative_z() function.  */
 int64_t
-evaluator_derivative_z__(int64_t * evaluator)
+evaluator_derivative_z__(int64_t *evaluator)
 {
 	return (int64_t) evaluator_derivative_z((void *) *evaluator);
 }
