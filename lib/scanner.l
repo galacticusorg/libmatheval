@@ -74,6 +74,8 @@ digit [0-9]
 number ({digit}+|{digit}+\.{digit}*|{digit}*\.{digit}+)([Ee][+\-]?{digit}+)?
 constant "e"|"log2e"|"log10e"|"ln2"|"ln10"|"pi"|"pi_2"|"pi_4"|"1_pi"|"2_pi"|"2_sqrtpi"|"sqrt2"|"sqrt1_2"
 function "exp"|"log"|"sqrt"|"sin"|"cos"|"tan"|"cot"|"sec"|"csc"|"asin"|"acos"|"atan"|"acot"|"asec"|"acsc"|"sinh"|"cosh"|"tanh"|"coth"|"sech"|"csch"|"asinh"|"acosh"|"atanh"|"acoth"|"asech"|"acsch"|"abs"|"step"|"delta"|"nandelta"|"erf"
+function2 "min"|"max"
+select "select"
 identifier [_a-zA-Z][_a-zA-Z0-9]*
 
 %%
@@ -99,6 +101,18 @@ identifier [_a-zA-Z][_a-zA-Z0-9]*
         /* Find symbol table record corresponding to function name.  */
         yylval.record = symbol_table_lookup (symbol_table, yytext);
         return FUNCTION;
+}
+
+{select} {
+        /* Find symbol table record corresponding to selection.  */
+        yylval.record = symbol_table_lookup (symbol_table, yytext);
+        return SELECT;
+}
+
+{function2} {
+        /* Find symbol table record corresponding to function name.  */
+        yylval.record = symbol_table_lookup (symbol_table, yytext);
+        return FUNCTION2;
 }
 
 {identifier} {
@@ -128,6 +142,10 @@ identifier [_a-zA-Z][_a-zA-Z0-9]*
 
 "^" {
         return '^';
+}
+
+"," {
+        return ',';
 }
 
 "(" {

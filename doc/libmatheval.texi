@@ -433,6 +433,20 @@ hyperbolic inverse secant (@code{asech}), hyperbolic inverse cosecant
 with infinity (@code{delta}) and not-a-number (@code{nandelta}) values
 defined for x = 0, and error function (@code{erf}).
 
+Supported functions of two arguments, separated by comma, are minimum
+(@code{min}) and maximum (@code{max}); where arguments are equal, the
+derivative of these functions is taken to be the derivative of the
+first argument.
+
+Supported function of three arguments is selection (@code{select}):
+its value is the value of the second argument if the first argument is
+non-zero, and the value of the third argument otherwise (also if the
+first argument is not a number); the other argument does not affect
+the result, even if its value is infinite or not a number.  The
+derivative of this function is taken to be the derivative of the
+selected argument, also where the first argument changes.  Derivatives
+of @code{min} and @code{max} are expressed through @code{select}.
+
 Supported unary operation is unary minus (@code{'-'}).
 
 Supported binary operations are addition (@code{'+'}), subtraction
@@ -943,6 +957,20 @@ hyperbolic inverse secant (@code{asech}), hyperbolic inverse cosecant
 (@code{step}) with value 1 defined for x = 0, Dirac delta function
 with infinity (@code{delta}) and not-a-number (@code{nandelta}) values
 defined for x = 0, and error function (@code{erf}).
+
+Supported functions of two arguments, separated by comma, are minimum
+(@code{min}) and maximum (@code{max}); where arguments are equal, the
+derivative of these functions is taken to be the derivative of the
+first argument.
+
+Supported function of three arguments is selection (@code{select}):
+its value is the value of the second argument if the first argument is
+non-zero, and the value of the third argument otherwise (also if the
+first argument is not a number); the other argument does not affect
+the result, even if its value is infinite or not a number.  The
+derivative of this function is taken to be the derivative of the
+selected argument, also where the first argument changes.  Derivatives
+of @code{min} and @code{max} are expressed through @code{select}.
 
 Supported unary operation is unary minus (@code{'-'}).
 

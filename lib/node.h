@@ -30,7 +30,8 @@
 /* Data structure representing function tree node.  */
 typedef struct _Node {
 	/* Node type ('n' for number, 'c' for constant, 'v' for variable,
-	   'f' for function, 'u' for unary operation, 'b' for binary
+	   'f' for function, 'g' for function of two arguments, 's' for
+	   selection, 'u' for unary operation, 'b' for binary
 	   operation).  */
 	char type;
 	union {
@@ -45,6 +46,20 @@ typedef struct _Node {
 			/* Function argument node.  */
 			struct _Node *child;
 		} function;	/* Structure representing function.  */
+		/* Structure representing function of two arguments.  */
+		struct {
+			/* Symbol table record for function.  */
+			Record *record;
+			/* Function argument nodes.  */
+			struct _Node *left, *right;
+		} function2;
+		/* Structure representing selection.  */
+		struct {
+			/* Symbol table record for selection.  */
+			Record *record;
+			/* Condition and argument nodes.  */
+			struct _Node *condition, *left, *right;
+		} selection;
 		/* Structure representing unary operation.  */
 		struct {
 			/* Operation type ('-' for unary minus).  */

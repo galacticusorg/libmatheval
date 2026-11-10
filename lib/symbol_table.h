@@ -29,12 +29,15 @@ typedef struct _Record {
 	struct _Record *next;	/* Pointer to next record.  */
 	char *name;	/* Symbol name.  */
 	/* Symbol type ('c' for constant, 'v' for variable, 'f' for
-	   function).  */
+	   function, 'g' for function of two arguments, 's' for
+	   selection).  */
 	char type;
 	union {
 		double value;	/* Constant or variable value.  */
 		/* Pointer to function to calculate its value.  */
 		double (*function)(double);
+		/* Pointer to function of two arguments.  */
+		double (*function2)(double, double);
 	} data;
 	/* Record flag used for symbol table selective traversal.  */
 	int flag;

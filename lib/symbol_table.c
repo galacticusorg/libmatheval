@@ -31,6 +31,10 @@
    and returning double value.  */
 typedef double (*function_type)(double);
 
+/* Type definition for function accepting two arguments of double type
+   and returning double value.  */
+typedef double (*function2_type)(double, double);
+
 /* Calculate hash value for given name and hash table length.  */
 static int hash(char *name, int length);
 
@@ -90,6 +94,14 @@ symbol_table_create(int length)
 	     i < sizeof(functions_names) / sizeof(functions_names[0]); i++)
 		symbol_table_insert(symbol_table, functions_names[i], 'f',
 				    functions[i]);
+
+	/* Insert predefined functions of two arguments into symbol
+	   table.  */
+	symbol_table_insert(symbol_table, "min", 'g', fmin);
+	symbol_table_insert(symbol_table, "max", 'g', fmax);
+
+	/* Insert selection into symbol table.  */
+	symbol_table_insert(symbol_table, "select", 's');
 
 	/* Initialize symbol table reference count.  */
 	symbol_table->reference_count = 1;
@@ -160,6 +172,10 @@ symbol_table_insert(SymbolTable *symbol_table, char *name, int type, ...)
 
 	case 'f':
 		record->data.function = va_arg(ap, function_type);
+		break;
+
+	case 'g':
+		record->data.function2 = va_arg(ap, function2_type);
 		break;
 	}
 	va_end(ap);

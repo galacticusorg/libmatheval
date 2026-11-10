@@ -65,6 +65,23 @@ node_create(int type, ...)
 		node->data.function.child = va_arg(ap, Node *);
 		break;
 
+	case 'g':
+		/* Remember pointer to symbol table record describing
+		   function and initialize function arguments.  */
+		node->data.function2.record = va_arg(ap, Record *);
+		node->data.function2.left = va_arg(ap, Node *);
+		node->data.function2.right = va_arg(ap, Node *);
+		break;
+
+	case 's':
+		/* Remember pointer to symbol table record describing
+		   selection and initialize condition and arguments.  */
+		node->data.selection.record = va_arg(ap, Record *);
+		node->data.selection.condition = va_arg(ap, Node *);
+		node->data.selection.left = va_arg(ap, Node *);
+		node->data.selection.right = va_arg(ap, Node *);
+		break;
+
 	case 'u':
 		/* Initialize operation type and operand.  */
 		node->data.un_op.operation = (char) va_arg(ap, int);
@@ -107,6 +124,17 @@ node_destroy(Node *node)
 		node_destroy(node->data.function.child);
 		break;
 
+	case 'g':
+		node_destroy(node->data.function2.left);
+		node_destroy(node->data.function2.right);
+		break;
+
+	case 's':
+		node_destroy(node->data.selection.condition);
+		node_destroy(node->data.selection.left);
+		node_destroy(node->data.selection.right);
+		break;
+
 	case 'u':
 		node_destroy(node->data.un_op.child);
 		break;
@@ -124,7 +152,7 @@ node_destroy(Node *node)
 Node *
 node_copy(Node *node)
 {
-	Node *n0, *n1;	/* Copies of children.  */
+	Node *n0, *n1, *n2;	/* Copies of children.  */
 
 	/* According to node type, create (deep) copy of subtree rooted at
 	   node.  */
@@ -141,6 +169,19 @@ node_copy(Node *node)
 	case 'f':
 		n0 = node_copy(node->data.function.child);
 		return node_create('f', node->data.function.record, n0);
+
+	case 'g':
+		n0 = node_copy(node->data.function2.left);
+		n1 = node_copy(node->data.function2.right);
+		return node_create('g', node->data.function2.record, n0,
+				   n1);
+
+	case 's':
+		n0 = node_copy(node->data.selection.condition);
+		n1 = node_copy(node->data.selection.left);
+		n2 = node_copy(node->data.selection.right);
+		return node_create('s', node->data.selection.record, n0,
+				   n1, n2);
 
 	case 'u':
 		n0 = node_copy(node->data.un_op.child);
@@ -175,6 +216,63 @@ node_simplify(Node *node)
 		    node_simplify(node->data.function.child);
 		if (node->data.function.child->type == 'n') {
 			double value = node_evaluate(node);
+
+			node_destroy(node);
+			return node_create('n', value);
+		} else
+			return node;
+
+	case 'g':
+		/* Simplify function arguments and if numbers evaluate
+		   function and replace function node with number node.  */
+		node->data.function2.left =
+		    node_simplify(node->data.function2.left);
+		node->data.function2.right =
+		    node_simplify(node->data.function2.right);
+		if (node->data.function2.left->type == 'n'
+		    && node->data.function2.right->type == 'n') {
+			double value = node_evaluate(node);
+
+			node_destroy(node);
+			return node_create('n', value);
+		} else
+			return node;
+
+	case 's':
+		/* Simplify condition, and if number or constant replace
+		   selection node with selected argument node, other
+		   argument being not simplified (thus not evaluated).  */
+		node->data.selection.condition =
+		    node_simplify(node->data.selection.condition);
+		if (node->data.selection.condition->type == 'n'
+		    || node->data.selection.condition->type == 'c') {
+			double value =
+			    node_evaluate(node->data.selection.condition);
+			Node *selected;
+
+			if (value != 0 && !isnan(value)) {
+				selected = node->data.selection.left;
+				node->data.selection.left = NULL;
+			} else {
+				selected = node->data.selection.right;
+				node->data.selection.right = NULL;
+			}
+			node_destroy(node);
+			return node_simplify(selected);
+		}
+
+		/* Otherwise simplify arguments, and if same number,
+		   condition does not matter.  */
+		node->data.selection.left =
+		    node_simplify(node->data.selection.left);
+		node->data.selection.right =
+		    node_simplify(node->data.selection.right);
+		if (node->data.selection.left->type == 'n'
+		    && node->data.selection.right->type == 'n'
+		    && node->data.selection.left->data.number
+		    == node->data.selection.right->data.number) {
+			double value =
+			    node->data.selection.left->data.number;
 
 			node_destroy(node);
 			return node_create('n', value);
@@ -315,6 +413,8 @@ node_evaluate(Node *node)
 	Record *record;	/* Symbol table record.  */
 	Node *child;	/* Function argument or operand.  */
 	Node *left, *right;	/* Arguments or operands.  */
+	Node *condition;	/* Selection condition.  */
+	double value;	/* Selection condition value.  */
 
 	/* According to node type, evaluate subtree rooted at node.  */
 	switch (node->type) {
@@ -334,6 +434,25 @@ node_evaluate(Node *node)
 		child = node->data.function.child;
 		/* Functions are evaluated through symbol table.  */
 		return (*record->data.function) (node_evaluate(child));
+
+	case 'g':
+		record = node->data.function2.record;
+		left = node->data.function2.left;
+		right = node->data.function2.right;
+		/* Functions are evaluated through symbol table.  */
+		return (*record->data.function2) (node_evaluate(left),
+						  node_evaluate(right));
+
+	case 's':
+		condition = node->data.selection.condition;
+		left = node->data.selection.left;
+		right = node->data.selection.right;
+		/* Only selected argument is evaluated; condition not a
+		   number selects second argument.  */
+		value = node_evaluate(condition);
+		if (value != 0 && !isnan(value))
+			return node_evaluate(left);
+		return node_evaluate(right);
 
 	case 'u':
 		child = node->data.un_op.child;
@@ -378,10 +497,11 @@ node_derivative(Node *node, char *name, SymbolTable *symbol_table)
 	Record *record;	/* Symbol table record.  */
 	Node *child;	/* Function argument or operand.  */
 	Node *left, *right;	/* Arguments or operands.  */
+	Node *condition;	/* Selection condition.  */
 	/* Nodes of derivative tree.  */
 	Node *n0, *n1, *n2, *n3, *n4, *n5, *n6, *n7, *n8, *n9, *n10, *n11,
 	    *n12, *n13, *n14, *n15, *n16;
-	Record *r0, *r1;	/* Records of functions used.  */
+	Record *r0, *r1, *r2;	/* Records of functions used.  */
 
 	/* According to node type, derivative tree for subtree rooted at
 	   node is created.  */
@@ -788,6 +908,60 @@ node_derivative(Node *node, char *name, SymbolTable *symbol_table)
 
 		break;
 
+	case 'g':
+		record = node->data.function2.record;
+		left = node->data.function2.left;
+		right = node->data.function2.right;
+		/* Apply rules of min and max functions derivatives: take
+		   derivative of argument returned by C library fmin() or
+		   fmax(), of f also where f and g are equal:
+		   max(f,g)'=select(c,f',g'), with
+		   c=select(step(f-g),1,select(step(g-f),0,step(abs(f)))),
+		   and min alike with differences swapped.  Inner
+		   selections decide only if a difference is not a number:
+		   equal infinite arguments, or argument not a number
+		   (ignored by C library unless both are).  Derivative of
+		   argument not selected is never evaluated.  */
+		n0 = node_copy(left);
+		n1 = node_copy(right);
+		n2 = node_copy(left);
+		n3 = node_copy(right);
+		if (!strcmp(record->name, "min")) {
+			n4 = node_create('b', '-', n1, n0);
+			n5 = node_create('b', '-', n2, n3);
+		} else {
+			n4 = node_create('b', '-', n0, n1);
+			n5 = node_create('b', '-', n3, n2);
+		}
+		r0 = symbol_table_lookup(symbol_table, "step");
+		n6 = node_create('f', r0, n4);
+		n7 = node_create('f', r0, n5);
+		n8 = node_copy(left);
+		r1 = symbol_table_lookup(symbol_table, "abs");
+		n9 = node_create('f', r1, n8);
+		n10 = node_create('f', r0, n9);
+		r2 = symbol_table_lookup(symbol_table, "select");
+		n11 = node_create('n', 0.0);
+		n12 = node_create('s', r2, n7, n11, n10);
+		n13 = node_create('n', 1.0);
+		n14 = node_create('s', r2, n6, n13, n12);
+		n15 = node_derivative(left, name, symbol_table);
+		n16 = node_derivative(right, name, symbol_table);
+		return node_create('s', r2, n14, n15, n16);
+
+	case 's':
+		record = node->data.selection.record;
+		condition = node->data.selection.condition;
+		left = node->data.selection.left;
+		right = node->data.selection.right;
+		/* Apply select(c,f,g)'=select(c,f',g') derivative rule:
+		   derivative of selected argument, also where condition
+		   changes (as SymPy does for Piecewise).  */
+		n0 = node_copy(condition);
+		n1 = node_derivative(left, name, symbol_table);
+		n2 = node_derivative(right, name, symbol_table);
+		return node_create('s', record, n0, n1, n2);
+
 	case 'u':
 		child = node->data.un_op.child;
 		switch (node->data.un_op.operation) {
@@ -891,6 +1065,17 @@ node_flag_variables(Node *node)
 		node_flag_variables(node->data.function.child);
 		break;
 
+	case 'g':
+		node_flag_variables(node->data.function2.left);
+		node_flag_variables(node->data.function2.right);
+		break;
+
+	case 's':
+		node_flag_variables(node->data.selection.condition);
+		node_flag_variables(node->data.selection.left);
+		node_flag_variables(node->data.selection.right);
+		break;
+
 	case 'u':
 		node_flag_variables(node->data.un_op.child);
 		break;
@@ -909,6 +1094,7 @@ node_get_length(Node *node)
 	Record *record;	/* Symbol table record.  */
 	Node *child;	/* Function argument or operand.  */
 	Node *left, *right;	/* Arguments or operands.  */
+	Node *condition;	/* Selection condition.  */
 
 	/* According to node type, calculate length of string representing
 	   subtree rooted at node.  */
@@ -932,6 +1118,23 @@ node_get_length(Node *node)
 		    1;
 		break;
 
+	case 'g':
+		record = node->data.function2.record;
+		left = node->data.function2.left;
+		right = node->data.function2.right;
+		return strlen(record->name) + 1 + node_get_length(left) +
+		    1 + node_get_length(right) + 1;
+
+	case 's':
+		record = node->data.selection.record;
+		condition = node->data.selection.condition;
+		left = node->data.selection.left;
+		right = node->data.selection.right;
+		return strlen(record->name) + 1 +
+		    node_get_length(condition)
+		    + 1 + node_get_length(left) + 1 +
+		    node_get_length(right) + 1;
+
 	case 'u':
 		child = node->data.un_op.child;
 		return 1 + 1 + node_get_length(child) + 1;
@@ -952,6 +1155,7 @@ node_write(Node *node, char *string)
 	Record *record;	/* Symbol table record.  */
 	Node *child;	/* Function argument or operand.  */
 	Node *left, *right;	/* Arguments or operands.  */
+	Node *condition;	/* Selection condition.  */
 
 	/* According to node type, write subtree rooted at node to node
 	   string variable.  Always use parenthesis to resolve operation
@@ -982,6 +1186,41 @@ node_write(Node *node, char *string)
 		sprintf(string, "%s%c", record->name, '(');
 		string += strlen(string);
 		node_write(child, string);
+		string += strlen(string);
+		sprintf(string, "%c", ')');
+		break;
+
+	case 'g':
+		record = node->data.function2.record;
+		left = node->data.function2.left;
+		right = node->data.function2.right;
+		sprintf(string, "%s%c", record->name, '(');
+		string += strlen(string);
+		node_write(left, string);
+		string += strlen(string);
+		sprintf(string, "%c", ',');
+		string += strlen(string);
+		node_write(right, string);
+		string += strlen(string);
+		sprintf(string, "%c", ')');
+		break;
+
+	case 's':
+		record = node->data.selection.record;
+		condition = node->data.selection.condition;
+		left = node->data.selection.left;
+		right = node->data.selection.right;
+		sprintf(string, "%s%c", record->name, '(');
+		string += strlen(string);
+		node_write(condition, string);
+		string += strlen(string);
+		sprintf(string, "%c", ',');
+		string += strlen(string);
+		node_write(left, string);
+		string += strlen(string);
+		sprintf(string, "%c", ',');
+		string += strlen(string);
+		node_write(right, string);
 		string += strlen(string);
 		sprintf(string, "%c", ')');
 		break;

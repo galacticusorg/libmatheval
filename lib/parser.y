@@ -71,7 +71,7 @@ extern void input_reset (void);
 
 /* Grammar terminal symbols.  */
 %token <node> NUMBER CONSTANT VARIABLE
-%token <record> FUNCTION
+%token <record> FUNCTION FUNCTION2 SELECT
 %left '-' '+'
 %left '*' '/'
 %left NEG
@@ -126,6 +126,14 @@ expression
 | FUNCTION '(' expression ')' {
         /* Create function node.  */
         $$ = node_create ('f', $1, $3);
+}
+| FUNCTION2 '(' expression ',' expression ')' {
+        /* Create function of two arguments node.  */
+        $$ = node_create ('g', $1, $3, $5);
+}
+| SELECT '(' expression ',' expression ',' expression ')' {
+        /* Create selection node.  */
+        $$ = node_create ('s', $1, $3, $5, $7);
 }
 | '(' expression ')' {
         $$ = $2;
