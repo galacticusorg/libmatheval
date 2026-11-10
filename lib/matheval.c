@@ -145,7 +145,7 @@ evaluator_evaluate(void *evaluator, int count, char **names,
 char *
 evaluator_get_string(void *evaluator)
 {
-	int length;	/* Length of evaluator textual representaion.  */
+	size_t length;	/* Length of evaluator textual representaion.  */
 	Evaluator *e = (Evaluator *) evaluator;	/* Evaluator.  */
 
 	/* If not already, create and remember evaluator textual

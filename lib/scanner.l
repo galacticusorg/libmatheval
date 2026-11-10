@@ -152,12 +152,12 @@ identifier [_a-zA-Z][_a-zA-Z0-9]*
 
 static int input_from_string (char *buffer, int max_size)
 {
-        int count; /* Count of characters to copy from input string to buffer.  */
+        size_t count; /* Count of characters to copy from input string to buffer.  */
 
-        /* Calculate count of characters to copy.  */
-        count = strlen (input_string);
-        if (count > max_size)
-                count = max_size;
+        /* Calculate count of characters to copy, without overflow for
+         * very long strings.  */
+        for (count = 0; count < (size_t) max_size && input_string[count];
+             count++);
 
         /* Perform copy operation and update input string.  */
         memcpy(buffer, input_string, count);

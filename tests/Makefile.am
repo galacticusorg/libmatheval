@@ -69,8 +69,14 @@ installcheck-local:
 AM_CPPFLAGS = -I$(top_builddir) -I$(top_builddir)/lib -I$(top_srcdir)	\
 -I$(top_srcdir)/lib
 
+check_PROGRAMS = fortran
+TESTS = fortran
+
+fortran_SOURCES = fortran.c
+fortran_LDADD = $(top_builddir)/lib/libmatheval.la
+
 if HAVE_GUILE
-check_PROGRAMS = matheval
+check_PROGRAMS += matheval
 endif
 
 matheval_SOURCES = matheval.c

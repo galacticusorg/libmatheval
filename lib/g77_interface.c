@@ -43,6 +43,8 @@ evaluator_create__(char *string, int length)
 
 	/* Copy string passed from Fortran code and terminate it with
 	   zero.  */
+	if (length < 0)
+		length = 0;
 	stringz = XMALLOC(char, length + 1);
 	memcpy(stringz, string, length * sizeof(char));
 	stringz[length] = '\0';
@@ -73,25 +75,30 @@ evaluator_evaluate__(int64_t *evaluator, int *count, char *names,
 	   function expects array of strings.  */
 	char **names_copy;
 	double result;	/* Calculated value of function.  */
+	int parsed;	/* Number of names parsed.  */
 	int i, j, n;	/* Loop counters.  */
 
 	/* Parse string containing variable names and create array of
-	   strings with each string containing single name.  */
-	names_copy = XMALLOC(char *, *count);
-	for (i = j = 0; i < *count && j < length; i++, j += n) {
-		for (; names[j] == ' '; j++);
+	   strings with each string containing single name; parsing stops
+	   at the end of string, if less names than given count found.  */
+	names_copy = XMALLOC(char *, *count > 0 ? *count : 1);
+	for (i = j = 0; i < *count; i++, j += n) {
+		for (; j < length && names[j] == ' '; j++);
+		if (j >= length)
+			break;
 		for (n = 1; j + n < length && !(names[j + n] == ' '); n++);
 		names_copy[i] = XMALLOC(char, n + 1);
 		memcpy(names_copy[i], names + j, n * sizeof(char));
 		names_copy[i][n] = '\0';
 	}
+	parsed = i;
 
 	/* Call evaluator_evaluate() function.  */
-	result = evaluator_evaluate((void *) *evaluator, *count,
+	result = evaluator_evaluate((void *) *evaluator, parsed,
 				    names_copy, values);
 
 	/* Free memory used.  */
-	for (i = 0; i < *count; i++)
+	for (i = 0; i < parsed; i++)
 		XFREE(names_copy[i]);
 	XFREE(names_copy);
 
@@ -110,10 +117,19 @@ evaluator_get_string_length__(int64_t *evaluator)
 void
 evaluator_get_string_chars__(int64_t *evaluator, char *string, int length)
 {
+	char *source;	/* Evaluator textual representation.  */
+	size_t n;	/* Number of characters to copy.  */
+
 	/* Copy evaluator textual respresentation to string passed from
-	   Fortran code.  */
-	memcpy(string, evaluator_get_string((void *) *evaluator),
-	       length * sizeof(char));
+	   Fortran code, padding it with blanks.  */
+	if (length < 0)
+		return;
+	source = evaluator_get_string((void *) *evaluator);
+	n = strlen(source);
+	if (n > (size_t) length)
+		n = length;
+	memcpy(string, source, n * sizeof(char));
+	memset(string + n, ' ', length - n);
 }
 
 /* First in pair of wrappers for evaluator_get_variables() function.  */
@@ -155,9 +171,11 @@ evaluator_get_variables_chars__(int64_t *evaluator, char *string,
 
 	/* Get array of strings with variable names.  */
 	evaluator_get_variables((void *) *evaluator, &names, &count);
+	if (length < 0)
+		length = 0;
 
 	/* Concatenate variable names from above array into string passed
-	   from Fortran code.  */
+	   from Fortran code, padding it with blanks.  */
 	for (i = 0; i < count; i++) {
 		if (i != 0 && length > 0) {
 			*(string++) = ' ';
@@ -170,6 +188,7 @@ evaluator_get_variables_chars__(int64_t *evaluator, char *string,
 		string += n;
 		length -= n;
 	}
+	memset(string, ' ', length);
 }
 
 /* Wrapper for evaluator_derivative() function.  */
@@ -182,6 +201,8 @@ evaluator_derivative__(int64_t *evaluator, char *name, int length)
 
 	/* Copy variable name passed from Fortran code and terminate it
 	   with zero.  */
+	if (length < 0)
+		length = 0;
 	stringz = XMALLOC(char, length + 1);
 	memcpy(stringz, name, length * sizeof(char));
 	stringz[length] = '\0';

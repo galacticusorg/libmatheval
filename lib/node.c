@@ -902,12 +902,10 @@ node_flag_variables(Node *node)
 	}
 }
 
-int
+size_t
 node_get_length(Node *node)
 {
-	FILE *file;	/* Temporary file.  */
-	int count;	/* Count of bytes written to above file.  */
-	int length;	/* Length of above string.  */
+	size_t length;	/* Length of above string.  */
 	Record *record;	/* Symbol table record.  */
 	Node *child;	/* Function argument or operand.  */
 	Node *left, *right;	/* Arguments or operands.  */
@@ -916,20 +914,9 @@ node_get_length(Node *node)
 	   subtree rooted at node.  */
 	switch (node->type) {
 	case 'n':
-		length = 0;
+		length = snprintf(NULL, 0, "%g", node->data.number);
 		if (node->data.number < 0)
-			length += 1;
-
-		file = tmpfile();
-		if (file) {
-			if ((count =
-			     fprintf(file, "%g", node->data.number)) >= 0)
-				length += count;
-			fclose(file);
-		}
-
-		if (node->data.number < 0)
-			length += 1;
+			length += 2;
 		return length;
 
 	case 'c':

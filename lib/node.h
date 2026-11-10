@@ -24,6 +24,7 @@
 #include "config.h"
 #endif
 
+#include <stddef.h>
 #include "symbol_table.h"
 
 /* Data structure representing function tree node.  */
@@ -94,7 +95,7 @@ void node_flag_variables(Node *node);
 
 /* Calculate length of the string representing subtree rooted at specified
    node.  */
-int node_get_length(Node *node);
+size_t node_get_length(Node *node);
 
 /* Write subtree rooted at specified node to given string variable.  No
    checking of string overflow is done by this procedure; it is expected
