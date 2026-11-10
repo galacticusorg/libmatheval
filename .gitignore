@@ -11,6 +11,6 @@ libmatheval-*.tar.gz
 autom4te.cache
 config
 doc/stamp-vti
-libmatheval-1.1.11
+libmatheval-*/
 m4
 new

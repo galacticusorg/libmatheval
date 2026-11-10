@@ -1,5 +1,5 @@
 # Copyright (C) 1999, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2011,
-# 2012, 2013 Free Software Foundation, Inc.
+# 2012, 2013, 2026 Free Software Foundation, Inc.
 #
 # This file is part of GNU libmatheval
 #
@@ -19,33 +19,17 @@
 
 ACLOCAL_AMFLAGS = -I m4
 
-AUX_DIST = $(ac_aux_dir)/compile $(ac_aux_dir)/config.guess		\
-$(ac_aux_dir)/config.sub $(ac_aux_dir)/depcomp $(ac_aux_dir)/install-sh	\
-$(ac_aux_dir)/ltmain.sh $(ac_aux_dir)/mdate-sh $(ac_aux_dir)/missing	\
-$(ac_aux_dir)/mkinstalldirs $(ac_aux_dir)/texinfo.tex
-
 MAINTAINERCLEANFILES = Makefile.in aclocal.m4 configure config.h.in	\
-config.log config.status stamp-h.in $(AUX_DIST)
+config.log config.status
 
-# The test suite needs Guile, which is optional.
-if HAVE_GUILE
-TESTS_SUBDIR = tests
-else
-check-local:
-	@echo "Guile 3.0 was not found by configure, so the test suite was not run."
-endif
-SUBDIRS = doc lib $(TESTS_SUBDIR)
-DIST_SUBDIRS = doc lib tests
+SUBDIRS = doc lib tests
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libmatheval.pc
 
-.PHONY: beauty dist-hook
+EXTRA_DIST = .indent.pro
+
+.PHONY: beauty
 
 beauty:
 	-for dir in lib tests; do cd $$dir; $(MAKE) $@; cd ..; done
-
-dist-hook:
-	for file in $(AUX_DIST); do \
-	  cp $$file $(distdir)/$$file; \
-	done

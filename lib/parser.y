@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1999, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2011,
- * 2012, 2013 Free Software Foundation, Inc.
+ * 2012, 2013, 2026 Free Software Foundation, Inc.
  * 
  * This file is part of GNU libmatheval
  *
@@ -22,7 +22,7 @@
 %{
 /*
  * Copyright (C) 1999, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2011,
- * 2012, 2013 Free Software Foundation, Inc.
+ * 2012, 2013, 2026 Free Software Foundation, Inc.
  * 
  * GNU libmatheval is free software: you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -71,8 +71,7 @@ extern void input_reset (void);
 
 /* Grammar terminal symbols.  */
 %token <node> NUMBER CONSTANT VARIABLE
-%token <record> FUNCTION
-%token <record> FUNCTION2
+%token <record> FUNCTION FUNCTION2 SELECT
 %left '-' '+'
 %left '*' '/'
 %left NEG
@@ -81,6 +80,9 @@ extern void input_reset (void);
 
 /* Grammar non-terminal symbols.  */
 %type <node> expression
+
+/* Free subtrees discarded when parsing fails.  */
+%destructor { node_destroy ($$); } <node>
 
 /* Grammar start non-terminal.  */
 %start input
@@ -121,13 +123,17 @@ expression
         /* Create exponentiation unary operation node.  */
         $$ = node_create ('b', '^', $1, $3);
 }
-| FUNCTION2 '(' expression ',' expression ')' {
-        /* Create function node.  */
-        $$ = node_create ('g', $1, $3, $5);
-}
 | FUNCTION '(' expression ')' {
         /* Create function node.  */
         $$ = node_create ('f', $1, $3);
+}
+| FUNCTION2 '(' expression ',' expression ')' {
+        /* Create function of two arguments node.  */
+        $$ = node_create ('g', $1, $3, $5);
+}
+| SELECT '(' expression ',' expression ',' expression ')' {
+        /* Create selection node.  */
+        $$ = node_create ('s', $1, $3, $5, $7);
 }
 | '(' expression ')' {
         $$ = $2;
@@ -138,6 +144,8 @@ expression
 
 int yyerror(char* s)
 {
+        (void) s;
+
         /* Indicate parsing error through appropriate flag, reset input
          * string and stop parsing.  */
         ok = 0;

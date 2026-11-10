@@ -1,5 +1,5 @@
 # Copyright (C) 1999, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2011,
-# 2012, 2013 Free Software Foundation, Inc.
+# 2012, 2013, 2026 Free Software Foundation, Inc.
 #
 # This file is part of GNU libmatheval
 #
@@ -21,15 +21,15 @@ MAINTAINERCLEANFILES = Makefile.in parser.c parser.h scanner.c
 
 EXTRA_DIST = parser.h
 
-INCLUDES = -I$(top_builddir) -I$(top_srcdir)
+AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir)
 
 lib_LTLIBRARIES = libmatheval.la
 
 libmatheval_la_SOURCES = parser.y scanner.l error.c matheval.c	\
 g77_interface.c node.c symbol_table.c xmalloc.c xmath.c
 
-libmatheval_la_LDFLAGS = -version-info 1:0:0
-libmatheval_la_LIBADD = @LEXLIB@ -lm
+libmatheval_la_LDFLAGS = -version-info 1:1:0 -export-symbols-regex '^evaluator_'
+libmatheval_la_LIBADD = -lm
 
 include_HEADERS = matheval.h
 noinst_HEADERS = common.h error.h node.h symbol_table.h xmalloc.h	\
@@ -40,5 +40,7 @@ AM_YFLAGS = -d
 .PHONY: beauty
 
 beauty:
-	-for file in $$(ls *.c *.h); do indent -orig -i8 -ncdb $$file; done
-	-rm -f *~
+	cd $(srcdir) && INDENT_PROFILE=../.indent.pro indent error.c	\
+	g77_interface.c matheval.c node.c symbol_table.c xmalloc.c xmath.c	\
+	$(include_HEADERS) $(noinst_HEADERS)
+	-rm -f $(srcdir)/*~
