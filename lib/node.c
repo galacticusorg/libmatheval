@@ -645,7 +645,7 @@ node_derivative(Node *node, char *name, SymbolTable *symbol_table)
 			n2 = node_copy(child);
 			n3 = node_create('n', 2.0);
 			n4 = node_create('b', '^', n2, n3);
-			n5 = node_create('b', '-', n1, n4);
+			n5 = node_create('b', '+', n1, n4);
 			n6 = node_create('f', r0, n5);
 			return node_create('b', '/', n0, n6);
 		}
@@ -677,11 +677,11 @@ node_derivative(Node *node, char *name, SymbolTable *symbol_table)
 		   derivative.  */
 		if (!strcmp(record->name, "acoth")) {
 			n0 = node_derivative(child, name, symbol_table);
-			n1 = node_copy(child);
-			n2 = node_create('n', 2.0);
-			n3 = node_create('b', '^', n1, n2);
-			n4 = node_create('n', 1.0);
-			n5 = node_create('b', '-', n3, n4);
+			n1 = node_create('n', 1.0);
+			n2 = node_copy(child);
+			n3 = node_create('n', 2.0);
+			n4 = node_create('b', '^', n2, n3);
+			n5 = node_create('b', '-', n1, n4);
 			return node_create('b', '/', n0, n5);
 		}
 		/* Apply rule of inverse hyperbolic secant function
