@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1999, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2011,
- * 2012, 2013 Free Software Foundation, Inc.
+ * 2012, 2013, 2026 Free Software Foundation, Inc.
  * 
  * This file is part of GNU libmatheval
  *
@@ -22,7 +22,7 @@
 %{
 /*
  * Copyright (C) 1999, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2011,
- * 2012, 2013 Free Software Foundation, Inc.
+ * 2012, 2013, 2026 Free Software Foundation, Inc.
  * 
  * This file is part of GNU libmatheval
  *
@@ -63,6 +63,9 @@ extern char *input_string; /* String representing function.  */
 /* Read next max_size character from string into buffer.  */
 static int input_from_string (char *buffer, int max_size);
 %}
+
+/* Scanner input is a single string, so yywrap() is not needed.  */
+%option noyywrap
 
 /* Token definitions.  */
 whitespace [ \t]+

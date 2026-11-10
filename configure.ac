@@ -1,5 +1,5 @@
 dnl Copyright (C) 1999, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2011,
-dnl 2012, 2013 Free Software Foundation, Inc.
+dnl 2012, 2013, 2026 Free Software Foundation, Inc.
 dnl
 dnl This file is part of GNU libmatheval
 dnl
@@ -18,14 +18,13 @@ dnl along with GNU libmatheval.  If not, see
 dnl <http://www.gnu.org/licenses/>.
 
 dnl Process this file with autoconf to produce a configure script.
-AC_PREREQ(2.53)
-AC_INIT([libmatheval],[1.1.11],[asamardzic@gnu.org])
+AC_PREREQ([2.69])
+AC_INIT([libmatheval],[1.1.11],[bug-libmatheval@gnu.org])
 AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_MACRO_DIR([m4])
-AC_SUBST([ac_aux_dir])
-AM_INIT_AUTOMAKE([libmatheval], [1.1.11])
-AC_CONFIG_SRCDIR([configure.in])
-AM_CONFIG_HEADER([config.h])
+AM_INIT_AUTOMAKE
+AC_CONFIG_SRCDIR([lib/matheval.h])
+AC_CONFIG_HEADERS([config.h])
 
 dnl Initialize the test suite.
 AC_CONFIG_TESTDIR([tests])
@@ -34,36 +33,30 @@ AC_CONFIG_FILES([tests/Makefile])
 
 dnl Checks for programs.
 AC_PROG_CC
-AM_PROG_CC_C_O
-AC_PROG_CC_C99
-AC_PROG_CPP
-AC_PROG_INSTALL
-AM_PROG_LEX
-AC_PROG_LN_S
-AC_PROG_LIBTOOL
-AC_PROG_MAKE_SET
+AM_PROG_LEX([noyywrap])
 AC_PROG_YACC
+LT_INIT
 AM_MISSING_PROG([AUTOM4TE], [autom4te])
-GUILE_FLAGS
 
-dnl Checks for libraries.
+dnl Guile is needed by test suite only.
+have_guile=no
+PKG_PROG_PKG_CONFIG([0.9.0], [PKG_CONFIG=""])
+if test -n "$PKG_CONFIG"; then
+  PKG_CHECK_MODULES([GUILE], [guile-3.0], [have_guile=yes],
+    [PKG_CHECK_MODULES([GUILE], [guile-2.2], [have_guile=yes],
+      [PKG_CHECK_MODULES([GUILE], [guile-2.0], [have_guile=yes],
+        [have_guile=no])])])
+fi
+AM_CONDITIONAL([HAVE_GUILE], [test "x$have_guile" = xyes])
 
 dnl Checks for header files.
-AC_HEADER_STDC
 AC_CHECK_HEADERS([math.h strings.h stddef.h stdint.h])
 
 dnl Checks for typedefs, structures, and compiler characteristics.
-AC_C_CONST
 AC_TYPE_SIZE_T
 
 dnl Checks for library functions.
 AC_CHECK_FUNCS([bzero memset], [break])
 
-dnl Additional Guile feature checks.
-AC_CHECK_TYPE([scm_t_bits], [AC_DEFINE([HAVE_SCM_T_BITS], [1], [Define to 1 if you have the `scm_t_bits' type.])], [], [#include <libguile.h>])
-AC_CHECK_LIB([guile], [scm_c_define_gsubr], [AC_DEFINE([HAVE_SCM_C_DEFINE_GSUBR], [1], [Define to 1 if you have the `scm_c_define_gsubr' function.])], [], [$GUILE_LDFLAGS])
-AC_CHECK_LIB([guile], [scm_make_gsubr], [AC_DEFINE([HAVE_SCM_MAKE_GSUBR], [1], [Define to 1 if you have the `scm_make_gsubr' function.])], [], [$GUILE_LDFLAGS])
-AC_CHECK_LIB([guile], [scm_num2dbl], [AC_DEFINE([HAVE_SCM_NUM2DBL], [1], [Define to 1 if you have the `scm_num2dbl' function.])], [], [$GUILE_LDFLAGS])
-
-AC_CONFIG_FILES([Makefile doc/Makefile lib/Makefile])
-AC_OUTPUT(libmatheval.pc)
+AC_CONFIG_FILES([Makefile doc/Makefile lib/Makefile libmatheval.pc])
+AC_OUTPUT

@@ -27,7 +27,7 @@ check_SCRIPTS = matheval.sh
 DISTCLEANFILES = atconfig $(check_SCRIPTS)
 MAINTAINERCLEANFILES = Makefile.in $(TESTSUITE)
 
-$(srcdir)/package.m4: $(top_srcdir)/configure.in
+$(srcdir)/package.m4: $(top_srcdir)/configure.ac
 	{					\
 	  echo '# Signature of the current package.'; \
 	  echo 'm4_define([AT_PACKAGE_NAME],      [@PACKAGE_NAME@])'; \
@@ -52,8 +52,13 @@ clean-local:
 		$(SHELL) $(TESTSUITE) --clean; \
 	fi
 
+if HAVE_GUILE
 check-local: atconfig $(TESTSUITE)
-	$(SHELL) $(TESTSUITE);
+	$(SHELL) $(TESTSUITE)
+else
+check-local:
+	@echo "Guile not found, test suite skipped"
+endif
 
 installcheck-local:
 	if test -f $(TESTSUITE); then \
@@ -61,16 +66,17 @@ installcheck-local:
 	fi
 
 
-INCLUDES = -I$(top_builddir) -I$(top_builddir)/lib -I$(top_srcdir)	\
+AM_CPPFLAGS = -I$(top_builddir) -I$(top_builddir)/lib -I$(top_srcdir)	\
 -I$(top_srcdir)/lib
 
-noinst_PROGRAMS = matheval
+if HAVE_GUILE
+check_PROGRAMS = matheval
+endif
 
 matheval_SOURCES = matheval.c
 
 matheval_CFLAGS = $(GUILE_CFLAGS)
-matheval_LDADD = $(top_builddir)/lib/libmatheval.la
-matheval_LDFLAGS = $(GUILE_LDFLAGS)
+matheval_LDADD = $(top_builddir)/lib/libmatheval.la $(GUILE_LIBS)
 
 .PHONY: beauty
 

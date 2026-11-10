@@ -19,13 +19,8 @@
 
 ACLOCAL_AMFLAGS = -I m4
 
-AUX_DIST = $(ac_aux_dir)/compile $(ac_aux_dir)/config.guess		\
-$(ac_aux_dir)/config.sub $(ac_aux_dir)/depcomp $(ac_aux_dir)/install-sh	\
-$(ac_aux_dir)/ltmain.sh $(ac_aux_dir)/mdate-sh $(ac_aux_dir)/missing	\
-$(ac_aux_dir)/mkinstalldirs $(ac_aux_dir)/texinfo.tex
-
 MAINTAINERCLEANFILES = Makefile.in aclocal.m4 configure config.h.in	\
-config.log config.status stamp-h.in $(AUX_DIST)
+config.log config.status
 
 SUBDIRS = doc lib tests
 
@@ -34,12 +29,7 @@ pkgconfig_DATA = libmatheval.pc
 
 EXTRA_DIST = .indent.pro
 
-.PHONY: beauty dist-hook
+.PHONY: beauty
 
 beauty:
 	-for dir in lib tests; do cd $$dir; $(MAKE) $@; cd ..; done
-
-dist-hook:
-	for file in $(AUX_DIST); do \
-	  cp $$file $(distdir)/$$file; \
-	done

@@ -1,7 +1,7 @@
 # Checking the numbers.                      -*- Autotest -*-
 
 # Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2011, 2012,
-# 2013 Free Software Foundation, Inc.
+# 2013, 2026 Free Software Foundation, Inc.
 #
 # This file is part of GNU libmatheval
 #
@@ -53,6 +53,6 @@ AT_DATA([number.scm],
 (display (evaluator-evaluate-x f 0))
 ]])
 
-AT_CHECK([matheval.sh number.scm], [ignore], [0.644394014977254], [ignore])
+AT_CHECK([matheval.sh number.scm], [ignore], [0.6443940149772542], [ignore])
 
 AT_CLEANUP

@@ -21,7 +21,7 @@ MAINTAINERCLEANFILES = Makefile.in parser.c parser.h scanner.c
 
 EXTRA_DIST = parser.h
 
-INCLUDES = -I$(top_builddir) -I$(top_srcdir)
+AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir)
 
 lib_LTLIBRARIES = libmatheval.la
 
@@ -29,7 +29,7 @@ libmatheval_la_SOURCES = parser.y scanner.l error.c matheval.c	\
 g77_interface.c node.c symbol_table.c xmalloc.c xmath.c
 
 libmatheval_la_LDFLAGS = -version-info 1:0:0
-libmatheval_la_LIBADD = @LEXLIB@ -lm
+libmatheval_la_LIBADD = -lm
 
 include_HEADERS = matheval.h
 noinst_HEADERS = common.h error.h node.h symbol_table.h xmalloc.h	\
