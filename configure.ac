@@ -55,8 +55,5 @@ AC_CHECK_HEADERS([math.h strings.h stddef.h stdint.h])
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_TYPE_SIZE_T
 
-dnl Checks for library functions.
-AC_CHECK_FUNCS([bzero memset], [break])
-
 AC_CONFIG_FILES([Makefile doc/Makefile lib/Makefile libmatheval.pc])
 AC_OUTPUT

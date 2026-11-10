@@ -24,33 +24,7 @@
 #include "config.h"
 #endif
 
-#if HAVE_MATH_H
 #include <math.h>
-#else
-#error no <math.h> avaialable
-#endif
-
-#ifdef INFINITY
-#define MATH_INFINITY INFINITY
-#elif defined HUGE_VAL
-#define MATH_INFINITY HUGE_VAL
-#else
-#define MATH_INFINITY (1.0 / 0.0)
-#endif
-
-#ifdef NAN
-#define MATH_NAN NAN
-#elif defined INFINITY
-#define MATH_NAN (INFINITY / INFINITY)
-#else
-#define MATH_NAN (0.0 / 0.0)
-#endif
-
-#ifdef isnan
-#define MATH_ISNAN(x) isnan(x)
-#else
-#define MATH_ISNAN(x) ((x) != (x))
-#endif
 
 /* Calculate cotangent of value x.  */
 double math_cot(double x);
@@ -78,15 +52,6 @@ double math_sech(double x);
 
 /* Calculate hyperbolical cosecant of value x.  */
 double math_csch(double x);
-
-/* Calculate inverse hyperbolical sine of value x.  */
-double math_asinh(double x);
-
-/* Calculate inverse hyperbolical cosine of value x.  */
-double math_acosh(double x);
-
-/* Calculate inverse hyperbolical tangent of value x.  */
-double math_atanh(double x);
 
 /* Calculate inverse hyperbolical cotangent of value x.  */
 double math_acoth(double x);

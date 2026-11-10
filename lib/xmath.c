@@ -83,64 +83,43 @@ math_csch(double x)
 }
 
 double
-math_asinh(double x)
-{
-	/* Calculate inverse hyperbolic sine value.  */
-	return log(x + sqrt(x * x + 1));
-}
-
-double
-math_acosh(double x)
-{
-	/* Calculate inverse hyperbolic cosine value.  */
-	return log(x + sqrt(x * x - 1));
-}
-
-double
-math_atanh(double x)
-{
-	/* Calculate inverse hyperbolic tangent value.  */
-	return 0.5 * log((1 + x) / (1 - x));
-}
-
-double
 math_acoth(double x)
 {
 	/* Calculate inverse hyperbolic cotangent value.  */
-	return 0.5 * log((x + 1) / (x - 1));
+	return atanh(1 / x);
 }
 
 double
 math_asech(double x)
 {
 	/* Calculate inverse hyperbolic secant value.  */
-	return math_acosh(1 / x);
+	return acosh(1 / x);
 }
 
 double
 math_acsch(double x)
 {
 	/* Calculate inverse hyperbolic cosecant value.  */
-	return math_asinh(1 / x);
+	return asinh(1 / x);
 }
 
 double
 math_step(double x)
 {
 	/* Calculate step function value.  */
-	return MATH_ISNAN(x) ? x : ((x < 0) ? 0 : 1);
+	return isnan(x) ? x : ((x < 0) ? 0 : 1);
 }
 
 double
 math_delta(double x)
 {
 	/* Calculate delta function value.  */
-	return MATH_ISNAN(x) ? x : ((x == 0) ? MATH_INFINITY : 0);
+	return isnan(x) ? x : ((x == 0) ? INFINITY : 0);
 }
 
 double
 math_nandelta(double x)
 {
 	/* Calculate modified delta function value.  */
-	return MATH_ISNAN(x) ? x : ((x == 0) ? MATH_NAN : 0);
+	return isnan(x) ? x : ((x == 0) ? NAN : 0);
 }

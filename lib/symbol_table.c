@@ -67,7 +67,7 @@ symbol_table_create(int length)
 		tan, math_cot, math_sec, math_csc, asin,
 		acos, atan, math_acot, math_asec, math_acsc,
 		sinh, cosh, tanh, math_coth, math_sech,
-		math_csch, math_asinh, math_acosh, math_atanh, math_acoth,
+		math_csch, asinh, acosh, atanh, math_acoth,
 		math_asech, math_acsch, fabs, math_step, math_delta,
 		math_nandelta, erf
 	};

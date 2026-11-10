@@ -385,7 +385,7 @@ AT_DATA([function.scm],
 (display (evaluator-evaluate-x f 1))
 ]])
 
-AT_CHECK([matheval.sh function.scm], [ignore], [0.8813735870195429], [ignore])
+AT_CHECK([matheval.sh function.scm], [ignore], [0.881373587019543], [ignore])
 
 AT_DATA([function.scm],
 [[
@@ -488,7 +488,7 @@ AT_DATA([function.scm],
 (display (evaluator-evaluate-x f 1))
 ]])
 
-AT_CHECK([matheval.sh function.scm], [ignore], [0.8813735870195429], [ignore])
+AT_CHECK([matheval.sh function.scm], [ignore], [0.881373587019543], [ignore])
 
 AT_DATA([function.scm],
 [[
@@ -583,5 +583,61 @@ AT_DATA([function.scm],
 ]])
 
 AT_CHECK([matheval.sh function.scm], [ignore], [(2_sqrtpi*exp((-(x^2))))], [ignore])
+
+AT_DATA([function.scm],
+[[
+(define f (evaluator-create "asinh(x)"))
+(display (evaluator-evaluate-x f -10000000000))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [-23.7189981105004], [ignore])
+
+AT_DATA([function.scm],
+[[
+(define f (evaluator-create "asinh(x)"))
+(display (evaluator-evaluate-x f 1e-10))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [1.0e-10], [ignore])
+
+AT_DATA([function.scm],
+[[
+(define f (evaluator-create "acosh(x)"))
+(display (evaluator-evaluate-x f 10000000000))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [23.7189981105004], [ignore])
+
+AT_DATA([function.scm],
+[[
+(define f (evaluator-create "atanh(x)"))
+(display (evaluator-evaluate-x f 1e-12))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [1.0e-12], [ignore])
+
+AT_DATA([function.scm],
+[[
+(define f (evaluator-create "acoth(x)"))
+(display (evaluator-evaluate-x f 1000000000000))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [1.0e-12], [ignore])
+
+AT_DATA([function.scm],
+[[
+(define f (evaluator-create "asech(x)"))
+(display (evaluator-evaluate-x f 1e-10))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [23.7189981105004], [ignore])
+
+AT_DATA([function.scm],
+[[
+(define f (evaluator-create "acsch(x)"))
+(display (evaluator-evaluate-x f 10000000000))
+]])
+
+AT_CHECK([matheval.sh function.scm], [ignore], [1.0e-10], [ignore])
 
 AT_CLEANUP

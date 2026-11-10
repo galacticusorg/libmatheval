@@ -24,10 +24,6 @@
 #include "common.h"
 #include "error.h"
 
-#if !HAVE_BZERO && HAVE_MEMSET
-#define bzero(buf, bytes) ((void) memset(buf, 0, bytes))
-#endif
-
 void *
 xmalloc(size_t num)
 {
@@ -42,14 +38,9 @@ xmalloc(size_t num)
 void *
 xrealloc(void *ptr, size_t num)
 {
-	void *ptr_new;
+	/* Call realloc() and check return value.  */
+	void *ptr_new = realloc(ptr, num);
 
-	/* If memory not already allocated, fall back to xmalloc().  */
-	if (!ptr)
-		return xmalloc(num);
-
-	/* Otherwise, call realloc() and check return value.  */
-	ptr_new = realloc(ptr, num);
 	if (!ptr_new)
 		error_fatal("unable to allocate memory");
 
@@ -59,9 +50,10 @@ xrealloc(void *ptr, size_t num)
 void *
 xcalloc(size_t num, size_t size)
 {
-	/* Allocate memory and fill with zeroes.  */
-	void *ptr_new = xmalloc(num * size);
+	/* Call calloc() and check return value.  */
+	void *ptr_new = calloc(num, size);
 
-	bzero(ptr_new, num * size);
+	if (!ptr_new)
+		error_fatal("unable to allocate memory");
 	return ptr_new;
 }
