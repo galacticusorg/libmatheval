@@ -60,11 +60,6 @@ check-local:
 	@echo "Guile not found, test suite skipped"
 endif
 
-installcheck-local:
-	if test -f $(TESTSUITE); then \
-		$(SHELL) $(TESTSUITE) AUTOTEST_PATH=$(exec_prefix)/bin; \
-	fi
-
 
 AM_CPPFLAGS = -I$(top_builddir) -I$(top_builddir)/lib -I$(top_srcdir)	\
 -I$(top_srcdir)/lib
