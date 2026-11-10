@@ -99,6 +99,44 @@ values, to create a corresponding tree for the function derivative
 over a specified variable or to get back a textual representation of
 the in-memory tree.
 
+For example, the following short program creates a function of two
+variables, evaluates it, and then creates and evaluates its derivative
+over one of the variables:
+
+@example
+#include <stdio.h>
+#include <matheval.h>
+
+int
+main (void)
+@{
+  char *names[] = @{ "x", "y" @};
+  double values[] = @{ 4, 5 @};
+  void *f, *f_prim;
+
+  f = evaluator_create ("sqrt(2*x+3*y)");
+  f_prim = evaluator_derivative_x (f);
+  printf ("f(x, y) = %s\n", evaluator_get_string (f));
+  printf ("f(4, 5) = %g\n", evaluator_evaluate (f, 2, names, values));
+  printf ("df/dx = %s\n", evaluator_get_string (f_prim));
+  printf ("df/dx(4, 5) = %g\n",
+          evaluator_evaluate (f_prim, 2, names, values));
+  evaluator_destroy (f);
+  evaluator_destroy (f_prim);
+  return 0;
+@}
+@end example
+
+@noindent
+The program prints:
+
+@example
+f(x, y) = sqrt(((2*x)+(3*y)))
+f(4, 5) = 4.79583
+df/dx = ((((0*x)+2)+(0*y))/(2*sqrt(((2*x)+(3*y)))))
+df/dx(4, 5) = 0.208514
+@end example
+
 This section discusses use of the programming interface exposed by the
 library from C programs.  Readers interested in the Fortran interface
 should switch immediately to the @ref{Fortran interface} section.
