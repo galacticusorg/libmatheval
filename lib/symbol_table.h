@@ -62,7 +62,7 @@ void symbol_table_destroy(SymbolTable *symbol_table);
    represent symbol.  If symbol already in symbol table, pointer to its
    record is returned immediately.  */
 Record *symbol_table_insert(SymbolTable *symbol_table, char *name,
-			    char type, ...);
+			    int type, ...);
 
 /* Lookup symbol by name from given symbol table.  Pointer to symbol
    record is returned if symbol found, null pointer otherwise.  */

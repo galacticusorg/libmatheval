@@ -28,7 +28,7 @@
 #include "node.h"
 
 Node *
-node_create(char type, ...)
+node_create(int type, ...)
 {
 	Node *node;	/* New node.  */
 	va_list ap;	/* Variable argument list.  */
@@ -152,6 +152,8 @@ node_copy(Node *node)
 		return node_create('b', node->data.bin_op.operation, n0,
 				   n1);
 	}
+
+	return NULL;
 }
 
 Node *
@@ -303,6 +305,8 @@ node_simplify(Node *node)
 		else
 			return node;
 	}
+
+	return node;
 }
 
 double
@@ -339,13 +343,14 @@ node_evaluate(Node *node)
 		case '-':
 			return -node_evaluate(child);
 		}
+		break;
 
 	case 'b':
 		left = node->data.bin_op.left;
 		right = node->data.bin_op.right;
 		/* Binary operation node is evaluated according to
 		   operation type.  */
-		switch (node->data.un_op.operation) {
+		switch (node->data.bin_op.operation) {
 		case '+':
 			return node_evaluate(left) + node_evaluate(right);
 
@@ -781,6 +786,8 @@ node_derivative(Node *node, char *name, SymbolTable *symbol_table)
 			return node_create('b', '*', n0, n7);
 		}
 
+		break;
+
 	case 'u':
 		child = node->data.un_op.child;
 		switch (node->data.un_op.operation) {
@@ -789,6 +796,8 @@ node_derivative(Node *node, char *name, SymbolTable *symbol_table)
 			n0 = node_derivative(child, name, symbol_table);
 			return node_create('u', '-', n0);
 		}
+
+		break;
 
 	case 'b':
 		left = node->data.bin_op.left;
@@ -864,6 +873,8 @@ node_derivative(Node *node, char *name, SymbolTable *symbol_table)
 			return node_create('b', '*', n4, n5);
 		}
 	}
+
+	return NULL;
 }
 
 void

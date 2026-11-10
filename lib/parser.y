@@ -136,6 +136,8 @@ expression
 
 int yyerror(char* s)
 {
+        (void) s;
+
         /* Indicate parsing error through appropriate flag, reset input
          * string and stop parsing.  */
         ok = 0;

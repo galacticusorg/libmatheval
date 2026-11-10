@@ -71,7 +71,7 @@ symbol_table_create(int length)
 		math_asech, math_acsch, fabs, math_step, math_delta,
 		math_nandelta, erf
 	};
-	int i;	/* Loop counter.  */
+	size_t i;	/* Loop counter.  */
 
 	/* Allocate memory for symbol table data structure as well as for
 	   corresponding hash table.  */
@@ -124,7 +124,7 @@ symbol_table_destroy(SymbolTable *symbol_table)
 }
 
 Record *
-symbol_table_insert(SymbolTable *symbol_table, char *name, char type, ...)
+symbol_table_insert(SymbolTable *symbol_table, char *name, int type, ...)
 {
 	/* Pointer to symbol table record corresponding to name given.  */
 	Record *record;

@@ -65,7 +65,7 @@ typedef struct _Node {
 /* Create node of given type and initialize it from optional arguments.
    Function returns pointer to node object that should be passed as first
    argument to all other node functions.  */
-Node *node_create(char type, ...);
+Node *node_create(int type, ...);
 
 /* Destroy subtree rooted at specified node.  */
 void node_destroy(Node *node);

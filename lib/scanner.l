@@ -66,7 +66,7 @@ static int input_from_string (char *buffer, int max_size);
 
 /* Scanner input is a single string, so yywrap() is not needed;
  * unmatched input must not be echoed to standard output.  */
-%option noyywrap nodefault
+%option noyywrap nodefault nounput noinput
 
 /* Token definitions.  */
 whitespace [ \t]+

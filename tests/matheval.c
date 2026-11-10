@@ -47,6 +47,8 @@ static SCM evaluator_derivative_z_scm(SCM evaluator_smob);
 static void
 inner_main(void *closure, int argc, char **argv)
 {
+	(void) closure;
+
 	/* Extend Guile with evaluator type and register procedure to free
 	   objects of this type.  */
 	evaluator_tag = scm_make_smob_type("evaluator", sizeof(void *));
