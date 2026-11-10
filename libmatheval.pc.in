@@ -24,7 +24,7 @@ includedir=@includedir@
 
 Name: libmatheval
 Description: Library of functions for evaluating mathematical expressions
-Version: 1.1.11
+Version: 1.1.12
 Libs: -L${libdir} -lmatheval
 Libs.private: -lm
 Cflags: -I${includedir}

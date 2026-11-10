@@ -19,7 +19,7 @@ dnl <http://www.gnu.org/licenses/>.
 
 dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ([2.69])
-AC_INIT([libmatheval],[1.1.11],[bug-libmatheval@gnu.org])
+AC_INIT([libmatheval],[1.1.12],[bug-libmatheval@gnu.org])
 AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE
