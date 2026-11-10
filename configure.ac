@@ -36,6 +36,7 @@ AC_PROG_CC
 AM_PROG_LEX([noyywrap])
 AC_PROG_YACC
 LT_INIT
+AM_CONDITIONAL([ENABLE_SHARED], [test "x$enable_shared" = xyes])
 AM_MISSING_PROG([AUTOM4TE], [autom4te])
 
 dnl Guile is needed by test suite only.

@@ -72,8 +72,17 @@ AM_CPPFLAGS = -I$(top_builddir) -I$(top_builddir)/lib -I$(top_srcdir)	\
 check_PROGRAMS = fortran
 TESTS = fortran
 
+# Symbols internal to library are hidden in shared library only.
+if ENABLE_SHARED
+check_PROGRAMS += symbols
+TESTS += symbols
+endif
+
 fortran_SOURCES = fortran.c
 fortran_LDADD = $(top_builddir)/lib/libmatheval.la
+
+symbols_SOURCES = symbols.c
+symbols_LDADD = $(top_builddir)/lib/libmatheval.la
 
 if HAVE_GUILE
 check_PROGRAMS += matheval
